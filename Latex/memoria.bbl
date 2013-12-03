@@ -1,0 +1,14 @@
+\begin{thebibliography}{1}
+
+\bibitem{oreilly}
+Gary Bradski and Adrian Kaehler.
+\newblock {\em Learning OpenCV}.
+\newblock O'Reilly, 2008.
+
+\bibitem{shiandtomasi}
+Jianbo Shi and Carlo Tomasi.
+\newblock Good features to track.
+\newblock In Springer, editor, {\em 9th IEEE Conference on Computer Vision and
+  Pattern Recognition}, 1994.
+
+\end{thebibliography}

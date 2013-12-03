@@ -1,0 +1,155 @@
+\documentclass[a4paper,openright, 12pt]{book}
+\usepackage[spanish]{babel} 
+\usepackage[utf8]{inputenc} 
+\usepackage{listings}
+\usepackage{color}
+
+\definecolor{mygreen}{rgb}{0,0.6,0}
+\definecolor{mygray}{rgb}{0.5,0.5,0.5}
+\definecolor{mymauve}{rgb}{0.58,0,0.82}
+
+\lstset{ %
+  backgroundcolor=\color{white},   
+  basicstyle=\footnotesize,       
+  breakatwhitespace=false,         
+  breaklines=true,                 % sets automatic line breaking
+  captionpos=b,                    % sets the caption-position to bottom
+  commentstyle=\color{mygreen},    % comment style
+  deletekeywords={...},            % if you want to delete keywords from the given language
+  escapeinside={\%*}{*)},          % if you want to add LaTeX within your code
+  extendedchars=true,              % lets you use non-ASCII characters; for 8-bits encodings only, does not work with UTF-8
+  frame=single,                    % adds a frame around the code
+  keepspaces=true,                 % keeps spaces in text, useful for keeping indentation of code (possibly needs columns=flexible)
+  keywordstyle=\color{blue},       % keyword style
+  language=Python,                 % the language of the code
+  morekeywords={*,...},            % if you want to add more keywords to the set
+  numbers=none,                    % where to put the line-numbers; possible values are (none, left, right)
+  numbersep=5pt,                   % how far the line-numbers are from the code
+  numberstyle=\tiny\color{mygray}, % the style that is used for the line-numbers
+  rulecolor=\color{black},         % if not set, the frame-color may be changed on line-breaks within not-black text (e.g. comments (green here))
+  showspaces=false,                % show spaces everywhere adding particular underscores; it overrides 'showstringspaces'
+  showstringspaces=false,          % underline spaces within strings only
+  showtabs=false,                  % show tabs within strings adding particular underscores
+  stepnumber=2,                    % the step between two line-numbers. If it's 1, each line will be numbered
+  stringstyle=\color{mymauve},     % string literal style
+  tabsize=2,                       % sets default tabsize to 2 spaces
+  title=\lstname                   % show the filename of files included with \lstinputlisting; also try caption instead of title
+}
+
+
+
+
+\begin{document}
+
+\begin{titlepage}
+\begin{center}
+\begin{Huge}
+\textsc{Título}
+\end{Huge}
+\end{center}
+\end{titlepage}
+
+\newpage
+\mbox{}
+\thispagestyle{empty} 
+
+
+\tableofcontents % indice de contenidos
+\thispagestyle{empty}
+
+
+\chapter{Introducción}\label{cap.introduccion}
+\pagenumbering{arabic} % para empezar la numeración con números
+
+\section{Motivación}
+
+
+\section{OpenCV}
+
+OpenCV es una librería de código abierto escrita en C y C++ destinada a la visión artificial y al tratamiento de imágenes. Se trata de una librería multiplataforma con versiones para GNU/Linux, Windows, Mac OS y Android y actualmente cuenta con interfaces para Python, Java y MATLAB/OCTAVE. Las últimas versiones incluyen soporte para GPU usando CUDA.
+Desarrollada originalmente por Intel, su primera versión alfa se publicó en el año 2000 en el \textit{IEEE Conference on Computer Vision and Pattern Recognition}. OpenCV nació inicialmente como un proyecto para avanzar en las aplicaciones de uso intenso de la CPU y dando gran importancia a las aplicaciones en tiempo real. Hoy en día cuenta con más 2500 algoritmos optimizados que abarcan todo tipo de campos relacionados con la visión artificial.
+Estos algortimos pueden ser usados para tareas como: detectar y reconocer caras y gestos, identificar objetos, detección de características 2D y 3D, estimación de movimiento, seguimiento del movimiento, visión estéro y calibración de la cámara, eliminar los ojos rojos de las fotografías realizadas con flash...
+\newline
+OpenCV es ampliamente utilizada por todo tipo de empresas (desde grandes empresas como Google, Yahoo, Microsoft, Intel, IBM, Sony, Honda, Toyota a pequeñas empresas), grupos de investigación y organismos gubernamentales y en sectores de todo tipo como: inspección de los productos en las fábricas, seguridad, usos médicos, robótica...
+\newline
+\subsection*{Ejemplos}
+\lstinputlisting[language=Python, frame= single]{ejemplos/ejemplo1.py}
+\lstinputlisting[language=Python, frame= single]{ejemplos/ejemplo2.py}
+\lstinputlisting[language=Python, frame= single]{ejemplos/ejemplo3.py}
+\lstinputlisting[language=Python, frame= single]{ejemplos/ejemplo4.py}
+\lstinputlisting[language=Python, frame= single]{ejemplos/ejemplo5.py}
+\lstinputlisting[language=Python, frame= single]{ejemplos/ejemplo7.py}
+\lstinputlisting[language=Python, frame= single]{ejemplos/ejemplo9.py}
+\lstinputlisting[language=Python, frame= single]{ejemplos/BlurCam.py}
+
+\newpage
+\section{Android}
+
+Android es un sistema operativo desarrollado por Google y orientado a móviles y tablets. Está basado en linux y es de código abierto. Actualmente se estima que en torno un 80\% de los dispositívos móviles usan el sistema operativo android.
+Su núcleo está programado en C, pero la aplicaciones y toda la interfaz de usuario se programan en Java.
+Este sistema operativo está estructurado en 4 capas:
+\begin{description}
+  \item[Núcleo linux] \hfill \\
+  Se encarga de las funcionalidades básicas del sistema, como manejo de procesos, de la memoria y de los dispositivos como la cámara, la pantalla, etc.
+   Asimismo funciona como una capa de ebstracción entre el hardware y el resto del software.
+   
+  \item[Librerías y Runtime de Android] \hfill \\
+  Por encima del núcleo, hay una serie de librerías usadas por componentes del sistema, entre ellas destacan Surface Manager, Media Framework, SQLite, WebKit, SGL y Open GL
+  \newline
+  El runtime de Android proporciona un componente clave,la máquina virtual Dalvik. Cada aplicación Android corre su propio proceso, con su propia instancia de esta máquina virtual.
+  Además, el runtime de android proporciona librerías básicas que proporcionan la mayor parte de las funciones del lenguaje de programación Java.
+  
+  \item[Framework de aplicaciones] \hfill \\
+  Esta capa proporciona a las aplicaciones muchos servicios en forma de clases de Java 
+  
+   \item[Aplicaciones] \hfill \\
+  En esta capa se encuentran tanto las aplicaciones base como las que instalemos y desarrollemos   \ldots
+\end{description}
+
+\subsection*{Estructura de una aplicación Android}
+Las aplicaciones android están por los llamados componentes de aplicación. Hay cuatro tipo de componentes:
+\begin{description}
+  \item[Activities] \hfill \\
+  Representa una única pantalla de la aplicación con su interfaz de usuario.
+  \item[Services] \hfill \\
+  Son componentes que se ejecutan en segundo plano y que no constan de interfaz gráfica.
+  \item[Content providers] \hfill \\
+  \item[Broadcast receivers] \hfill \\
+\end{description}
+
+\chapter{Estabilización de imagen}\label{cap.}
+
+\section{Algoritmo}
+Se trata de un algoritmo básico de estabilización de imagen que se basa en la suposición de que el único movimiento de la cámara es el que queremos eliminar; es decir, excepto por ligeros movimientos no deseados, la cámara está estática.
+La idea del algoritmo es muy sencilla: 
+Tomamos dos frames consecutivos y buscamos una serie de puntos característicos mediante el algoritmo propuesto por Shi y Tomashi \cite{shiandtomasi}, usando la función: \lstinline{goodFeaturesToTrack}; después vemos a donde se han movido esos puntos en el siguiente frame mediante el algoritmo de flujo óptico de Lucas-Kanade.
+Finalmente calculamos la homografía que lleva los puntos originales a donde hemos calculado que se han movido y le aplicamos la inversa de esa transformación al segundo frame para colocarlo donde debería estar.
+\subsection{Encontrar puntos característicos}
+
+EXPLICACIÓN
+\subsection{Algoritmo de Lucas-Kanade}
+EXPLICACIÓN
+
+\subsection{Codigo}
+\lstinputlisting[language=Python, frame= single]{estabilizacion.py}
+
+\section{Uso del acelerometro para estabilizar}
+Se trata de intentar utilizar los datos extra de los que disponemos, es decir, los que nos proporciona el acelerómetro del móvil para intentar estabilizar la imagen utilizando estos datos.
+Para ello en primer lugar hacemos un programa para android que se encarga de recoger estos datos, grabando el vídeo a la vez que registra los datos del acelerómetro y los guarda en un archivo junto con el momento exacto en el que se han registrado los datos.
+Luego, un segundo programa en el ordenador proceaso los arhivos para intentar estabilizar la imagen: recoge los datos de aceleración en cada instante de media y aproxima el movimiento en dichos instantes. Luego calcula mediante interpolación cuanto se ha movido la camára en el instante del fotograma y recoloca el fotograma de acuerdo con lo obtenido.
+
+\subsection{Programa para Android}
+
+
+\subsection{Programa de procesado de los datos}
+\lstinputlisting[language=Python, frame= single]{estabilizacion_acelerometro.py}
+
+\subsection{Resultados}
+
+\cleardoublepage
+\addcontentsline{toc}{chapter}{Bibliografía}
+\bibliographystyle{plain} % estilo de la bibliografía.
+\bibliography{texto} % texto.bib es el fichero donde está salvada la bibliografía.
+
+
+\end{document}

@@ -1,0 +1,10 @@
+import cv2
+def load (name):
+    img = cv2.imread(name)
+    cv2.imshow('Example1',img)
+    cv2.waitKey(0)
+
+def main():
+    name = raw_input("Nombre de archivo:")
+    load(name)
+main()
