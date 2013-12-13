@@ -5,6 +5,12 @@ Gary Bradski and Adrian Kaehler.
 \newblock {\em Learning OpenCV}.
 \newblock O'Reilly, 2008.
 
+\bibitem{canny86}
+John Canny.
+\newblock A computational aproach to edge detection.
+\newblock In {\em IEEE Trans. On Pattern Analysis and Machine Inteligence},
+  pages 679--698, 1986.
+
 \bibitem{shiandtomasi}
 Jianbo Shi and Carlo Tomasi.
 \newblock Good features to track.

@@ -26,6 +26,6 @@ if __name__ == '__main__':
     img1 = doPyrDown(img)
     img2 = doPyrDown(img1)
     out = doCanny(img2, 10, 100, 3)
-    cv2.imshow('Example6-in',img)
-    cv2.imshow("Example6-out", out)
+    cv2.imshow('Example7-in',img)
+    cv2.imshow("Example7-out", out)
     cv2.waitKey(0)

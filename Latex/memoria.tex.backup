@@ -62,6 +62,8 @@
 \pagenumbering{arabic} % para empezar la numeración con números
 
 \section{Motivación}
+
+
 \chapter{OpenCV}
 
 \section{Introducción}
@@ -144,52 +146,28 @@ Esta función devuelve el valor de distintas propiedades del video con el que es
 \end{itemize}
 También usamos la función \lstinline|cv2.VideoCapture.set(propId, value)|, usada para fijar el valor de alguna de las propiedades del vídeo. Por tanto los valores que puede tomar \lstinline|propId| son los mismos que para la función \lstinline|cv2.VideoCapture.get()| y el argumento \lstinline|value| indica el nuevo valor que tomará la propiedad indicada.
 
-Una vez cargamos el video como ya sabemos y obtenemos el número total de frames con la función \lstinline|get| como acabamos de ver, procedemos a crear una ventana con la función \lstinline|cv2.namedWindow(winname[, flags])|.
+Una vez cargamos el video como ya sabemos y obtenemos el número total de frames con la función \lstinline|get| como acabamos de ver, procedemos a crear una ventana con la función \lstinline|cv2.namedWindow(winname[, flags]).
 Hasta ahora no había hecho falta ya que \lstinline|cv2.imshow| creaba una nueva ventana si no existía una con ese nombre.
 Ahora le vamos a añadir algo (una trackbar) a nuestra ventana, por lo que necesitamos que ya esté creada.
 Para esto usamos \lstinline|cv2.createTrackbar(trackbarName, windowName, value, count, onChange)|, siendo estos parámetros:
 \begin{itemize}
- \item trackbarname – El nombre de la trackbar creada.
- \item winname – Nombre de la ventana en la que queremos la trackbar.
- \item value – Variable que refleja la posición del slider.
- \item count – La posición máxima del slider. (La posición mñinima es 0 siempre)
- \item onChange – Función que será llamada cada vez que el slider cambie de posición.
- \newline
- ******
+ \item trackbarname – Name of the created trackbar.
+ \item winname – Name of the window that will be used as a parent of the created trackbar.
+ \item value – Optional pointer to an integer variable whose value reflects the position of the slider. Upon creation, the slider position is defined by this variable.
+ \item count – Maximal position of the slider. The minimal position is always 0.
+onChange – Pointer to the function to be called every time the slider changes position. This function should be prototyped as void Foo(int,void*); , where the first parameter is the trackbar position and the second parameter is the user data (see the next parameter). If the callback is the NULL pointer, no callbacks are called, but only value is updated.
 \end{itemize}
 
 \newpage
 
 \subsection*{Ejemplo 4}
-Ahora vamos a ver un ejemplo de una transformación muy sencilla, vamos a abrir una imagen y a aplicarle un desenfoque gaussiano y a mostrar tanto la imagen original como la resultante por pantalla
 \lstinputlisting[language=Python, frame= single]{ejemplos/ejemplo4.py}
-La única función nueva es:
-\newline
-\lstinline|cv2.GaussianBlur(src, ksize, sigmaX[, dst[, sigmaY[, borderType]]])|, cuyos argumentos son:
-
-
-
-
 \newpage
 
 \subsection*{Ejemplo 5}
-En este ejemplo realizamos otra transformación, en este caso reducimos la imagen a la mitad. Esta tarea la realiza la función \lstinline|cv2.pyrDown|
 \lstinputlisting[language=Python, frame= single]{ejemplos/ejemplo5.py}
-Como vemos, en el resto del código no hay nada nuevo, a excepción de la función ya nombrada.
-\newpage
-\subsection*{Ejemplo 6}
-En este ejemplo utilizamos el algoritmo de Canny \cite{canny86} de detección de bordes, usando para ello la función \lstinline|cv2.Canny|
-\lstinputlisting[language=Python, frame= single]{ejemplos/ejemplo6.py}
-\newpage 
-\subsection*{Ejemplo 7}
-Ahora simplemente vamos a combinar los dos ejemplos anteriores, reduciendo la imagen original dos veces con \lstinline|pyrDown| y luego encontrando los bordes con \lstinline|Canny|
 \lstinputlisting[language=Python, frame= single]{ejemplos/ejemplo7.py}
-\newpage
-\subsection*{Ejemplo 9}
-A continuación vemos un ejemplo que muestra la imagen de la webcam.
 \lstinputlisting[language=Python, frame= single]{ejemplos/ejemplo9.py}
-Como vemos el código es exactamente el mismo que el de mostrar un vñideo por pantalla, excepto que a la funcion \lstinline|cv2.VideoCapture| le pasamos como argumento, en lugar del nombre del archivo, un entero que representa el índice de la cámara (si solo hay una cámara, debe ser 0).
-\newpage
 \lstinputlisting[language=Python, frame= single]{ejemplos/BlurCam.py}
 
 \newpage
@@ -233,7 +211,7 @@ Las aplicaciones android están por los llamados componentes de aplicación. Hay
 \section{Algoritmo}
 Se trata de un algoritmo básico de estabilización de imagen que se basa en la suposición de que el único movimiento de la cámara es el que queremos eliminar; es decir, excepto por ligeros movimientos no deseados, la cámara está estática.
 La idea del algoritmo es muy sencilla: 
-Tomamos dos frames consecutivos y buscamos una serie de puntos característicos mediante el algoritmo propuesto por Shi y Tomashi \cite{shiandtomasi}, usando la función: \lstinline|goodFeaturesToTrack|; después vemos a donde se han movido esos puntos en el siguiente frame mediante el algoritmo de flujo óptico de Lucas-Kanade.
+Tomamos dos frames consecutivos y buscamos una serie de puntos característicos mediante el algoritmo propuesto por Shi y Tomashi \cite{shiandtomasi}, usando la función: \lstinline{goodFeaturesToTrack}; después vemos a donde se han movido esos puntos en el siguiente frame mediante el algoritmo de flujo óptico de Lucas-Kanade.
 Finalmente calculamos la homografía que lleva los puntos originales a donde hemos calculado que se han movido y le aplicamos la inversa de esa transformación al segundo frame para colocarlo donde debería estar.
 \subsection{Encontrar puntos característicos}
 
@@ -241,7 +219,6 @@ EXPLICACIÓN
 \subsection{Algoritmo de Lucas-Kanade}
 EXPLICACIÓN
 
-\newpage
 \subsection{Codigo}
 \lstinputlisting[language=Python, frame= single]{estabilizacion.py}
 

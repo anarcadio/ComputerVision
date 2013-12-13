@@ -1,14 +1,18 @@
 \select@language {spanish}
 \contentsline {chapter}{\numberline {1}Introducci\IeC {\'o}n}{1}
 \contentsline {section}{\numberline {1.1}Motivaci\IeC {\'o}n}{1}
-\contentsline {section}{\numberline {1.2}OpenCV}{1}
-\contentsline {section}{\numberline {1.3}Android}{7}
-\contentsline {chapter}{\numberline {2}Estabilizaci\IeC {\'o}n de imagen}{9}
-\contentsline {section}{\numberline {2.1}Algoritmo}{9}
-\contentsline {subsection}{\numberline {2.1.1}Encontrar puntos caracter\IeC {\'\i }sticos}{9}
-\contentsline {subsection}{\numberline {2.1.2}Algoritmo de Lucas-Kanade}{9}
-\contentsline {subsection}{\numberline {2.1.3}Codigo}{9}
-\contentsline {section}{\numberline {2.2}Uso del acelerometro para estabilizar}{11}
-\contentsline {subsection}{\numberline {2.2.1}Programa para Android}{12}
-\contentsline {subsection}{\numberline {2.2.2}Programa de procesado de los datos}{12}
-\contentsline {chapter}{Bibliograf\IeC {\'\i }a}{15}
+\contentsline {chapter}{\numberline {2}OpenCV}{3}
+\contentsline {section}{\numberline {2.1}Introducci\IeC {\'o}n}{3}
+\contentsline {section}{\numberline {2.2}Ejemplos}{4}
+\contentsline {chapter}{\numberline {3}Otras librer\IeC {\'\i }as usadas}{17}
+\contentsline {section}{\numberline {3.1}Android}{17}
+\contentsline {chapter}{\numberline {4}Estabilizaci\IeC {\'o}n de imagen}{19}
+\contentsline {section}{\numberline {4.1}Algoritmo}{19}
+\contentsline {subsection}{\numberline {4.1.1}Encontrar puntos caracter\IeC {\'\i }sticos}{19}
+\contentsline {subsection}{\numberline {4.1.2}Algoritmo de Lucas-Kanade}{19}
+\contentsline {subsection}{\numberline {4.1.3}Codigo}{20}
+\contentsline {section}{\numberline {4.2}Uso del acelerometro para estabilizar}{21}
+\contentsline {subsection}{\numberline {4.2.1}Programa para Android}{22}
+\contentsline {subsection}{\numberline {4.2.2}Programa de procesado de los datos}{22}
+\contentsline {subsection}{\numberline {4.2.3}Resultados}{25}
+\contentsline {chapter}{Bibliograf\IeC {\'\i }a}{27}

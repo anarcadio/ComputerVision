@@ -62,6 +62,8 @@
 \pagenumbering{arabic} % para empezar la numeración con números
 
 \section{Motivación}
+
+
 \chapter{OpenCV}
 
 \section{Introducción}
@@ -161,35 +163,15 @@ Para esto usamos \lstinline|cv2.createTrackbar(trackbarName, windowName, value, 
 \newpage
 
 \subsection*{Ejemplo 4}
-Ahora vamos a ver un ejemplo de una transformación muy sencilla, vamos a abrir una imagen y a aplicarle un desenfoque gaussiano y a mostrar tanto la imagen original como la resultante por pantalla
 \lstinputlisting[language=Python, frame= single]{ejemplos/ejemplo4.py}
-La única función nueva es:
-\newline
-\lstinline|cv2.GaussianBlur(src, ksize, sigmaX[, dst[, sigmaY[, borderType]]])|, cuyos argumentos son:
-
-
-
-
 \newpage
 
 \subsection*{Ejemplo 5}
-En este ejemplo realizamos otra transformación, en este caso reducimos la imagen a la mitad. Esta tarea la realiza la función \lstinline|cv2.pyrDown|
 \lstinputlisting[language=Python, frame= single]{ejemplos/ejemplo5.py}
-Como vemos, en el resto del código no hay nada nuevo, a excepción de la función ya nombrada.
-\newpage
-\subsection*{Ejemplo 6}
-En este ejemplo utilizamos el algoritmo de Canny \cite{canny86} de detección de bordes, usando para ello la función \lstinline|cv2.Canny|
-\lstinputlisting[language=Python, frame= single]{ejemplos/ejemplo6.py}
-\newpage 
 \subsection*{Ejemplo 7}
-Ahora simplemente vamos a combinar los dos ejemplos anteriores, reduciendo la imagen original dos veces con \lstinline|pyrDown| y luego encontrando los bordes con \lstinline|Canny|
 \lstinputlisting[language=Python, frame= single]{ejemplos/ejemplo7.py}
-\newpage
 \subsection*{Ejemplo 9}
-A continuación vemos un ejemplo que muestra la imagen de la webcam.
 \lstinputlisting[language=Python, frame= single]{ejemplos/ejemplo9.py}
-Como vemos el código es exactamente el mismo que el de mostrar un vñideo por pantalla, excepto que a la funcion \lstinline|cv2.VideoCapture| le pasamos como argumento, en lugar del nombre del archivo, un entero que representa el índice de la cámara (si solo hay una cámara, debe ser 0).
-\newpage
 \lstinputlisting[language=Python, frame= single]{ejemplos/BlurCam.py}
 
 \newpage
@@ -233,7 +215,7 @@ Las aplicaciones android están por los llamados componentes de aplicación. Hay
 \section{Algoritmo}
 Se trata de un algoritmo básico de estabilización de imagen que se basa en la suposición de que el único movimiento de la cámara es el que queremos eliminar; es decir, excepto por ligeros movimientos no deseados, la cámara está estática.
 La idea del algoritmo es muy sencilla: 
-Tomamos dos frames consecutivos y buscamos una serie de puntos característicos mediante el algoritmo propuesto por Shi y Tomashi \cite{shiandtomasi}, usando la función: \lstinline|goodFeaturesToTrack|; después vemos a donde se han movido esos puntos en el siguiente frame mediante el algoritmo de flujo óptico de Lucas-Kanade.
+Tomamos dos frames consecutivos y buscamos una serie de puntos característicos mediante el algoritmo propuesto por Shi y Tomashi \cite{shiandtomasi}, usando la función: \lstinline{goodFeaturesToTrack}; después vemos a donde se han movido esos puntos en el siguiente frame mediante el algoritmo de flujo óptico de Lucas-Kanade.
 Finalmente calculamos la homografía que lleva los puntos originales a donde hemos calculado que se han movido y le aplicamos la inversa de esa transformación al segundo frame para colocarlo donde debería estar.
 \subsection{Encontrar puntos característicos}
 
@@ -241,7 +223,6 @@ EXPLICACIÓN
 \subsection{Algoritmo de Lucas-Kanade}
 EXPLICACIÓN
 
-\newpage
 \subsection{Codigo}
 \lstinputlisting[language=Python, frame= single]{estabilizacion.py}
 
