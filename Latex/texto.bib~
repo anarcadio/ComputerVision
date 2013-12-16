@@ -11,7 +11,7 @@
    publisher =   "O'Reilly",
    year =        2008,
  }
-@CONFERENCE{ canny86,
+@CONFERENCE{canny86,
 AUTHOR       = {John Canny}, 
 TITLE        = {A Computational Aproach to Edge Detection},
 BOOKTITLE    = {IEEE Trans. On Pattern Analysis and Machine Inteligence},

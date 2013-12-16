@@ -11,6 +11,12 @@ John Canny.
 \newblock In {\em IEEE Trans. On Pattern Analysis and Machine Inteligence},
   pages 679--698, 1986.
 
+\bibitem{harris88}
+Chris Harris and Mike Stephens.
+\newblock A combined corner and edge detector.
+\newblock In {\em Proceedings of the 4th Alvey Vision Conference}, page
+  147–151, 1988.
+
 \bibitem{shiandtomasi}
 Jianbo Shi and Carlo Tomasi.
 \newblock Good features to track.

@@ -3,6 +3,7 @@
 \usepackage[utf8]{inputenc} 
 \usepackage{listings}
 \usepackage{color}
+\usepackage{amsmath}
 
 \definecolor{mygreen}{rgb}{0,0.6,0}
 \definecolor{mygray}{rgb}{0.5,0.5,0.5}
@@ -237,12 +238,124 @@ Tomamos dos frames consecutivos y buscamos una serie de puntos característicos 
 Finalmente calculamos la homografía que lleva los puntos originales a donde hemos calculado que se han movido y le aplicamos la inversa de esa transformación al segundo frame para colocarlo donde debería estar.
 \subsection{Encontrar puntos característicos}
 
-EXPLICACIÓN
-\subsection{Algoritmo de Lucas-Kanade}
-EXPLICACIÓN
+como ya hemos dicho, queremos encontrar una serie de puntos característicos que puedan ser localizados bien para poder encontrarlos en el siguiente fotograma. Es evidente que no vale cualquier punto, por ejemplo, si tenemos una pared completamente blanca, será muy difícil saber a donde se ha movido un punto cualquiera de la pared de un fotograma a otro. Por este motivo se introduce el concepto de buenos puntos característicos
+(good features to track).
+Un primer acercamiento a definir qué puntos eran buenos lo dieron Chris Harris y Mike Stephens en ``A Combined Corner and Edge Detector" \cite{harris88}.
+La idea básica es encontrar la diferencia de la intensidad de la imagen en un rectángulo centrado en $(x,y)$ . Esto se expresa con la función:
+\begin{equation}
+E(x,y)= \sum_{u,v} w(u,v) [I(u+x,v+y)-I(u,v)]^2
+\end{equation}
+Donde $w(x,y)$ es una función ventana, que asocia un peso a cada punto, e $I(x,y)$ es la intensidad de la imagen en cada punto.
+Por tanto si E(x,y) es suficientemente grande, (x,y) será un buen punto.
+Aplicando el desarrollo en serie de Taylor a $I(u+x,v+y)$ obtenemos:
+\begin{equation}
+I(u+x,v+y) \approx I(u, v) + I_x(u,v)x + I_y(u,v)y
+\end{equation}
+Donde $I_x$ e $I_y$ son las derivadas parciales en x e y respectivamente.
+Esto nos lleva a la aproximación:
+\begin{equation*}
+E(x,y) \approx \sum_{u,v} w(u,v)[I_x(u,v)x + I_y(u,v)y]^2
+\end{equation*}
+que matricialmente se expresa como:
+\begin{equation}
+E(x,y) \approx 
+\left( \begin{array}{cc}x & y \end{array} \right)
+M 
+\left( \begin{array}{c}x\\y \end{array} \right)
+\end{equation}, siendo $M$:
+\begin{equation*}
+M = \sum_{u,v}w(u,v)
+\left( \begin{array}{cc}
+I_x^2 & I_xI_y\\
+I_xI_y & I_y^2
+ \end{array} \right)
+\end{equation*}
+Como nuestro objetivo era que E(x,y) fuese lo suficientemente grande, si estudiamos los autovalores de $M$, lo que querremos es que ambos sean suficientemente grandes.
+Sean $\lambda_1$ y $\lambda_2$ dichos autovalores, entonces:
+\begin{itemize}
+\item Si  $ \lambda_1 \approx 0 $ y $\lambda_2 \approx 0 $ entones el punto no quiere interés.
+\item Si  $ \lambda_1 \approx 0 $ y $\lambda_2 $ es positivos y suficientemente grande entonces hemos encontrado un borde.
+\item Si  $ \lambda_1 $ y $\lambda_2 $ son positivos y suficientemen grandes entonces hemos encontrado un punto de interés. Este punto es la intersección de dos bordes,por ello, estos puntos también son llamados esquinas .
+\end{itemize}
+Como función para valorar la calidad de los autovalores, Shi y Tomasi propusieron:
+\begin{equation*}
+R = min(\lambda_1, \lambda_2)
+\end{equation*}
+en lugar de la propuesta por Harris:
+\begin{equation*}
+R = \lambda_1 \lambda_2 - k(\lambda_1 + \lambda_2)^2
+\end{equation*}
+La función propuesta por Shi y Tomasi proporciona mejores resultados que la original.
+De hacer todo esto se encarga la función \lstinline|cv2.goodFeaturesToTrack()|, que calculas las segundas derivadas utilizando el operador sobel y luego calcula los autovalores.
+Sus argumentos son:
+\newline
+\lstinline|cv2.goodFeaturesToTrack(image, maxCorners, qualityLevel, minDistance[, corners[, mask[, blockSize[, useHarrisDetector[, k]]]]]) |
+\begin{itemize}
+\item image: La imagen en la que queremos buscar los puntos (en escala de grises).
+\item maxCorners:  el máximo número de puntos característicos que queremos.
+\item qualityLevel: La calidad mínima que deben tener los puntos. Es un valor entre 0 y 1. Este parámetro es multiplicado por el mayor valor de calidad encontrado y sólo las esquinas que superen dicho valor serán devueltas.
+\item minDistance: distancia (euclídea) mínima que tiene que existir entre los puntos devueltos.
+\item corners (opcional): la lista de salida con los puntos encontrados.
+\item mask (opcional):Región de interés en la que se buscarán los puntos.
+\item blockSize (opcional):Tamaño del bloque para calcular la matriz $M$.
+\item useHarrisDetector (opcional): Parámetro que indica si queremos usar el detector de Harris (en lugar de el de Shi y Tomasi).
+\item k: El parámetro para el detector de Harris.
+\end{itemize}
 
 \newpage
-\subsection{Codigo}
+\subsection{Algoritmo de Lucas-Kanade}
+El algortimo de Lucas-Kanade es un método que sirve para calcular el flujo óptico.
+El flujo óptico es el patrón de movimiento aparente de los objetos entre un fotograma y el siguiente causado por un movimiento de la cámara o de los objetos. Se trata de un campo vectorial de dos dimensiones donde cada vector es un vector de desplazamiento de un punto entre ambos fotogramas.
+Este algoritmo está basado en tres suposiciones:
+\begin{enumerate}
+\item Brillo constante: La apariencia de un pixel no cambia entre un frame y otro. Para una imagen en escala de grises esto es equivalente a que su brillo permanece constante
+\item Los objetos no se mueven muy rápido.
+\item Coherencia espacial:Los píxeles vecinos tienen movimiento similar.
+\end{enumerate}
+El hecho de que el brillo no varie, es decir, que la intensidad de un pixel se mantiene no lleva a la siguente igualdad:
+\begin{equation}
+I(x,y,t)=I(x+dx,y+dy,t+dt)
+\end{equation}
+De donde obtenemos:
+\begin{equation}
+\label{optflow}
+I_x u + I_y v + I_t = 0
+\end{equation}
+, donde $u= \dfrac{dx}{dt}$ y $v= \dfrac{dy}{dt}$ y siendo $I_x$ e $I_y$ los gradientes de la imagen inicial y análogamente $I_t$ el gradiente sobre el tiempo.
+La ecuación \ref{optflow} se conoce como la ecuación del flujo óptico y no puede ser resuelta para un solo punto ya que hay dos incógnitas.
+Para resolverla utilizamos la suposición de la coherencia espacial, entonces podemos tomar una ventana en torno al punto y obtener un sistema de ecuaciones de la forma $Aw=-b$:
+\begin{equation}
+\left(
+\begin{matrix}
+I_x(p_1) & I_y(p_1)\\
+I_x(p_2) & I_y(p_2)\\
+\vdots & \vdots \\
+I_x(p_n) & I_y(p_n)\\
+\end{matrix}
+\right)
+\left(\begin{array}{c}u\\v\end{array}\right)
+=
+- \left(\begin{array}{c} I_t(p_1)\\I_t(p_2)\\ \vdots\\ I_t(p_n)\end{array}\right)
+\end{equation}
+El algoritmo de Lucas-Kanade obtiene una solución utlizando el ajuste por mínimos cuadrados. Resuelve el sistema:
+\begin{equation*}
+A^t Aw=A^t b
+\end{equation*}
+es decir:
+\begin{equation*}
+\left(
+\begin{matrix}
+\sum I_x I_x & \sum I_x I_y\\
+\sum I_x I_y & \sum I_y I_y\\
+\end{matrix}
+\right)
+\left(\begin{array}{c}u\\v\end{array}\right)
+=
+- \left(\begin{array}{c} \sum I_x I_t\\ \sum I_y I_t\end{array}\right)
+\end{equation*}
+y la solución a esta ecuación es $\left(\begin{array}{c}u\\v\end{array}\right) = (A^t A)^{-1} A^t b $  
+\newpage
+\subsection{Código}
 \lstinputlisting[language=Python, frame= single]{estabilizacion.py}
 
 \section{Uso del acelerometro para estabilizar}
