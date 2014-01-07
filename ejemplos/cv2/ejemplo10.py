@@ -15,7 +15,8 @@ if __name__ == '__main__':
     while (True):
         ret, frame = capture.read()
         if (not ret): break
-        out = doCanny(frame, 50, 100, 3)
+        edgeimg = doCanny(frame, 30, 80, 3)
+        out = 255- edgeimg
         cv2.imshow("Example9-in",frame)
         cv2.imshow("Example9-out",out)
         c = cv2.waitKey(33)

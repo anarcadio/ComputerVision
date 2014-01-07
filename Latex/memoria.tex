@@ -31,9 +31,9 @@
   showspaces=false,                % show spaces everywhere adding particular underscores; it overrides 'showstringspaces'
   showstringspaces=false,          % underline spaces within strings only
   showtabs=false,                  % show tabs within strings adding particular underscores
-  stepnumber=2,                    % the step between two line-numbers. If it's 1, each line will be numbered
+  stepnumber=1,                    % the step between two line-numbers. If it's 1, each line will be numbered
   stringstyle=\color{mymauve},     % string literal style
-  tabsize=2,                       % sets default tabsize to 2 spaces
+  tabsize=4,                       % sets default tabsize to 2 spaces
   title=\lstname                   % show the filename of files included with \lstinputlisting; also try caption instead of title
 }
 
@@ -56,6 +56,7 @@
 
 
 \tableofcontents % indice de contenidos
+\newpage
 \thispagestyle{empty}
 
 
@@ -68,105 +69,76 @@
 \section{Introducción}
 OpenCV es una librería de código abierto escrita en C y C++ destinada a la visión artificial y al tratamiento de imágenes. Se trata de una librería multiplataforma con versiones para GNU/Linux, Windows, Mac OS y Android y actualmente cuenta con interfaces para Python, Java y MATLAB/OCTAVE. Las últimas versiones incluyen soporte para GPU usando CUDA.
 Desarrollada originalmente por Intel, su primera versión alfa se publicó en el año 2000 en el \textit{IEEE Conference on Computer Vision and Pattern Recognition}. OpenCV nació inicialmente como un proyecto para avanzar en las aplicaciones de uso intenso de la CPU y dando gran importancia a las aplicaciones en tiempo real. Hoy en día cuenta con más 2500 algoritmos optimizados que abarcan todo tipo de campos relacionados con la visión artificial.
-Estos algortimos pueden ser usados para tareas como: detectar y reconocer caras y gestos, identificar objetos, detección de características 2D y 3D, estimación de movimiento, seguimiento del movimiento, visión estéro y calibración de la cámara, eliminar los ojos rojos de las fotografías realizadas con flash...
+Estos algortimos pueden ser usados para tareas como: detección y reconocimiento de caras y gestos, identificación objetos, detección de características 2D y 3D, estimación y seguimiento del movimiento, visión estéreo y calibración de la cámara, eliminación los ojos rojos de las fotografías realizadas con flash...
 \newline
 OpenCV es ampliamente utilizada por todo tipo de empresas (desde grandes empresas como Google, Yahoo, Microsoft, Intel, IBM, Sony, Honda, Toyota a pequeñas empresas), grupos de investigación y organismos gubernamentales y en sectores de todo tipo como: inspección de los productos en las fábricas, seguridad, usos médicos, robótica...
 \newline
+Como ya hemos dicho, openCV incluye todo tipo de funciones e implementaciones de algoritmos. 
+Dichas funciones se pueden dividir en varios grupos:
+\begin{itemize}
+\item Las relacionadas con el interfaz gráfico: se encargan de crear ventanas, mostrar imágenes por pantalla, registrar las pulsaciones del teclado, y de crear la interfaz de usuario (botones, barras de desplazamiento, etc). Veremos las más importantes en los ejemplos de la sección siguiente.
+\item Las estructuras básicas como las matrices y las funciones para trabajar con ellas. En la versión para python esto no es muy importante porque está adaptada para trabajar con arrays de Numpy.
+\item Las funciones de procesado de imágenes. Es la parte fundamental de openCV y contiene fucniones de todo tipo: 
+\begin{itemize}
+\item Filtros de imagen, como desenfoques varios, ampliar o reducir una imagen, calcular el gradiente de una imagen mediante el operador Sobel...
+\newline Veremos algunas de estas funciones en los ejemplos.
+\item Transformaciones geométricas. Estas funciones realizan diversas tareas de carácter geométrico sobre las imágenes 2D, como calcular la transformación afín que lleva unos puntos a otros, calcular la matriz de una rotación o aplicarle a una imagen la matriz de una transformación.
+\item Funciones relacionadas con el cálculo y manejo de histogramas (comparar dos histogramas, normalizar un histograma...).
+\item Funciones de estimación de movimiento y detección de características. La más importantes son usadas y explicadas en el capítulo 4.
+\end{itemize}
+\item Funciones de calibrado de la cámara (para corregir la distorsión provocada por la lente) y de reconstrucción 3D usando visión estéreo (dos cámaras).
+\item Funciones para detectar objetos y caras. Destaca la clase \lstinline|CascadeClassifier|.
+\item Además, openCV consta de una librería de aprendizaje automático (\textit{machine learning}) que está formada por funciones de clasificación estadística, árboles de decisión, redes neuronales...
+\end{itemize}
+Por supuesto openCV es una libería enorme y consta de muchísimas más funciones que las aquí mencionadas\newpage
 \section{Ejemplos}
-A continuación veremos una serie de ejemplos sencillos de uso de openCV con python, similares a los propuestos en el capítulo 2 de "Learning OpenCV" \cite{oreilly}
+A continuación veremos una serie de ejemplos sencillos de uso de openCV con python, similares a los propuestos en el capítulo 2 de \textit{"Learning OpenCV" \cite{oreilly}}
 \subsection*{Ejemplo 1}
 En primer lugar veamos como mostrar una imagen en una ventana
 \lstinputlisting[language=Python, frame= single]{ejemplos/ejemplo1.py}
 Como vemos se trata de un código muy sencillo. Al ser ejecutado con un argumento, carga una imagen y la muestra en una ventana; luego espera hasta que el usuario pulse una tecla.
 
-La función \lstinline|cv2.imread()| es la que se encarga de cargar la imagen desde un archivo. 
+La función \lstinline|cv2.imread()| es la que se encarga de cargar la imagen desde un archivo.  Esta función toma como argumentos el nombre del archivo que se quiere abrir y además podemos especificar con un segundo parámetro opcional el modo de color en que se carga la imagen.
 
-Según la documentación de openCV, la función 
-\lstinline|cv2.imread(filename[, flags])|
-toma como parámetros:
-\begin{itemize}
-
-\item filename: Es el nombre del archivo que se quiere abrir.
-\item flags:
-Especifican el modo de color en que se carga la imagen:
-\begin{itemize}
-\item \lstinline|CV_LOAD_IMAGE_ANYDEPTH|: Devuelve una imagen de 16-bit/32-bit cuando la entrada tiene la correspondiente profundidad, en otro caso la convierte a 8-bit.
-\item \lstinline|CV_LOAD_IMAGE_COLOR|: Convierte la imagen a color
-\item \lstinline|CV_LOAD_IMAGE_GRAYSCALE|: Convierte la imagen a escala de grises
-\item $>0$ Devuelve una imagen de 3 canales de color.
-
-\item $=0$ Devuelve una imagen en escala de grises.
-\item $<0$ Return the loaded image as is (with alpha channel).
-\end{itemize}
-\end{itemize}
 La función devuelve la imagen (en forma de array de numpy).
 \newline
 Una vez hemos cargado la imagen, la mostramos en una ventana usando \lstinline|cv2.imshow(winname, image)|, donde \lstinline|winname| es el nombre de la ventana e \lstinline|image| es la imagen que queremos mostrar.
-Por último, utilizamos \lstinline|cv2.waitKey(0)| para esperar a que el usuario pulse una tecla. Esta función recibe un único parámetro que indica el tiempo, en milisegundos, a esperar para la pulsación de una tecla. Si este parámetro es menor o igual que cero, esperará indefinidamente.
+Por último, utilizamos \lstinline|cv2.waitKey(0)| para esperar a que el usuario pulse una tecla. Esta función recibe un único parámetro que indica el tiempo de espera en milisegundos para la pulsación de una tecla. Si este parámetro es menor o igual que cero, esperará indefinidamente.
 
 \newpage
 
 \subsection*{Ejemplo 2}
-En el siguiente ejemplo vemos como cargar un archivo de video y mostrarlo en una ventana. El programa termina cuando el video se acaba o cuando el usuario pulsa la tecla Esc
+En el siguiente ejemplo vemos como cargar un archivo de video y mostrarlo en una ventana. El programa termina cuando el video se acaba o cuando el usuario pulsa la tecla ``Esc"
 \lstinputlisting[language=Python, frame= single]{ejemplos/ejemplo2.py}
 En este ejemplo hemos hecho uso de la clase VideoCapture.
-La función \lstinline|cv2.VideoCapture(filename)| recibe como argumento el nombre de un archivo de vídeo o la ID de un dispositivo de video (en este caso un nombre de archivo) y devuelve un objeto de la clase VideoCapture.
-De esta clase tan solo usamos ahora la función \lstinline|cv2.VideoCapture.read()| que toma el siguiente fotograma, lo decodifica y lo devuelve. Además de la imagen, devuelve un booleano, que en el código hemos llamado ret, que es False si ningún fotograma ha sido tomado y True en otro caso.
+La función \lstinline|cv2.VideoCapture(filename)| recibe como argumento el nombre de un archivo de video o la ID de un dispositivo de video (en este caso un nombre de archivo) y devuelve un objeto de la clase VideoCapture.
+De esta clase tan solo usamos ahora la función \lstinline|cv2.VideoCapture.read()| que toma el siguiente fotograma, lo decodifica y lo devuelve. Además de la imagen, devuelve un booleano, que en el código hemos llamado ``\lstinline|ret|", que es \textit{\lstinline|False|} si ningún fotograma ha sido tomado y \textit{\lstinline|True|} en otro caso.
 Como ahora ya tenemos una imagen, para mostrarla por pantalla usamos la misma función que en el ejemplo 1.
-Por último esta vez usamos la función \lstinline|cv2.waitKey| de manera un poco distinta al anterior ejemplo. Como ahora estamos en un bucle, esperamos a la pulsación 33 milisegundos. Si alguna tecla es pulsada, su valor ASCII se almacena y lo comparamos con 27 que es el correspondiente a la tecla Esc.
+Por último, esta vez usamos la función \lstinline|cv2.waitKey| de manera un poco distinta al anterior ejemplo. Como ahora estamos en un bucle, esperamos a la pulsación 33 milisegundos. Si alguna tecla es pulsada, su valor ASCII se almacena y lo comparamos con 27 que es el correspondiente a la tecla ``Esc".
 
 \newpage
 \subsection*{Ejemplo 3}
-En este ejemplo mejoraremos un poco el reproductor de video que hemos programado en el ejemplo anterior. Se ha añadido un slider con el instante del video en que nos encontramos, el cual se puede utilizar para avanzar y retroceder hasta donde deseemos.
+En este ejemplo mejoraremos un poco el reproductor de video que hemos programado en el ejemplo anterior. Se ha añadido una barra de deslizamiento con el instante del video en que nos encontramos, el cual se puede utilizar para avanzar y retroceder hasta donde deseemos.
 \lstinputlisting[language=Python, frame= single]{ejemplos/ejemplo3.py}
 Como vemos, en este código hemos introducido unas cuantas funciones nuevas.
 En primer lugar, hemos usado varias veces la función \lstinline|cv2.VideoCapture.get(propId)| con distintos argumentos.
-Esta función devuelve el valor de distintas propiedades del video con el que estamos trabajando. El argumento es el identificador de la propiedad y puede ser uno de los siguientes según la documentación:
-\begin{itemize}
+Esta función devuelve el valor de distintas propiedades del video con el que estamos trabajando. El argumento es el identificador de la propiedad entre los que destacan: \lstinline|CV_CAP_PROP_POS_FRAMES| (posición del próximo fotograma que va a ser decodificado/capturado), \lstinline|CV_CAP_PROP_FPS| (fotogramas por segundo) y \lstinline|CV_CAP_PROP_FRAME_WIDTH|y \lstinline|CV_CAP_PROP_FRAME_HEIGHT| (anchura y altura de los fotogramas del video respectivamente).
+La lista completa de opciones puede ser encontrada fácilmente en la documentacíon de openCV.
 
-    \item \lstinline|CV_CAP_PROP_POS_MSEC| Posición actual en el video en milisegundos o el "timestamp" del capturador de video.
-    \item \lstinline|CV_CAP_PROP_POS_FRAMES| Posición del próximo fotograma que va a ser decodificado/capturado.
-    \item \lstinline|CV_CAP_PROP_POS_AVI_RATIO| Posición relativa del video, siendo 0 el inicio del video y 1 el final.
-  
-    \item \lstinline|CV_CAP_PROP_FRAME_WIDTH| Anchura de los fotogramas del video.
-    \item \lstinline|CV_CAP_PROP_FRAME_HEIGHT| Altura de los fotogramas del video.
-    \item \lstinline|CV_CAP_PROP_FPS| Fotogramas por segundo.
-    \item \lstinline|CV_CAP_PROP_FOURCC| Código de 4 caracteres del codec usado.
-    \item \lstinline|CV_CAP_PROP_FRAME_COUNT| Número de fotogramas en el archivo de video.
-    \item \lstinline|CV_CAP_PROP_FORMAT| Format of the Mat objects returned by retrieve() .
-    \item \lstinline|CV_CAP_PROP_MODE| Backend-specific value indicating the current capture mode.
-    \item \lstinline|CV_CAP_PROP_BRIGHTNESS| Brillo de la imagen (solo para cámaras).
-    \item \lstinline|CV_CAP_PROP_CONTRAST| Contraste de la imagen (solo para cámaras).
-    \item \lstinline|CV_CAP_PROP_SATURATION| Saturación de la imagen (solo para cámaras).
-    \item \lstinline|CV_CAP_PROP_HUE| Tono de la imagen (solo para cámaras).
-    \item \lstinline|CV_CAP_PROP_GAIN| Ganancia de la imagen (solo para cámaras)..
-    \item \lstinline|CV_CAP_PROP_EXPOSURE| Exposición (solo para cámaras).
-    \item \lstinline|CV_CAP_PROP_CONVERT_RGB| Boolean flags indicating whether images should be converted to RGB.
-\end{itemize}
-También usamos la función \lstinline|cv2.VideoCapture.set(propId, value)|, usada para fijar el valor de alguna de las propiedades del vídeo. Por tanto los valores que puede tomar \lstinline|propId| son los mismos que para la función \lstinline|cv2.VideoCapture.get()| y el argumento \lstinline|value| indica el nuevo valor que tomará la propiedad indicada.
+También usamos la función \lstinline|cv2.VideoCapture.set(propId, value)|, usada para fijar el valor de alguna de las propiedades del video. Por tanto los valores que puede tomar \lstinline|propId| son los mismos que para la función \lstinline|cv2.VideoCapture.get()| y el argumento \lstinline|value| indica el nuevo valor que tomará la propiedad indicada.
 
-Una vez cargamos el video como ya sabemos y obtenemos el número total de frames con la función \lstinline|get| como acabamos de ver, procedemos a crear una ventana con la función \lstinline|cv2.namedWindow(winname[, flags])|.
+Una vez cargamos el video como ya sabemos y obtenemos el número total de fotogramas con la función \lstinline|get| como acabamos de ver, procedemos a crear una ventana con la función \lstinline|cv2.namedWindow(winname[, flags])|.
 Hasta ahora no había hecho falta ya que \lstinline|cv2.imshow| creaba una nueva ventana si no existía una con ese nombre.
 Ahora le vamos a añadir algo (una trackbar) a nuestra ventana, por lo que necesitamos que ya esté creada.
-Para esto usamos \lstinline|cv2.createTrackbar(trackbarName, windowName, value, count, onChange)|, siendo estos parámetros:
-\begin{itemize}
- \item trackbarname – El nombre de la trackbar creada.
- \item winname – Nombre de la ventana en la que queremos la trackbar.
- \item value – Variable que refleja la posición del slider.
- \item count – La posición máxima del slider. (La posición mñinima es 0 siempre)
- \item onChange – Función que será llamada cada vez que el slider cambie de posición.
- \newline
- ******
-\end{itemize}
+Para esto usamos \lstinline|cv2.createTrackbar(trackbarName, windowName, value, count, onChange)|, siendo estos parámetros el nombre de la barra de deslizamiento creada, el nombre de la ventana en la que queremos la barra,una variable que refleja la posición del deslizador, la posición máxima del deslizador (la posición mínima es 0 siempre) y por último una función que será llamada cada vez que el slider cambie de posición.
 
 \newpage
 
 \subsection*{Ejemplo 4}
-Ahora vamos a ver un ejemplo de una transformación muy sencilla, vamos a abrir una imagen y a aplicarle un desenfoque gaussiano y a mostrar tanto la imagen original como la resultante por pantalla
+Ahora vamos a ver un ejemplo de una transformación muy sencilla, vamos a abrir una imagen y a aplicarle un desenfoque gaussiano y a mostrar tanto la imagen original como la resultante por pantalla.
 \lstinputlisting[language=Python, frame= single]{ejemplos/ejemplo4.py}
-La única función nueva es:
-\newline
-\lstinline|cv2.GaussianBlur(src, ksize, sigmaX[, dst[, sigmaY[, borderType]]])|, cuyos argumentos son:
+La única función nueva es 
+\lstinline|cv2.GaussianBlur()|, que es la que realiza el desenfoque.
 
 
 
@@ -183,35 +155,35 @@ En este ejemplo utilizamos el algoritmo de Canny \cite{canny86} de detección de
 \lstinputlisting[language=Python, frame= single]{ejemplos/ejemplo6.py}
 \newpage 
 \subsection*{Ejemplo 7}
-Ahora simplemente vamos a combinar los dos ejemplos anteriores, reduciendo la imagen original dos veces con \lstinline|pyrDown| y luego encontrando los bordes con \lstinline|Canny|
+Ahora simplemente vamos a combinar los dos ejemplos anteriores, reduciendo dos veces la imagen original con \lstinline|pyrDown| y luego encontrando los bordes con \lstinline|Canny|
 \lstinputlisting[language=Python, frame= single]{ejemplos/ejemplo7.py}
 \newpage
-\subsection*{Ejemplo 9}
-A continuación vemos un ejemplo que muestra la imagen de la webcam.
-\lstinputlisting[language=Python, frame= single]{ejemplos/ejemplo9.py}
-Como vemos el código es exactamente el mismo que el de mostrar un vñideo por pantalla, excepto que a la funcion \lstinline|cv2.VideoCapture| le pasamos como argumento, en lugar del nombre del archivo, un entero que representa el índice de la cámara (si solo hay una cámara, debe ser 0).
+\subsection*{Ejemplo 8}
+A continuación vemos un ejemplo que muestra la imagen de la \textit{webcam} y utiliza el algoritmo de Canny de detección de bordes.
+\lstinputlisting[language=Python, frame= single]{ejemplos/ejemplo8.py}
+Como vemos el código para mostrar una imagen de la \textit{webcam} es exactamente el mismo que el de mostrar un video por pantalla, excepto que a la función \lstinline|cv2.VideoCapture| le pasamos como argumento, en lugar del nombre del archivo, un entero que representa el índice de la cámara (si solo hay una cámara, debe ser 0).
 \newpage
-\lstinputlisting[language=Python, frame= single]{ejemplos/BlurCam.py}
-
+\subsection*{Ejemplo 9}
+\lstinputlisting[language=Python, frame= single]{ejemplos/ejemplo9.py}
 \newpage
 \chapter{Otras librerías usadas}
 \section{Android}
 
-Android es un sistema operativo desarrollado por Google y orientado a móviles y tablets. Está basado en linux y es de código abierto. Actualmente se estima que en torno un 80\% de los dispositívos móviles usan el sistema operativo Android.
+Android es un sistema operativo desarrollado por Google y orientado a móviles y tablets. Está basado en Linux y es de código abierto. Actualmente se estima que en torno a un 80\% de los dispositívos móviles usan el sistema operativo Android.
 Su núcleo está programado en C, pero la aplicaciones y toda la interfaz de usuario se programan en Java.
 Este sistema operativo está estructurado en 4 capas:
 \begin{description}
-  \item[Núcleo linux] \hfill \\
+  \item[Núcleo Linux] \hfill \\
   Se encarga de las funcionalidades básicas del sistema, como manejo de procesos, de la memoria y de los dispositivos como la cámara, la pantalla, etc.
-   Asimismo funciona como una capa de abstracción entre el hardware y el resto del software.
+   Asimismo funciona como una capa de abstracción entre el \textit{hardware} y el resto del \textit{software}.
    
-  \item[Librerías y Runtime de Android] \hfill \\
+  \item[Librerías y \textit{runtime} de Android] \hfill \\
   Por encima del núcleo, hay una serie de librerías usadas por componentes del sistema, entre ellas destacan Surface Manager, Media Framework, SQLite, WebKit, SGL y Open GL
   \newline
   El runtime de Android proporciona un componente clave,la máquina virtual Dalvik. Cada aplicación Android corre su propio proceso, con su propia instancia de esta máquina virtual.
-  Además, el runtime de android proporciona librerías básicas que proporcionan la mayor parte de las funciones del lenguaje de programación Java.
+  Además, el \textit{runtime} de Android proporciona librerías básicas que proporcionan la mayor parte de las funciones del lenguaje de programación Java.
   
-  \item[Framework de aplicaciones] \hfill \\
+  \item[Marco de trabajo(\textit{framework}) de aplicaciones] \hfill \\
   Esta capa proporciona a las aplicaciones muchos servicios en forma de clases de Java 
   
    \item[Aplicaciones] \hfill \\
@@ -219,27 +191,35 @@ Este sistema operativo está estructurado en 4 capas:
 \end{description}
 
 \subsection*{Estructura de una aplicación Android}
-Las aplicaciones android están por los llamados componentes de aplicación. Hay cuatro tipo de componentes:
+Las aplicaciones Android están formadas por los llamados componentes de aplicación. Hay cuatro tipo de componentes:
 \begin{description}
   \item[Activities] \hfill \\
   Representa una única pantalla de la aplicación con su interfaz de usuario.
   \item[Services] \hfill \\
   Son componentes que se ejecutan en segundo plano y que no constan de interfaz gráfica.
   \item[Content providers] \hfill \\
+  Se encarga de compartir información entre distintas aplicaciones.
   \item[Broadcast receivers] \hfill \\
+  Este componente permite el registro de eventos del sistema
 \end{description}
+Una vez visto esto veamos por encima la estructura de una aplicación Android.
+Dichas aplicaciones vienen en formato APK, que no es más que un fichero comprimido ZIP en el que se encuentran: el código, los recursos, la firma digital y el fichero de manifiesto.
+\newline
+Los recursos se encuentran en la carpeta \lstinline|res|. Además de las imágenes y otro tipo de contenido que usemos en la aplicación, esta carpeta contiene otra carpeta, llamada \lstinline|layouts|, en la que se encuentran archivos XML que describen las distintas pantallas o vistas de cada aplicación, es decir las interfaces gráficas asociadas a cada actividad.
+\newline
+El archivo ``\lstinline|manifest.xml|'' es un fichero XML donde se declaran los componentes que conforman la aplicación, así como se indican los permisos necesarios que requiere la aplicación, las funciones de \textit{hardware} o \textit{software} que se necesitan (la cámara, el acelerómetro, los servicios de \textit{bluetooth}...) y algunás características más del programa.
 
 \chapter{Estabilización de imagen}\label{cap.}
 
-\section{Algoritmo}
-Se trata de un algoritmo básico de estabilización de imagen que se basa en la suposición de que el único movimiento de la cámara es el que queremos eliminar; es decir, excepto por ligeros movimientos no deseados, la cámara está estática.
+\section{Algoritmo básico}
+Se trata de un algoritmo básico de estabilización de imagen para eliminar el posible movimiento de agitación la cámara. Dicho algoritmo se basa en la suposición de que el único movimiento de la cámara es el que queremos eliminar; es decir, excepto por ligeros movimientos no deseados, la cámara está estática.
 La idea del algoritmo es muy sencilla: 
-Tomamos dos frames consecutivos y buscamos una serie de puntos característicos mediante el algoritmo propuesto por Shi y Tomashi \cite{shiandtomasi}, usando la función: \lstinline|goodFeaturesToTrack|; después vemos a donde se han movido esos puntos en el siguiente frame mediante el algoritmo de flujo óptico de Lucas-Kanade.
-Finalmente calculamos la homografía que lleva los puntos originales a donde hemos calculado que se han movido y le aplicamos la inversa de esa transformación al segundo frame para colocarlo donde debería estar.
-\subsection{Encontrar puntos característicos}
+Tomamos dos fotogramas consecutivos y buscamos una serie de puntos característicos mediante el algoritmo propuesto por Shi y Tomashi \cite{shiandtomasi}, usando la función: \lstinline|goodFeaturesToTrack|; después vemos a donde se han movido esos puntos en el siguiente fotograma mediante el algoritmo de flujo óptico de Lucas-Kanade.
+Finalmente calculamos la homografía que lleva los puntos originales a donde hemos calculado que se han movido y le aplicamos la inversa de esa transformación al segundo fotograma para colocarlo donde debería estar.
+\subsection{Algoritmo para encontrar puntos característicos}
 
-como ya hemos dicho, queremos encontrar una serie de puntos característicos que puedan ser localizados bien para poder encontrarlos en el siguiente fotograma. Es evidente que no vale cualquier punto, por ejemplo, si tenemos una pared completamente blanca, será muy difícil saber a donde se ha movido un punto cualquiera de la pared de un fotograma a otro. Por este motivo se introduce el concepto de buenos puntos característicos
-(good features to track).
+Como ya hemos dicho, queremos encontrar una serie de puntos característicos que puedan ser localizados bien para poder encontrarlos en el siguiente fotograma. Es evidente que no vale cualquier punto, por ejemplo, si tenemos una pared completamente blanca, será muy difícil saber a donde se ha movido un punto cualquiera de la pared de un fotograma a otro. Por este motivo se introduce el concepto de buenos puntos característicos
+(\textit{good features to track}).
 Un primer acercamiento a definir qué puntos eran buenos lo dieron Chris Harris y Mike Stephens en ``A Combined Corner and Edge Detector" \cite{harris88}.
 La idea básica es encontrar la diferencia de la intensidad de la imagen en un rectángulo centrado en $(x,y)$ . Esto se expresa con la función:
 \begin{equation}
@@ -262,7 +242,8 @@ E(x,y) \approx
 \left( \begin{array}{cc}x & y \end{array} \right)
 M 
 \left( \begin{array}{c}x\\y \end{array} \right)
-\end{equation}, siendo $M$:
+\end{equation}
+siendo $M$:
 \begin{equation*}
 M = \sum_{u,v}w(u,v)
 \left( \begin{array}{cc}
@@ -273,8 +254,8 @@ I_xI_y & I_y^2
 Como nuestro objetivo era que E(x,y) fuese lo suficientemente grande, si estudiamos los autovalores de $M$, lo que querremos es que ambos sean suficientemente grandes.
 Sean $\lambda_1$ y $\lambda_2$ dichos autovalores, entonces:
 \begin{itemize}
-\item Si  $ \lambda_1 \approx 0 $ y $\lambda_2 \approx 0 $ entones el punto no quiere interés.
-\item Si  $ \lambda_1 \approx 0 $ y $\lambda_2 $ es positivos y suficientemente grande entonces hemos encontrado un borde.
+\item Si  $ \lambda_1 \approx 0 $ y $\lambda_2 \approx 0 $ entonces el punto no tiene interés.
+\item Si  $ \lambda_1 \approx 0 $ y $\lambda_2 $ es positivo y suficientemente grande entonces hemos encontrado un borde.
 \item Si  $ \lambda_1 $ y $\lambda_2 $ son positivos y suficientemen grandes entonces hemos encontrado un punto de interés. Este punto es la intersección de dos bordes,por ello, estos puntos también son llamados esquinas .
 \end{itemize}
 Como función para valorar la calidad de los autovalores, Shi y Tomasi propusieron:
@@ -286,20 +267,20 @@ en lugar de la propuesta por Harris:
 R = \lambda_1 \lambda_2 - k(\lambda_1 + \lambda_2)^2
 \end{equation*}
 La función propuesta por Shi y Tomasi proporciona mejores resultados que la original.
-De hacer todo esto se encarga la función \lstinline|cv2.goodFeaturesToTrack()|, que calculas las segundas derivadas utilizando el operador sobel y luego calcula los autovalores.
+De hacer todo esto se encarga la función \lstinline|cv2.goodFeaturesToTrack()|, que calcula las segundas derivadas utilizando el operador Sobel y luego calcula los autovalores.
 Sus argumentos son:
 \newline
 \lstinline|cv2.goodFeaturesToTrack(image, maxCorners, qualityLevel, minDistance[, corners[, mask[, blockSize[, useHarrisDetector[, k]]]]]) |
 \begin{itemize}
-\item image: La imagen en la que queremos buscar los puntos (en escala de grises).
-\item maxCorners:  el máximo número de puntos característicos que queremos.
-\item qualityLevel: La calidad mínima que deben tener los puntos. Es un valor entre 0 y 1. Este parámetro es multiplicado por el mayor valor de calidad encontrado y sólo las esquinas que superen dicho valor serán devueltas.
-\item minDistance: distancia (euclídea) mínima que tiene que existir entre los puntos devueltos.
-\item corners (opcional): la lista de salida con los puntos encontrados.
-\item mask (opcional):Región de interés en la que se buscarán los puntos.
-\item blockSize (opcional):Tamaño del bloque para calcular la matriz $M$.
-\item useHarrisDetector (opcional): Parámetro que indica si queremos usar el detector de Harris (en lugar de el de Shi y Tomasi).
-\item k: El parámetro para el detector de Harris.
+\item \textit{image}: la imagen en la que queremos buscar los puntos (en escala de grises).
+\item \textit{maxCorners}:  el máximo número de puntos característicos que queremos.
+\item \textit{qualityLevel}: la calidad mínima que deben tener los puntos. Es un valor entre 0 y 1. Este parámetro es multiplicado por el mayor valor de calidad encontrado y sólo las esquinas que superen dicho valor serán devueltas.
+\item \textit{minDistance}: distancia (euclídea) mínima que tiene que existir entre los puntos devueltos.
+\item \textit{corners} (opcional): la lista de salida con los puntos encontrados.
+\item \textit{mask} (opcional): región de interés en la que se buscarán los puntos.
+\item \textit{blockSize} (opcional): tamaño del bloque para calcular la matriz $M$.
+\item \textit{useHarrisDetector} (opcional): parámetro que indica si queremos usar el detector de Harris (en lugar de el de Shi y Tomasi).
+\item \textit{k}: el parámetro para el detector de Harris.
 \end{itemize}
 
 \newpage
@@ -308,20 +289,20 @@ El algortimo de Lucas-Kanade es un método que sirve para calcular el flujo ópt
 El flujo óptico es el patrón de movimiento aparente de los objetos entre un fotograma y el siguiente causado por un movimiento de la cámara o de los objetos. Se trata de un campo vectorial de dos dimensiones donde cada vector es un vector de desplazamiento de un punto entre ambos fotogramas.
 Este algoritmo está basado en tres suposiciones:
 \begin{enumerate}
-\item Brillo constante: La apariencia de un pixel no cambia entre un frame y otro. Para una imagen en escala de grises esto es equivalente a que su brillo permanece constante
+\item Brillo constante: la apariencia de un píxel no cambia entre un frame y otro. Para una imagen en escala de grises esto es equivalente a que su brillo permanece constante
 \item Los objetos no se mueven muy rápido.
-\item Coherencia espacial:Los píxeles vecinos tienen movimiento similar.
+\item Coherencia espacial: los píxeles vecinos tienen movimiento similar.
 \end{enumerate}
-El hecho de que el brillo no varie, es decir, que la intensidad de un pixel se mantiene no lleva a la siguente igualdad:
+El hecho de que el brillo no varie, es decir, que la intensidad de un píxel se mantiene nos lleva a la siguente igualdad:
 \begin{equation}
 I(x,y,t)=I(x+dx,y+dy,t+dt)
 \end{equation}
-De donde obtenemos:
+Como hemos supuesto que el movimiento entre dos fotogramas es relativamente pequeño, podemos aproximar por desarrolo de Taylor la parte derecha de la igualdad anterior, de donde obtenemos:
 \begin{equation}
 \label{optflow}
 I_x u + I_y v + I_t = 0
 \end{equation}
-, donde $u= \dfrac{dx}{dt}$ y $v= \dfrac{dy}{dt}$ y siendo $I_x$ e $I_y$ los gradientes de la imagen inicial y análogamente $I_t$ el gradiente sobre el tiempo.
+ donde $u= \dfrac{dx}{dt}$ y $v= \dfrac{dy}{dt}$ y siendo $I_x$ e $I_y$ los gradientes de la imagen inicial y análogamente $I_t$ el gradiente sobre el tiempo.
 La ecuación \ref{optflow} se conoce como la ecuación del flujo óptico y no puede ser resuelta para un solo punto ya que hay dos incógnitas.
 Para resolverla utilizamos la suposición de la coherencia espacial, entonces podemos tomar una ventana en torno al punto y obtener un sistema de ecuaciones de la forma $Aw=-b$:
 \begin{equation}
@@ -354,20 +335,103 @@ es decir:
 - \left(\begin{array}{c} \sum I_x I_t\\ \sum I_y I_t\end{array}\right)
 \end{equation*}
 y la solución a esta ecuación es $\left(\begin{array}{c}u\\v\end{array}\right) = (A^t A)^{-1} A^t b $  
+
+El problema hasta ahora son las suposiciones de los movimientos pequeños y coherentes. Queremos usar una ventana grande para captar movimientos grandes pero esto puede romper dichas suposiciones. Para solventar esto aplicamos el algoritmo iterativamente a una pirámide de imágenes del fotograma. Primero se aplica el algoritmo a la imagen en la cima de la pirámide para seguir los movimiento grandes y luego según se va bajando en la pirámide se va refinando iterativamente el resultado partiendo del anterior. De esta manera los movimientos grandes se van convirtiendo en movimientos pequeños.
+\newline
+Este algoritmo lo realiza openCV mediante la función: \newline
+\lstinline|cv2.calcOpticalFlowPyrLK(prevImg, nextImg, prevPts[, nextPts[, status[, err[, winSize[, maxLevel[, criteria[, flags[, minEigThreshold]]]]]]]])|
+$\rightarrow$  \lstinline|nextPts, status, err|
+\newline
+
+Donde:
+\begin{itemize}
+\item \lstinline|prevImg| y \lstinline|nextImg| son las dos imágenes entre las que queremos detectar movimiento y \lstinline|prevPts| los puntos que queremos seguir.
+\item \lstinline|nextPts| es el vector de salida que contiene las nuevas posiciones de los puntos de entrada. Si se usa el argumento \lstinline|OPTFLOW_USE_INITIAL_FLOW|, este vector deberá tener el mismo tamaño que el de entrada.
+
+\item \lstinline|status| es un vector de salida en el que cada elemento es 1 si el flujo para el punto correspondiente se ha encontrado y 0 en otro caso.
+
+\item \lstinline|err| es un vector de salida que contiene en cada el elemento el error asociado a cada punto. El tipo de este error se puede fijar en el argumento \lstinline|flags|.  Si no se encuentra flujo el error no está definido.
+
+\item \lstinline|winSize| es el tamaño de la ventana en cada nivel de la pirámide.
+
+
+\item \lstinline|maxLevel| es el nivel máximo de niveles  de la pirámide a usar empezando desde 0. Si es 0 no se usará pirámide; si es 1, se usarán dos niveles, etc. 
+
+\item \lstinline|criteria| es un parámetero que indica el criterio para terminar la búsqueda iterativa del algoritmo: después de un número máximo de iteraciones
+o cuando la ventana de búsqueda se mueve menos que un épsilon dado.
+\newpage
+\item \lstinline|flags|:
+	\begin{itemize}
+    \item \lstinline|OPTFLOW_USE_INITIAL_FLOW| utiliza estimaciones iniciales, almacenadas en \lstinline|nextPst|. Si no, copia \lstinline|prevPts| a \lstinline|nextPts| y los considera la estimación inicial.
+    
+    \item \lstinline|OPTFLOW_LK_GET_MIN_EIGENVALS| utiliza los autovalores mínimos como medida de error. Si este parámetro no se indica se usará como medida de error la distancia $L_1$ entre los bloques del punto original y un punto movido, dividido por el número de píxeles en una ventana.
+	\end{itemize}
+\item \lstinline|minEigThreshold| –  El algortimo calcula el menor autovalor de la matriz de las ecuaciones del flujo. Si este valor dividido por el número de píxeles en una ventana es menor que \lstinline|minEigThreshold|, entonces el punto es filtrado y no se calcula su flujo.
+
+\end{itemize}
+\newpage
+
+\subsection{Cálculo de la homografía}
+En visión artificial se llama homografía a una transformación proyectiva de un plano a otro.
+\newline
+Tenemos una serie de puntos $q_1 \ldots q_n$ que van a parar a $q'_1 \ldots q'_n$. Denotaremos $q_i = (x_i,y_i)$ y $q'_i=(x'_i, y'_i)$,
+Entonces podemos expresar la homografía como:
+\begin{equation}
+	\left( \begin{array}{c}
+	x'_i\\
+	y'_i\\
+	1
+	\end{array} \right)
+	= sH
+		\left( \begin{array}{c}
+	x_i\\
+	y_i\\
+	1
+	\end{array} \right)
+\end{equation}
+donde $s$ es un factor de escala y $H$ es la matriz de la transformación.
+Para encontrar dicha matriz usamos la función \lstinline|cv.FindHomography()|
+que en un principio devuelve dicha matriz minimizando el error:
+\begin{equation*}
+\sum_i \left( x'_i - \dfrac{h_{11}x_i + h_{12}y_i + h_{13}}{h_{31}x_i + h_{32}y_i + h_{33}} \right) ^2  
++ 
+\left( y'_i - \dfrac{h_{21}x_i + h_{22}y_i + h_{23}}{h_{31}x_i + h_{32}y_i + h_{33}} \right) ^2 
+\end{equation*}
+Pero como no todos los puntos encajan en la transformación ya que puede haber errores u otros movimientos que no son los de la cámara utilizaremos un método robusto llamado RANSAC (RANdom SAmple Consensus). Se trata de un método iterativo para estimar los parámetros de un modelo matemático que contiene valores atípicos. La idea básica de este algoritmo es resolver varias veces el problema con distintos subconjuntos aleatorios de los puntos dados y luego tomar como solución particular la más cercana a la media/mediana de las soluciones.
 \newpage
 \subsection{Código}
 \lstinputlisting[language=Python, frame= single]{estabilizacion.py}
 
-\section{Uso del acelerometro para estabilizar}
+\newpage
+\section{Uso del acelerómetro para estabilizar}
 Se trata de intentar utilizar los datos extra de los que disponemos, es decir, los que nos proporciona el acelerómetro del móvil para intentar estabilizar la imagen utilizando estos datos.
-Para ello en primer lugar hacemos un programa para android que se encarga de recoger estos datos, grabando el vídeo a la vez que registra los datos del acelerómetro y los guarda en un archivo junto con el momento exacto en el que se han registrado los datos.
+Para ello en primer lugar hacemos un programa para Android que se encargue de recoger estos datos, grabando el vídeo a la vez que registra los datos del acelerómetro y los guarda en un archivo junto con el momento exacto en el que se han registrado los datos.
 Luego, un segundo programa en el ordenador procesa los archivos para intentar estabilizar la imagen: recoge los datos de aceleración en cada instante de media y aproxima el movimiento en dichos instantes. Luego calcula mediante interpolación cuanto se ha movido la cámara en el instante del fotograma y recoloca el fotograma de acuerdo con lo obtenido.
 
 \subsection{Programa para Android}
+A continuación se incluyen las partes más importantes del código de la aplicación de Android.
+\begin{description}
 
+\item [MainActivity] \hfill \\
 
+\lstinputlisting[language=Java, frame= single]{Android/MainActivity.java}
+\newpage
+\item [Clase vcorderView] \hfill \\
+A continuación incluimos el código de la clase \lstinline|vcorderView| que es la clase que se encarga de grabar de la cámara.
+\lstinputlisting[language=Java, frame= single]{Android/vcorderView.java}
+
+\item [Android manifest] \hfill \\
+Ahora vemos el archivo \lstinline|AndroidManifest.xml| en el que cabe destacar las líneas en las que hemos indicado los permisos especiales que necesitamos (el uso de la cámara y de poder escribir en el almacenamiento del móvil).
+\lstinputlisting[language=Xml, frame= single]{Android/AndroidManifest.xml}
+
+\item [Activity layout] \hfill \\
+Por último vemos el archivo XML que describe la interfaz de nuestra única actividad (y que tan solo es un marco y la zona en la que mostraremos la imagen mientras estemos grabando).
+\lstinputlisting[language=Xml, frame= single]{Android/res/layout/activity_main.xml}
+\end{description}
+\newpage
 \subsection{Programa de procesado de los datos}
 \lstinputlisting[language=Python, frame= single]{estabilizacion_acelerometro.py}
+\newpage
 
 \subsection{Resultados}
 

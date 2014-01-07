@@ -8,6 +8,19 @@ def doCanny(im, lowThresh, highThresh, aperture):
         out = cv2.Canny(im, lowThresh, highThresh, aperture)
     return out
 
+def invert(img):
+    height    = img->height
+    width     = img->width
+    step      = img->widthStep
+    channels  = img->nChannels
+    data      = img->imageData
+ 
+  // invert the image
+  for(i=0;i<height;i++)
+     for(j=0;j<width;j++)
+        for(k=0;k<channels;k++)  //loop to read for each channel
+           data[i*step+j*channels+k]=255-data[i*step+j*channels+k];    //inverting the image
+
 if __name__ == '__main__':
 
     capture =  cv2.VideoCapture(0)
@@ -15,7 +28,8 @@ if __name__ == '__main__':
     while (True):
         ret, frame = capture.read()
         if (not ret): break
-        out = doCanny(frame, 50, 100, 3)
+        edgeimg = doCanny(frame, 50, 100, 3)
+        out = invert(edgeimg)
         cv2.imshow("Example9-in",frame)
         cv2.imshow("Example9-out",out)
         c = cv2.waitKey(33)

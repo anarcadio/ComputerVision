@@ -3,16 +3,17 @@
 \contentsline {section}{\numberline {1.1}Motivaci\IeC {\'o}n}{1}
 \contentsline {chapter}{\numberline {2}OpenCV}{3}
 \contentsline {section}{\numberline {2.1}Introducci\IeC {\'o}n}{3}
-\contentsline {section}{\numberline {2.2}Ejemplos}{4}
-\contentsline {chapter}{\numberline {3}Otras librer\IeC {\'\i }as usadas}{17}
-\contentsline {section}{\numberline {3.1}Android}{17}
-\contentsline {chapter}{\numberline {4}Estabilizaci\IeC {\'o}n de imagen}{19}
-\contentsline {section}{\numberline {4.1}Algoritmo}{19}
-\contentsline {subsection}{\numberline {4.1.1}Encontrar puntos caracter\IeC {\'\i }sticos}{19}
-\contentsline {subsection}{\numberline {4.1.2}Algoritmo de Lucas-Kanade}{22}
-\contentsline {subsection}{\numberline {4.1.3}C\IeC {\'o}digo}{23}
-\contentsline {section}{\numberline {4.2}Uso del acelerometro para estabilizar}{24}
-\contentsline {subsection}{\numberline {4.2.1}Programa para Android}{25}
-\contentsline {subsection}{\numberline {4.2.2}Programa de procesado de los datos}{25}
-\contentsline {subsection}{\numberline {4.2.3}Resultados}{28}
-\contentsline {chapter}{Bibliograf\IeC {\'\i }a}{29}
+\contentsline {section}{\numberline {2.2}Ejemplos}{5}
+\contentsline {chapter}{\numberline {3}Otras librer\IeC {\'\i }as usadas}{15}
+\contentsline {section}{\numberline {3.1}Android}{15}
+\contentsline {chapter}{\numberline {4}Estabilizaci\IeC {\'o}n de imagen}{17}
+\contentsline {section}{\numberline {4.1}Algoritmo b\IeC {\'a}sico}{17}
+\contentsline {subsection}{\numberline {4.1.1}Algoritmo para encontrar puntos caracter\IeC {\'\i }sticos}{17}
+\contentsline {subsection}{\numberline {4.1.2}Algoritmo de Lucas-Kanade}{20}
+\contentsline {subsection}{\numberline {4.1.3}C\IeC {\'a}lculo de la homograf\IeC {\'\i }a}{23}
+\contentsline {subsection}{\numberline {4.1.4}C\IeC {\'o}digo}{24}
+\contentsline {section}{\numberline {4.2}Uso del aceler\IeC {\'o}metro para estabilizar}{27}
+\contentsline {subsection}{\numberline {4.2.1}Programa para Android}{27}
+\contentsline {subsection}{\numberline {4.2.2}Programa de procesado de los datos}{35}
+\contentsline {subsection}{\numberline {4.2.3}Resultados}{38}
+\contentsline {chapter}{Bibliograf\IeC {\'\i }a}{39}

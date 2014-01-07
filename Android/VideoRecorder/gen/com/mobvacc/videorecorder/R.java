@@ -5,7 +5,7 @@
  * should not be modified by hand.
  */
 
-package com.example.videorecorder;
+package com.mobvacc.videorecorder;
 
 public final class R {
     public static final class attr {
@@ -25,13 +25,13 @@ public final class R {
     }
     public static final class id {
         public static final int action_settings=0x7f080001;
-        public static final int camcorderView1=0x7f080000;
+        public static final int vcorderView1=0x7f080000;
     }
     public static final class layout {
-        public static final int activity_cam_recorder=0x7f030000;
+        public static final int activity_main=0x7f030000;
     }
     public static final class menu {
-        public static final int cam_recorder=0x7f070000;
+        public static final int main=0x7f070000;
     }
     public static final class string {
         public static final int action_settings=0x7f050001;
