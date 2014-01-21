@@ -4,6 +4,7 @@
 \usepackage{listings}
 \usepackage{color}
 \usepackage{amsmath}
+\usepackage{graphicx}
 
 \definecolor{mygreen}{rgb}{0,0.6,0}
 \definecolor{mygray}{rgb}{0.5,0.5,0.5}
@@ -11,11 +12,12 @@
 
 \lstset{ %
   backgroundcolor=\color{white},   
-  basicstyle=\footnotesize,       
+  basicstyle=\ttfamily,       
   breakatwhitespace=false,         
   breaklines=true,                 % sets automatic line breaking
   captionpos=b,                    % sets the caption-position to bottom
   commentstyle=\color{mygreen},    % comment style
+  columns=flexible,
   deletekeywords={...},            % if you want to delete keywords from the given language
   escapeinside={\%*}{*)},          % if you want to add LaTeX within your code
   extendedchars=true,              % lets you use non-ASCII characters; for 8-bits encodings only, does not work with UTF-8
@@ -67,7 +69,7 @@
 \chapter{OpenCV}
 
 \section{Introducción}
-OpenCV es una librería de código abierto escrita en C y C++ destinada a la visión artificial y al tratamiento de imágenes. Se trata de una librería multiplataforma con versiones para GNU/Linux, Windows, Mac OS y Android y actualmente cuenta con interfaces para Python, Java y MATLAB/OCTAVE. Las últimas versiones incluyen soporte para GPU usando CUDA.
+OpenCV es una librería de código abierto escrita en C y C++ destinada a la visión artificial y al tratamiento de imágenes. Se trata de una librería multiplataforma con versiones para GNU/Linux, Windows, Mac OS y Android y actualmente cuenta con interfaces para Python, Java y MATLAB/OCTAVE. Las últimas versiones incluyen soporte para CUDA, lo que nos permite ejecutar paralelamente funciones en la unidad de procesamiento gráfico o GPU de nuestro ordenador .
 Desarrollada originalmente por Intel, su primera versión alfa se publicó en el año 2000 en el \textit{IEEE Conference on Computer Vision and Pattern Recognition}. OpenCV nació inicialmente como un proyecto para avanzar en las aplicaciones de uso intenso de la CPU y dando gran importancia a las aplicaciones en tiempo real. Hoy en día cuenta con más 2500 algoritmos optimizados que abarcan todo tipo de campos relacionados con la visión artificial.
 Estos algortimos pueden ser usados para tareas como: detección y reconocimiento de caras y gestos, identificación objetos, detección de características 2D y 3D, estimación y seguimiento del movimiento, visión estéreo y calibración de la cámara, eliminación los ojos rojos de las fotografías realizadas con flash...
 \newline
@@ -92,7 +94,7 @@ Dichas funciones se pueden dividir en varios grupos:
 \end{itemize}
 Por supuesto openCV es una libería enorme y consta de muchísimas más funciones que las aquí mencionadas\newpage
 \section{Ejemplos}
-A continuación veremos una serie de ejemplos sencillos de uso de openCV con python, similares a los propuestos en el capítulo 2 de \textit{"Learning OpenCV" \cite{oreilly}}
+A continuación veremos una serie de ejemplos sencillos de uso de openCV con python, similares a los propuestos en el capítulo 2 de \textit{"Learning OpenCV" \cite{oreilly}}. No obstante en el libro estos ejemplos están programados en C con una versión antigua de la librería y aquí se presentan en Python y actualizados.
 \subsection*{Ejemplo 1}
 En primer lugar veamos como mostrar una imagen en una ventana
 \lstinputlisting[language=Python, frame= single]{ejemplos/ejemplo1.py}
@@ -135,7 +137,7 @@ Para esto usamos \lstinline|cv2.createTrackbar(trackbarName, windowName, value, 
 \newpage
 
 \subsection*{Ejemplo 4}
-Ahora vamos a ver un ejemplo de una transformación muy sencilla, vamos a abrir una imagen y a aplicarle un desenfoque gaussiano y a mostrar tanto la imagen original como la resultante por pantalla.
+Ahora vamos a ver un ejemplo de una transformación muy sencilla, vamos a abrir una imagen y a aplicarle un desenfoque gaussiano y a mostrar tanto la imagen original como la resultante por pantalla. El desenfoque gaussiano es un filtro usado para suavizar imágenes y desenfocarlas. Funciona de la siguiente manera: para cada píxel de la imagen mezcla su color con los de un ventana a su alrededor (de altura y anchura dadas). Esta mezcla es una media, ponderada con la distribución Gaussiana, de los píxeles que están dentro de la ventana.
 \lstinputlisting[language=Python, frame= single]{ejemplos/ejemplo4.py}
 La única función nueva es 
 \lstinline|cv2.GaussianBlur()|, que es la que realiza el desenfoque.
@@ -152,6 +154,24 @@ Como vemos, en el resto del código no hay nada nuevo, a excepción de la funci�
 \newpage
 \subsection*{Ejemplo 6}
 En este ejemplo utilizamos el algoritmo de Canny \cite{canny86} de detección de bordes, usando para ello la función \lstinline|cv2.Canny|
+ Este algoritmo funciona de la siguiente manera: en primer lugar utiliza un desenfoque gaussiano a la imagen para reducir el ruido. Posteriormente calcula el gradiente de la imagen. Esto lo hace aplicando dos matrices de convolución para calcular las deraivadas en las direcciones $x$ e $y$:
+
+\begin{equation*}
+G_{x} = \begin{bmatrix} -1 & 0 & +1 \\ -2 & 0 & +2 \\ -1 & 0 & +1 \end{bmatrix},  G_{y} = \begin{bmatrix} -1 & -2 & -1 \\ 0 & 0 & 0 \\ +1 & +2 & +1 \end{bmatrix}
+\end{equation*}
+
+Para finalmente calcular el gradiente y su dirección:
+
+\begin{equation*}
+\begin{array}{l} G = \sqrt{ G_{x}^{2} + G_{y}^{2} } \\ \theta = \arctan(\dfrac{ G_{y} }{ G_{x} }) \end{array}
+\end{equation*}
+Por último, para decidir si los píxeles pertenecen a un borde, se utilizan dos umbrales, uno superior y otro inferior:
+\begin{itemize}
+\item Si el gradiente del píxel es mayor que el umbral superior, se acepta el píxel como borde.
+\item Si el gradiente del píxel es menor que el umbral inferior, se rechaza el píxel.
+\item Si el gradiente está entre ambos umbrales, entonces se acepta solo si está conectado a un píxel que está por encima del umbral superior.
+\end{itemize}
+\newpage
 \lstinputlisting[language=Python, frame= single]{ejemplos/ejemplo6.py}
 \newpage 
 \subsection*{Ejemplo 7}
@@ -160,6 +180,7 @@ Ahora simplemente vamos a combinar los dos ejemplos anteriores, reduciendo dos v
 \newpage
 \subsection*{Ejemplo 8}
 A continuación vemos un ejemplo que muestra la imagen de la \textit{webcam} y utiliza el algoritmo de Canny de detección de bordes.
+
 \lstinputlisting[language=Python, frame= single]{ejemplos/ejemplo8.py}
 Como vemos el código para mostrar una imagen de la \textit{webcam} es exactamente el mismo que el de mostrar un video por pantalla, excepto que a la función \lstinline|cv2.VideoCapture| le pasamos como argumento, en lugar del nombre del archivo, un entero que representa el índice de la cámara (si solo hay una cámara, debe ser 0).
 \newpage
@@ -187,7 +208,7 @@ Este sistema operativo está estructurado en 4 capas:
   Esta capa proporciona a las aplicaciones muchos servicios en forma de clases de Java 
   
    \item[Aplicaciones] \hfill \\
-  En esta capa se encuentran tanto las aplicaciones base como las que instalemos y desarrollemos   \ldots
+  En esta capa se encuentran tanto las aplicaciones base como las que instalemos y desarrollemos. Como ya hemos dicho estas aplicaciones se programan en Java, disponiendo para ello del conjunto de herramientas Android SDK.
 \end{description}
 
 \subsection*{Estructura de una aplicación Android}
@@ -258,7 +279,7 @@ Sean $\lambda_1$ y $\lambda_2$ dichos autovalores, entonces:
 \item Si  $ \lambda_1 \approx 0 $ y $\lambda_2 $ es positivo y suficientemente grande entonces hemos encontrado un borde.
 \item Si  $ \lambda_1 $ y $\lambda_2 $ son positivos y suficientemen grandes entonces hemos encontrado un punto de interés. Este punto es la intersección de dos bordes,por ello, estos puntos también son llamados esquinas .
 \end{itemize}
-Como función para valorar la calidad de los autovalores, Shi y Tomasi propusieron:
+Como función para valorar la calidad de los autovalores, Shi y Tomasi \cite{shiandtomasi} propusieron:
 \begin{equation*}
 R = min(\lambda_1, \lambda_2)
 \end{equation*}
@@ -285,7 +306,7 @@ Sus argumentos son:
 
 \newpage
 \subsection{Algoritmo de Lucas-Kanade}
-El algortimo de Lucas-Kanade es un método que sirve para calcular el flujo óptico.
+El algortimo de Lucas-Kanade \cite{LucasKanade} es un método que sirve para calcular el flujo óptico.
 El flujo óptico es el patrón de movimiento aparente de los objetos entre un fotograma y el siguiente causado por un movimiento de la cámara o de los objetos. Se trata de un campo vectorial de dos dimensiones donde cada vector es un vector de desplazamiento de un punto entre ambos fotogramas.
 Este algoritmo está basado en tres suposiciones:
 \begin{enumerate}
@@ -401,7 +422,36 @@ Pero como no todos los puntos encajan en la transformación ya que puede haber e
 \newpage
 \subsection{Código}
 \lstinputlisting[language=Python, frame= single]{estabilizacion.py}
+\subsection{Comentarios y variaciones del algoritmo}
+Este algoritmo funciona bastante bien en la mayoría de los casos; sin embargo cuando el movimiento (ya sea el de la imagen o el de lo que estamos grabando) es muy brusco, puede producir efectos no deseados y ser contraproducente. Si asumimos que la camara no sufre rotaciones y solo hay traslación, en lugar de estimar la homografía podemos usar una traslación de razón la media o la mediana de lo que e ha movido cada píxel detectado. La media no es muy recomendable sin algún filtro, ya que es muy sensible a los valores atípicos y si ha objetos moviéndose se producirá traslación aun cuando la cámara este completamente quieta. Sin embargo la media funciona bastante bien y es más rápida que el algoritmo original. Sin embargo si no requerimos rapidez no supone una gran mejora.
+\newpage
+\section{Algortimo basado en la correlación de fase}
+Otro algoritmo bastante utilizado y más rápido que el anterior está basado en la correlación de fase. Supone que la cámara no sufre rotaciones y que el único movimiento no deseado es de traslación y emplea el nombrado método para calcular esta traslación.
+\newline
+La correlación de fase es un método de registro de imagen que utiliza el dominio de la frecuencia para estimar la traslación entre dos imágenes similares. Lo hace de la siguiente forma:
 
+
+Dadas dos imágenes ($\ g_a$ y $\ g_b$), se les aplica una función ventana y se calcula la transformada discreta de Fourier de ambas imágenes:
+  
+\begin{equation*} 
+    \mathbf{G}_a = \mathcal{F}\{g_a\}, \; \mathbf{G}_b = \mathcal{F}\{g_b\}
+\end{equation*}
+
+Calculamos la densidad espectral cruzada y normalizamos por su producto.
+\begin{equation*}
+   \ R = \frac{ \mathbf{G}_a \circ \mathbf{G}_b^*}{|\mathbf{G}_a \mathbf{G}_b^*|}
+\end{equation*}
+Donde $\circ$ es el producto de Hadamard.
+
+Obtenemos la correlación cruzada normalizada aplicando la inversa de la transformada de Fourier
+\begin{equation*}
+    \ r = \mathcal{F}^{-1}\{R\}
+\end{equation*}
+Por último, localizamos el máximo  $r$.
+\begin{equation*}
+    \ (\Delta x, \Delta y) = \arg \max_{(x, y)}\{r\} 
+\end{equation*}
+OpenCV dispone de la función \lstinline|cv2.phaseCorrelate| que se encarga de todo esto.
 \newpage
 \section{Uso del acelerómetro para estabilizar}
 Se trata de intentar utilizar los datos extra de los que disponemos, es decir, los que nos proporciona el acelerómetro del móvil para intentar estabilizar la imagen utilizando estos datos.
@@ -409,6 +459,52 @@ Para ello en primer lugar hacemos un programa para Android que se encargue de re
 Luego, un segundo programa en el ordenador procesa los archivos para intentar estabilizar la imagen: recoge los datos de aceleración en cada instante de media y aproxima el movimiento en dichos instantes. Luego calcula mediante interpolación cuanto se ha movido la cámara en el instante del fotograma y recoloca el fotograma de acuerdo con lo obtenido.
 
 \subsection{Programa para Android}
+Se trata de un programa bastante simple. Al abrirlo desde el móvil vemos la pantalla en negro (aunque con un marco blanco alrededor). Si pulsamos el boton de subir volumen, empezamos a ver vídeo por pantalla y el dispositivo empieza a grabar. Cuando le volvemos a dar al botón de subir volumen, el programa termina la grabación y guarda dos archivos: uno de vídeo y otro de texto con la siguiente información: en la primera línea el instante en el que comenzamos a grabar y en las siguientes lineas, separados por espacios las aceleraciones lineales medidas en cada eje, así como el instante en que han sido medidas.
+Ahora bien, el acelerómetro mide la aceleración que sufre el dispositivo, lo cual incluye la aceleración de la gravedad y, por tanto, tenemos que elminarla. Hay varias maneras de hacer esto, pero por fortuna, la mayoría de móviles andorid actuales incluyen un tipo de sensor llamado \lstinline|TYPE_LINEAR_ACCELERATION| que realiza estos cálculos por nosotros. Suele ser una fusión de sensores que, utilizando el acelerómetro y el giroscopio, resta la aceleración de la gravedad a la medida por el acelerómetro.
+La parte de grabación de video es muy básica y hace uso de la clase \lstinline|MediaRecorder|.
+El código completo se incluye al final de la memoría como apéndice.
+\newpage
+\subsection{Programa de procesado de los datos}
+Este programa recibe el video grabado y el fichero con los datos del acelerómetro,es decir tenemos una serie de instantes $t_i$ y las aceleraciones medidas en dichos instantes $a_{xi}, a_{yi}, a_{zi}$.
+Como lo que queremos en realidad es el desplazamiento en cada instante lo aproximamos usando la siguiente fórmula:
+\begin{equation}
+\left\{ \begin{array}{lcc}
+             v_{xi} = v_{x,i-1} + a_{xi}t_i \\
+             \\ x_i = x_{i-1} + \dfrac{v_{x,i-1} + v_{xi}}{2} t_i \\
+             \end{array}
+   \right.
+\end{equation}
+tomando $v_{x0}=0$ y $x_0=0$
+Para calcular $y_i$ y $z_i$ se realiza de manera equivalente.
+\newline
+Para conocer el desplazamiento en el instante de cada fotograma utilizamos \lstinline|numpy.interp()| para calcular la interpolación lineal del conjunto de datos que tenemos en el instante deseado. Ya sabemos el desplazamiento dela cámara en un instante dado, pero queremos saber el movimiento relativo en la imagen. Para esto, suponemos que estamos grabando a un objeto a una distancia $d$ conocida y que dicho objeto está centrado en la imagen.
+Veamos desde arriba la situación, siendo $A$ el objeto, $P1$ la posición inicial de la cámara y $P2$ a donde se ha movido. 
+
+\includegraphics{tales1}
+\newpage
+Tenemos, usando el teorema de Pitágoras:
+\begin{equation*}
+h=\sqrt{x^2 + z^2}
+\end{equation*}
+Y por el Teorema de Tales:
+\begin{equation*}
+m = \dfrac{h}{d-z}d
+\end{equation*}
+\includegraphics{tales2}
+Por último, de nuevo por Tales y por lo anterior, obtenemos que
+\begin{equation*}
+X=\dfrac{m}{d}(d+f)
+\end{equation*}
+siendo f la distancia focal de la cámara.
+Para obtener el desplazamiento en la imagen en el eje y, los cálculos son análogos.
+\newpage
+\lstinputlisting[language=Python, frame= single]{estabilizacion_acelerometro.py}
+\newpage
+
+\subsection{Resultados}
+
+\appendix
+\chapter{Código de Android}
 A continuación se incluyen las partes más importantes del código de la aplicación de Android.
 \begin{description}
 
@@ -428,12 +524,9 @@ Ahora vemos el archivo \lstinline|AndroidManifest.xml| en el que cabe destacar l
 Por último vemos el archivo XML que describe la interfaz de nuestra única actividad (y que tan solo es un marco y la zona en la que mostraremos la imagen mientras estemos grabando).
 \lstinputlisting[language=Xml, frame= single]{Android/res/layout/activity_main.xml}
 \end{description}
-\newpage
-\subsection{Programa de procesado de los datos}
-\lstinputlisting[language=Python, frame= single]{estabilizacion_acelerometro.py}
-\newpage
 
-\subsection{Resultados}
+
+
 
 \cleardoublepage
 \addcontentsline{toc}{chapter}{Bibliografía}

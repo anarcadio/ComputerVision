@@ -3,44 +3,44 @@ Capacity: max_strings=35307, hash_size=35307, hash_prime=30011
 The top-level auxiliary file: memoria.aux
 The style file: plain.bst
 Database file #1: texto.bib
-You've used 4 entries,
+You've used 5 entries,
             2118 wiz_defined-function locations,
-            520 strings with 4448 characters,
-and the built_in function-call counts, 1448 in all, are:
-= -- 137
-> -- 50
-< -- 2
-+ -- 21
-- -- 15
-* -- 65
-:= -- 216
-add.period$ -- 12
-call.type$ -- 4
-change.case$ -- 18
+            527 strings with 4629 characters,
+and the built_in function-call counts, 1891 in all, are:
+= -- 181
+> -- 63
+< -- 3
++ -- 27
+- -- 19
+* -- 88
+:= -- 276
+add.period$ -- 15
+call.type$ -- 5
+change.case$ -- 23
 chr.to.int$ -- 0
-cite$ -- 4
-duplicate$ -- 82
-empty$ -- 131
-format.name$ -- 15
-if$ -- 334
+cite$ -- 5
+duplicate$ -- 105
+empty$ -- 172
+format.name$ -- 19
+if$ -- 440
 int.to.chr$ -- 0
-int.to.str$ -- 4
-missing$ -- 5
-newline$ -- 23
-num.names$ -- 10
-pop$ -- 34
+int.to.str$ -- 5
+missing$ -- 6
+newline$ -- 28
+num.names$ -- 12
+pop$ -- 42
 preamble$ -- 1
-purify$ -- 15
+purify$ -- 19
 quote$ -- 0
-skip$ -- 70
+skip$ -- 91
 stack$ -- 0
-substring$ -- 68
-swap$ -- 35
-text.length$ -- 2
+substring$ -- 102
+swap$ -- 46
+text.length$ -- 3
 text.prefix$ -- 0
 top$ -- 0
-type$ -- 14
+type$ -- 18
 warning$ -- 0
-while$ -- 12
-width$ -- 5
-write$ -- 44
+while$ -- 16
+width$ -- 6
+write$ -- 55

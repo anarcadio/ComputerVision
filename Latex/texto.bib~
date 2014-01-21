@@ -18,3 +18,19 @@ BOOKTITLE    = {IEEE Trans. On Pattern Analysis and Machine Inteligence},
 YEAR         = {1986},
 Pages        = {679-698},
 }
+@CONFERENCE{harris88,
+AUTHOR       = {Chris Harris and Mike Stephens}, 
+TITLE        = {A combined corner and edge detector},
+BOOKTITLE    = {Proceedings of the 4th Alvey Vision Conference},
+YEAR         = {1988},
+Pages        = {147–151},
+}
+
+@CONFERENCE{LucasKanade,
+AUTHOR       = {B. D. Lucas and T. Kanade}, 
+TITLE        = {An iterative image registration technique with an application to stereo vision},
+BOOKTITLE    = {Proceedings of Imaging Understanding Workshop},
+YEAR         = {1981},
+Pages        = {121-130},
+}
+ (1981), . , pages 121--130

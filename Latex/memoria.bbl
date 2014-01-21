@@ -17,6 +17,13 @@ Chris Harris and Mike Stephens.
 \newblock In {\em Proceedings of the 4th Alvey Vision Conference}, page
   147–151, 1988.
 
+\bibitem{LucasKanade}
+B.~D. Lucas and T.~Kanade.
+\newblock An iterative image registration technique with an application to
+  stereo vision.
+\newblock In {\em Proceedings of Imaging Understanding Workshop}, pages
+  121--130, 1981.
+
 \bibitem{shiandtomasi}
 Jianbo Shi and Carlo Tomasi.
 \newblock Good features to track.

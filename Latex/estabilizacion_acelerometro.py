@@ -17,12 +17,11 @@ def get_array(filename):
             first = False
         else:
             aux = line.split()
-            date_str = aux[2]
+            date_str = aux[3]
             aux_date = date_str.split(":")
-            #date = [int(aux_date[0]), int(aux_date[1]), float(aux_date[2])]
             #get the time in seconds
             date = ((int(aux_date[0])*60 + int(aux_date[1]))*60 + float(aux_date[2])) - t0
-            fline = [float(aux[0]), float(aux[1]), date]
+            fline = [float(aux[0]), float(aux[1]),float(aux[2]), date]
             #esto es un poco cutre habria que cambiarlo
             if date != old_date:
                 array.append( fline )
@@ -37,23 +36,35 @@ def calculate_movement(filename):
     vx0 = 0.0
     y0 = 0.0
     vy0 = 0.0
+    z0 = 0.0
+    vz0 = 0.0
     dx = [(0.0,0.0)]
     dy = [(0.0,0.0)]
+    dz = [(0.0,0.0)]
     for line in array:
         ax = line[0]
         ay = line[1]
-        t1 = line[2]
+        az = line[2]
+        t1 = line[3]
         vx1 = vx0 + ax*(t1-t0)
         vy1 = vy0 + ay*(t1-t0)
+        vz1 = vz0 + az*(t1-t0)
         x1 = x0 + (vx0 + vx1)*(t1-t0)/2
         y1 = y0 + (vy0 + vy1)*(t1-t0)/2
+        z1 = z0 + (vz0 + vz1)*(t1-t0)/2
         dx.append((t1, x1))
         dy.append((t1, y1))
+        dz.append((t1, z1))
         x0 = x1
         y0 = y1
+        z0 = z1
         t0 = t1
-    return dx, dy
+    return dx, dy, dz
 
+def recalculate_pos(x, z, d, f):
+    h = np.sqrt(x*x+z*z)
+    m = h*d/(d-z)
+    return (m/d)*(d+f)
 
 if __name__ == '__main__':
 
@@ -65,13 +76,15 @@ if __name__ == '__main__':
         print("Error, introduce nombre del archivo de entrada")
         sys.exit()
     cap = cv2.VideoCapture(name)
-    x, y = calculate_movement(accname)
-    print x,y
-    fps = cap.get(cv2.cv.CV_CAP_PROP_FPS)
-    size = (int(cap.get( cv.CV_CAP_PROP_FRAME_WIDTH)),int(cap.get(cv.CV_CAP_PROP_FRAME_HEIGHT)))
-    print fps
-    fps = 30
+    x, y, z = calculate_movement(accname)
+
+
+    #esto hay que cambiarlo
+    fps = 30.0
+
     t = 0.0
+    f = 0.004
+    d = 10
 
     # Create some random colors
     color = np.random.randint(0,255,(10000,3))
@@ -96,12 +109,17 @@ if __name__ == '__main__':
         h, w = old_frame.shape[:2]
 
         #calculamos la traslacion
-        t = t + 1.0/fps
+        t = t + 1/fps
         dx = np.interp(t,[d[0] for d in x], [d[1] for d in x])
-        dy = np.interp(t,[d[0] for d in y], [d[1] for d in y])       
+        dy = np.interp(t,[d[0] for d in y], [d[1] for d in y])
+        dz = np.interp(t,[d[0] for d in z], [d[1] for d in z])
 
-        dx = dx*(138000.0)
-        dy = dy*(138000.0)
+        print dx,dy
+        #dx = dx*(13800.0)
+        #dy = dy*(13800.0)
+        
+        dx = recalculate_pos(dx, dz, d, f)
+        dy = recalculate_pos(dy, dz, d, f)
 
         M = np.array([[1, 0, dx],[0, 1, dy]])
 
