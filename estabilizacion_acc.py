@@ -62,9 +62,10 @@ def calculate_movement(filename):
     return dx, dy, dz
 
 def recalculate_pos(x, z, d, f):
+    s = np.sign(x)
     h = np.sqrt(x*x+z*z)
     m = h*d/(d-z)
-    return (m/d)*(d+f)
+    return s*(m/d)*(d+f)
 
 if __name__ == '__main__':
 
@@ -80,11 +81,11 @@ if __name__ == '__main__':
 
 
     #esto hay que cambiarlo
-    fps = 30.0
+    fps = 15.0
 
     t = 0.0
     f = 0.004
-    d = 10
+    dist = 1.2
 
     # Create some random colors
     color = np.random.randint(0,255,(10000,3))
@@ -114,12 +115,16 @@ if __name__ == '__main__':
         dy = np.interp(t,[d[0] for d in y], [d[1] for d in y])
         dz = np.interp(t,[d[0] for d in z], [d[1] for d in z])
 
-        print dx,dy
-        #dx = dx*(13800.0)
-        #dy = dy*(13800.0)
+
         
-        dx = recalculate_pos(dx, dz, d, f)
-        dy = recalculate_pos(dy, dz, d, f)
+        print "dx dy dz:", dx,dy, dz
+        dx = recalculate_pos(dx, dz, dist, f)
+        print "nuevi dx: ",dx
+        dy = recalculate_pos(dy, dz, dist, f)
+        print "nuevi dy: ",dy
+
+        dx = dx*(7659.0)
+        dy = dy*(7659.0)
 
         M = np.array([[1, 0, dx],[0, 1, dy]])
 

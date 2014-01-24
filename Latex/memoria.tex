@@ -26,7 +26,7 @@
   keywordstyle=\color{blue},       % keyword style
   language=Python,                 % the language of the code
   morekeywords={*,...},            % if you want to add more keywords to the set
-  numbers=none,                    % where to put the line-numbers; possible values are (none, left, right)
+  numbers=left,                    % where to put the line-numbers; possible values are (none, left, right)
   numbersep=5pt,                   % how far the line-numbers are from the code
   numberstyle=\tiny\color{mygray}, % the style that is used for the line-numbers
   rulecolor=\color{black},         % if not set, the frame-color may be changed on line-breaks within not-black text (e.g. comments (green here))
@@ -79,7 +79,7 @@ Como ya hemos dicho, openCV incluye todo tipo de funciones e implementaciones de
 Dichas funciones se pueden dividir en varios grupos:
 \begin{itemize}
 \item Las relacionadas con el interfaz gráfico: se encargan de crear ventanas, mostrar imágenes por pantalla, registrar las pulsaciones del teclado, y de crear la interfaz de usuario (botones, barras de desplazamiento, etc). Veremos las más importantes en los ejemplos de la sección siguiente.
-\item Las estructuras básicas como las matrices y las funciones para trabajar con ellas. En la versión para python esto no es muy importante porque está adaptada para trabajar con arrays de Numpy.
+\item Las estructuras básicas como las matrices y las funciones para trabajar con ellas. En la versión para python esto no es muy importante porque está adaptada para trabajar con arrays de Numpy (una extesión para python que añade funciones para el cálculo científico y sobre la que hablaremos un poco más en detalle en el siguiente capítulo).
 \item Las funciones de procesado de imágenes. Es la parte fundamental de openCV y contiene fucniones de todo tipo: 
 \begin{itemize}
 \item Filtros de imagen, como desenfoques varios, ampliar o reducir una imagen, calcular el gradiente de una imagen mediante el operador Sobel...
@@ -121,7 +121,7 @@ Por último, esta vez usamos la función \lstinline|cv2.waitKey| de manera un po
 \newpage
 \subsection*{Ejemplo 3}
 En este ejemplo mejoraremos un poco el reproductor de video que hemos programado en el ejemplo anterior. Se ha añadido una barra de deslizamiento con el instante del video en que nos encontramos, el cual se puede utilizar para avanzar y retroceder hasta donde deseemos.
-\lstinputlisting[language=Python, frame= single]{ejemplos/ejemplo3.py}
+\lstinputlisting[language=Python, frame= single, firstline=4, lastline=27]{ejemplos/ejemplo3.py}
 Como vemos, en este código hemos introducido unas cuantas funciones nuevas.
 En primer lugar, hemos usado varias veces la función \lstinline|cv2.VideoCapture.get(propId)| con distintos argumentos.
 Esta función devuelve el valor de distintas propiedades del video con el que estamos trabajando. El argumento es el identificador de la propiedad entre los que destacan: \lstinline|CV_CAP_PROP_POS_FRAMES| (posición del próximo fotograma que va a ser decodificado/capturado), \lstinline|CV_CAP_PROP_FPS| (fotogramas por segundo) y \lstinline|CV_CAP_PROP_FRAME_WIDTH|y \lstinline|CV_CAP_PROP_FRAME_HEIGHT| (anchura y altura de los fotogramas del video respectivamente).
@@ -154,7 +154,7 @@ Como vemos, en el resto del código no hay nada nuevo, a excepción de la funci�
 \newpage
 \subsection*{Ejemplo 6}
 En este ejemplo utilizamos el algoritmo de Canny \cite{canny86} de detección de bordes, usando para ello la función \lstinline|cv2.Canny|
- Este algoritmo funciona de la siguiente manera: en primer lugar utiliza un desenfoque gaussiano a la imagen para reducir el ruido. Posteriormente calcula el gradiente de la imagen. Esto lo hace aplicando dos matrices de convolución para calcular las deraivadas en las direcciones $x$ e $y$:
+ Este algoritmo funciona de la siguiente manera: en primer lugar utiliza un desenfoque gaussiano a la imagen para reducir el ruido. Posteriormente calcula el gradiente de la imagen. Esto lo hace aplicando dos matrices de convolución para calcular las derivadas en las direcciones $x$ e $y$:
 
 \begin{equation*}
 G_{x} = \begin{bmatrix} -1 & 0 & +1 \\ -2 & 0 & +2 \\ -1 & 0 & +1 \end{bmatrix},  G_{y} = \begin{bmatrix} -1 & -2 & -1 \\ 0 & 0 & 0 \\ +1 & +2 & +1 \end{bmatrix}
@@ -171,20 +171,21 @@ Por último, para decidir si los píxeles pertenecen a un borde, se utilizan dos
 \item Si el gradiente del píxel es menor que el umbral inferior, se rechaza el píxel.
 \item Si el gradiente está entre ambos umbrales, entonces se acepta solo si está conectado a un píxel que está por encima del umbral superior.
 \end{itemize}
+
+A continuación vemos un ejemplo que muestra la imagen de la \textit{webcam} y utiliza el algoritmo de Canny de detección de bordes.
+
 \newpage
-\lstinputlisting[language=Python, frame= single]{ejemplos/ejemplo6.py}
+\lstinputlisting[language=Python, frame= single]{ejemplos/ejemplo8.py}
+Como vemos el código para mostrar una imagen de la \textit{webcam} es exactamente el mismo que el de mostrar un video por pantalla, excepto que a la función \lstinline|cv2.VideoCapture| le pasamos como argumento, en lugar del nombre del archivo, un entero que representa el índice de la cámara (si solo hay una cámara, debe ser 0).
+\newpage
+
 \newpage 
 \subsection*{Ejemplo 7}
 Ahora simplemente vamos a combinar los dos ejemplos anteriores, reduciendo dos veces la imagen original con \lstinline|pyrDown| y luego encontrando los bordes con \lstinline|Canny|
 \lstinputlisting[language=Python, frame= single]{ejemplos/ejemplo7.py}
 \newpage
-\subsection*{Ejemplo 8}
-A continuación vemos un ejemplo que muestra la imagen de la \textit{webcam} y utiliza el algoritmo de Canny de detección de bordes.
 
-\lstinputlisting[language=Python, frame= single]{ejemplos/ejemplo8.py}
-Como vemos el código para mostrar una imagen de la \textit{webcam} es exactamente el mismo que el de mostrar un video por pantalla, excepto que a la función \lstinline|cv2.VideoCapture| le pasamos como argumento, en lugar del nombre del archivo, un entero que representa el índice de la cámara (si solo hay una cámara, debe ser 0).
-\newpage
-\subsection*{Ejemplo 9}
+\subsection*{Ejemplo 8}
 \lstinputlisting[language=Python, frame= single]{ejemplos/ejemplo9.py}
 \newpage
 \chapter{Otras librerías usadas}
@@ -229,6 +230,29 @@ Dichas aplicaciones vienen en formato APK, que no es más que un fichero comprim
 Los recursos se encuentran en la carpeta \lstinline|res|. Además de las imágenes y otro tipo de contenido que usemos en la aplicación, esta carpeta contiene otra carpeta, llamada \lstinline|layouts|, en la que se encuentran archivos XML que describen las distintas pantallas o vistas de cada aplicación, es decir las interfaces gráficas asociadas a cada actividad.
 \newline
 El archivo ``\lstinline|manifest.xml|'' es un fichero XML donde se declaran los componentes que conforman la aplicación, así como se indican los permisos necesarios que requiere la aplicación, las funciones de \textit{hardware} o \textit{software} que se necesitan (la cámara, el acelerómetro, los servicios de \textit{bluetooth}...) y algunás características más del programa.
+
+\section{Numpy}
+Numpy (NUMerical PYthon) es una extensión para Python que agrega un montón de funcionalidades para el calculo matemático. La más destacable que incorpora es el soporte para arrays N-dimensonales y funciones para operar con ellos. Además incluye numerosas funciones de álgebra lineal,transformadas de fourier, estadística básica...
+\newline
+El núcleo de Numpy es el objeto \lstinline|ndarray|, que es la estructura de datos que representa los arrays N-dimensionales. Estos arrays, a diferencia de las listas de python, deben estar formados por elementos del mismo tipo.
+La manera más usual de crear estos arrays es a partir de una lista de Python: \lstinline|numpy.array([1,2,3,4])|. También pueden usarse las funciones \lstinline|numpy.zeros(n,m)| y \lstinline|numpy.ones((n,m))| para crear matrices $nxm$ formadas solo por ceros o por unos, respectivamente.
+\newline
+Los operadores aritméticos pueden usarse con los arrays y se aplican elemento a elemento y devuelven un nuevo array con el resultado.
+El operador \lstinline|*| es la multiplicación elemento a elemento, para la multiplicación de matrices se usa la función \lstinline|numpy.dot(A,B)|.
+Otros ejemplos de funciones son: \lstinline|numpy.sum()|,\lstinline|numpy.min()| y \lstinline|numpy.max()|.
+
+Los principales atributos de \lstinline|ndarray| son:
+ \begin{itemize}
+\item \lstinline|ndarray.ndim|: el número de dimensiones (o ejes) del array.
+ 
+\item \lstinline|ndarray.shape|: las dimensiones del array. Consiste en una tupla (de longitud \lstinline|ndim|) de enteros que indican el tamaño del array en cada dimensión. Por ejemplo, para una matriz de $n$ filas y $m$ columnas, será (n,m).
+
+\item  \lstinline|ndarray.size|: el número total de elementos del array. Es el producto de todos los elementos de \lstinline|shape|. 
+
+\item\lstinline|ndarray.dtype|: el tipo de los elementos del array. Se pueden crear o especificar tipos usando los tipos estándar de Python. Además Numpy proporciona algunos tipos más, como \lstinline|numpy.int32|, \lstinline|numpy.int16|, y \lstinline|numpy.float64|
+
+\item \lstinline|ndarray.data|: el búfer que contiene los elementos del array. Generalmente no se usa este atributo ya que se suele acceder a los elementos usando índices.
+ \end{itemize}
 
 \chapter{Estabilización de imagen}\label{cap.}
 
@@ -288,7 +312,7 @@ en lugar de la propuesta por Harris:
 R = \lambda_1 \lambda_2 - k(\lambda_1 + \lambda_2)^2
 \end{equation*}
 La función propuesta por Shi y Tomasi proporciona mejores resultados que la original.
-De hacer todo esto se encarga la función \lstinline|cv2.goodFeaturesToTrack()|, que calcula las segundas derivadas utilizando el operador Sobel y luego calcula los autovalores.
+De hacer todo esto se encarga la función \lstinline|cv2.goodFeaturesToTrack()|, que calcula las segundas derivadas utilizando el operador Sobel (es el método que explicamos en el ejemplo 6 del capítulo 2 para calcular el gradiente de una imagen) y luego calcula los autovalores.
 Sus argumentos son:
 \newline
 \lstinline|cv2.goodFeaturesToTrack(image, maxCorners, qualityLevel, minDistance[, corners[, mask[, blockSize[, useHarrisDetector[, k]]]]]) |
@@ -425,7 +449,7 @@ Pero como no todos los puntos encajan en la transformación ya que puede haber e
 \subsection{Comentarios y variaciones del algoritmo}
 Este algoritmo funciona bastante bien en la mayoría de los casos; sin embargo cuando el movimiento (ya sea el de la imagen o el de lo que estamos grabando) es muy brusco, puede producir efectos no deseados y ser contraproducente. Si asumimos que la camara no sufre rotaciones y solo hay traslación, en lugar de estimar la homografía podemos usar una traslación de razón la media o la mediana de lo que e ha movido cada píxel detectado. La media no es muy recomendable sin algún filtro, ya que es muy sensible a los valores atípicos y si ha objetos moviéndose se producirá traslación aun cuando la cámara este completamente quieta. Sin embargo la media funciona bastante bien y es más rápida que el algoritmo original. Sin embargo si no requerimos rapidez no supone una gran mejora.
 \newpage
-\section{Algortimo basado en la correlación de fase}
+\section{Algoritmo basado en la correlación de fase}
 Otro algoritmo bastante utilizado y más rápido que el anterior está basado en la correlación de fase. Supone que la cámara no sufre rotaciones y que el único movimiento no deseado es de traslación y emplea el nombrado método para calcular esta traslación.
 \newline
 La correlación de fase es un método de registro de imagen que utiliza el dominio de la frecuencia para estimar la traslación entre dos imágenes similares. Lo hace de la siguiente forma:

@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.1415926-2.5-1.40.14 (TeX Live 2013/Debian) (format=pdflatex 2013.11.30)  20 JAN 2014 20:40
+This is pdfTeX, Version 3.1415926-2.5-1.40.14 (TeX Live 2013/Debian) (format=pdflatex 2013.11.30)  23 JAN 2014 19:43
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -525,93 +525,93 @@ LaTeX Info: Redefining \% on input line 110.
 LaTeX Info: Redefining \. on input line 121.
 LaTeX Info: Redefining \% on input line 121.
  [6]
-(./ejemplos/ejemplo3.py
-LaTeX Info: Redefining \. on input line 34.
-LaTeX Info: Redefining \% on input line 34.
- [7])
+(./ejemplos/ejemplo3.py)
 Overfull \hbox (30.98434pt too wide) in paragraph at lines 125--129
 \OT1/cmr/m/n/12 es el iden-ti-fi-ca-dor de la pro-pie-dad en-tre los que des-ta
 -can: []
  []
 
+LaTeX Info: Redefining \. on input line 129.
+LaTeX Info: Redefining \% on input line 129.
+[7]
 LaTeX Info: Redefining \. on input line 137.
 LaTeX Info: Redefining \% on input line 137.
-[8] (./ejemplos/ejemplo4.py)
+ [8] (./ejemplos/ejemplo4.py)
 LaTeX Info: Redefining \. on input line 148.
 LaTeX Info: Redefining \% on input line 148.
  [9] (./ejemplos/ejemplo5.py)
 LaTeX Info: Redefining \. on input line 154.
 LaTeX Info: Redefining \% on input line 154.
  [10]
-LaTeX Info: Redefining \. on input line 174.
-LaTeX Info: Redefining \% on input line 174.
+LaTeX Info: Redefining \. on input line 177.
+LaTeX Info: Redefining \% on input line 177.
  [11]
-(./ejemplos/ejemplo6.py)
-LaTeX Info: Redefining \. on input line 176.
-LaTeX Info: Redefining \% on input line 176.
- [12] (./ejemplos/ejemplo7.py)
+(./ejemplos/ejemplo8.py)
 LaTeX Info: Redefining \. on input line 180.
 LaTeX Info: Redefining \% on input line 180.
- [13]
-(./ejemplos/ejemplo8.py)
+ [12] (./ejemplos/ejemplo7.py)
 LaTeX Info: Redefining \. on input line 186.
 LaTeX Info: Redefining \% on input line 186.
- [14] (./ejemplos/ejemplo9.py)
-LaTeX Info: Redefining \. on input line 189.
-LaTeX Info: Redefining \% on input line 189.
- [15]
+ [13]
+(./ejemplos/ejemplo9.py)
 LaTeX Info: Redefining \. on input line 190.
 LaTeX Info: Redefining \% on input line 190.
- [16
+ [14]
+Cap\'{\i }tulo 3.
+[15
 
 ]
-Cap\'{\i }tulo 3.
-[17]
-LaTeX Info: Redefining \. on input line 233.
-LaTeX Info: Redefining \% on input line 233.
- [18]
+LaTeX Info: Redefining \. on input line 243.
+LaTeX Info: Redefining \% on input line 243.
+ [16]
+LaTeX Info: Redefining \. on input line 257.
+LaTeX Info: Redefining \% on input line 257.
+ [17]
+LaTeX Info: Redefining \. on input line 257.
+LaTeX Info: Redefining \% on input line 257.
+ [18
+
+]
 Cap\'{\i }tulo 4.
 
 Underfull \vbox (badness 1057) has occurred while \output is active []
 
- [19
-
-]
-Overfull \hbox (29.9002pt too wide) in paragraph at lines 289--295
+ [19]
+Overfull \hbox (29.9002pt too wide) in paragraph at lines 313--319
 [][][][][][][][][][][][][][][][][][][][][][][][][][][]
  []
 
-LaTeX Info: Redefining \. on input line 295.
-LaTeX Info: Redefining \% on input line 295.
+LaTeX Info: Redefining \. on input line 319.
+LaTeX Info: Redefining \% on input line 319.
 [20]
-LaTeX Info: Redefining \. on input line 307.
-LaTeX Info: Redefining \% on input line 307.
+LaTeX Info: Redefining \. on input line 331.
+LaTeX Info: Redefining \% on input line 331.
  [21]
-LaTeX Info: Redefining \. on input line 360.
-LaTeX Info: Redefining \% on input line 360.
+LaTeX Info: Redefining \. on input line 384.
+LaTeX Info: Redefining \% on input line 384.
  [22]
-Overfull \hbox (36.07521pt too wide) in paragraph at lines 360--366
+Overfull \hbox (36.07521pt too wide) in paragraph at lines 384--390
 [][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
  []
 
 
-Overfull \hbox (5.2002pt too wide) in paragraph at lines 360--366
+Overfull \hbox (5.2002pt too wide) in paragraph at lines 384--390
 [][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 360--366
+Underfull \hbox (badness 10000) in paragraph at lines 384--390
 
  []
 
-LaTeX Info: Redefining \. on input line 383.
-LaTeX Info: Redefining \% on input line 383.
+LaTeX Info: Redefining \. on input line 407.
+LaTeX Info: Redefining \% on input line 407.
 [23]
-LaTeX Info: Redefining \. on input line 393.
-LaTeX Info: Redefining \% on input line 393.
+LaTeX Info: Redefining \. on input line 417.
+LaTeX Info: Redefining \% on input line 417.
  [24]
-LaTeX Info: Redefining \. on input line 422.
-LaTeX Info: Redefining \% on input line 422.
+LaTeX Info: Redefining \. on input line 446.
+LaTeX Info: Redefining \% on input line 446.
  [25] (./estabilizacion.py
 LaTeX Info: Redefining \. on input line 37.
 LaTeX Info: Redefining \% on input line 37.
@@ -626,40 +626,40 @@ Underfull \vbox (badness 10000) has occurred while \output is active []
 LaTeX Info: Redefining \. on input line 111.
 LaTeX Info: Redefining \% on input line 111.
  [28])
-LaTeX Info: Redefining \. on input line 427.
-LaTeX Info: Redefining \% on input line 427.
+LaTeX Info: Redefining \. on input line 451.
+LaTeX Info: Redefining \% on input line 451.
 
 [29]
-LaTeX Info: Redefining \. on input line 455.
-LaTeX Info: Redefining \% on input line 455.
+LaTeX Info: Redefining \. on input line 479.
+LaTeX Info: Redefining \% on input line 479.
  [30]
-LaTeX Info: Redefining \. on input line 466.
-LaTeX Info: Redefining \% on input line 466.
- [31] <tales1.png, id=127, 392.9079pt x 237.7683pt>
+LaTeX Info: Redefining \. on input line 490.
+LaTeX Info: Redefining \% on input line 490.
+ [31] <tales1.png, id=128, 392.9079pt x 237.7683pt>
 File: tales1.png Graphic file (type png)
  <use tales1.png>
-Package pdftex.def Info: tales1.png used on input line 483.
+Package pdftex.def Info: tales1.png used on input line 507.
 (pdftex.def)             Requested size: 392.90694pt x 237.7677pt.
 
-Overfull \hbox (20.53175pt too wide) in paragraph at lines 483--484
+Overfull \hbox (20.53175pt too wide) in paragraph at lines 507--508
 [][] 
  []
 
-LaTeX Info: Redefining \. on input line 484.
-LaTeX Info: Redefining \% on input line 484.
-[32 <./tales1.png>] <tales2.png, id=133, 525.4029pt x 317.988pt>
+LaTeX Info: Redefining \. on input line 508.
+LaTeX Info: Redefining \% on input line 508.
+[32 <./tales1.png>] <tales2.png, id=134, 525.4029pt x 317.988pt>
 File: tales2.png Graphic file (type png)
 
 <use tales2.png>
-Package pdftex.def Info: tales2.png used on input line 493.
+Package pdftex.def Info: tales2.png used on input line 517.
 (pdftex.def)             Requested size: 525.40161pt x 317.98721pt.
 
-Overfull \hbox (135.40161pt too wide) in paragraph at lines 492--495
+Overfull \hbox (135.40161pt too wide) in paragraph at lines 516--519
 []
  []
 
-LaTeX Info: Redefining \. on input line 500.
-LaTeX Info: Redefining \% on input line 500.
+LaTeX Info: Redefining \. on input line 524.
+LaTeX Info: Redefining \% on input line 524.
 [33 <./tales2.png>] (./estabilizacion_acelerometro.py
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
@@ -676,16 +676,16 @@ Underfull \vbox (badness 10000) has occurred while \output is active []
 LaTeX Info: Redefining \. on input line 121.
 LaTeX Info: Redefining \% on input line 121.
  [36])
-LaTeX Info: Redefining \. on input line 502.
-LaTeX Info: Redefining \% on input line 502.
+LaTeX Info: Redefining \. on input line 526.
+LaTeX Info: Redefining \% on input line 526.
 
 [37]
-LaTeX Info: Redefining \. on input line 507.
-LaTeX Info: Redefining \% on input line 507.
+LaTeX Info: Redefining \. on input line 531.
+LaTeX Info: Redefining \% on input line 531.
  [38]
 Ap\'{e}ndice A.
 
-Underfull \hbox (badness 10000) in paragraph at lines 511--512
+Underfull \hbox (badness 10000) in paragraph at lines 535--536
 
  []
 
@@ -728,8 +728,8 @@ LaTeX Info: Redefining \. on input line 9.
 LaTeX Info: Redefining \% on input line 9.
  [46]) (./Android/res/layout/activity_main.xml
 [47])
-LaTeX Info: Redefining \. on input line 531.
-LaTeX Info: Redefining \% on input line 531.
+LaTeX Info: Redefining \. on input line 555.
+LaTeX Info: Redefining \% on input line 555.
  [48] (./memoria.bbl) [49
 
 
@@ -738,10 +738,10 @@ LaTeX Info: Redefining \. on input line 6.
 LaTeX Info: Redefining \% on input line 6.
 ) ) 
 Here is how much of TeX's memory you used:
- 5342 strings out of 494969
- 69880 string characters out of 6179592
- 340067 words of memory out of 5000000
- 8425 multiletter control sequences out of 15000+600000
+ 5354 strings out of 494969
+ 69963 string characters out of 6179592
+ 341815 words of memory out of 5000000
+ 8440 multiletter control sequences out of 15000+600000
  11491 words of font info for 41 fonts, out of 8000000 for 9000
  40 hyphenation exceptions out of 8191
  37i,9n,52p,819b,1965s stack positions out of 5000i,500n,10000p,200000b,80000s
@@ -753,15 +753,16 @@ e/texmf-dist/fonts/type1/public/amsfonts/cm/cmitt10.pfb></usr/share/texlive/tex
 mf-dist/fonts/type1/public/amsfonts/cm/cmmi12.pfb></usr/share/texlive/texmf-dis
 t/fonts/type1/public/amsfonts/cm/cmmi8.pfb></usr/share/texlive/texmf-dist/fonts
 /type1/public/amsfonts/cm/cmr12.pfb></usr/share/texlive/texmf-dist/fonts/type1/
-public/amsfonts/cm/cmr8.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/a
-msfonts/cm/cmsl12.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfont
-s/cm/cmsy10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/c
-msy8.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmti12.p
-fb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmtt12.pfb>
-Output written on memoria.pdf (53 pages, 301851 bytes).
+public/amsfonts/cm/cmr6.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/a
+msfonts/cm/cmr8.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/
+cm/cmsl12.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cms
+y10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy8.pfb
+></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmti12.pfb></usr
+/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmtt12.pfb>
+Output written on memoria.pdf (53 pages, 315421 bytes).
 PDF statistics:
- 237 PDF objects out of 1000 (max. 8388607)
- 162 compressed objects within 2 object streams
+ 241 PDF objects out of 1000 (max. 8388607)
+ 165 compressed objects within 2 object streams
  0 named destinations out of 1000 (max. 500000)
  11 words of extra memory for PDF output out of 10000 (max. 10000000)
 
