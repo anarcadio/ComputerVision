@@ -1,5 +1,4 @@
 import cv2
-import numpy as np
 
 def doCanny(im, lowThresh, highThresh, aperture):
     if (len(im.shape) != 2): 
@@ -10,14 +9,15 @@ def doCanny(im, lowThresh, highThresh, aperture):
     return out
 
 if __name__ == '__main__':
-    import sys
-    try: name = sys.argv[1]
-    except: 
-        print("Error, introduce nombre del archivo")
-        sys.exit()
 
-    img = cv2.imread(name)
-    out = doCanny(img, 10, 100, 3)
-    cv2.imshow('Example6-in',img)
-    cv2.imshow("Example6-out", out)
-    cv2.waitKey(0)
+    capture =  cv2.VideoCapture(0)
+
+    while (True):
+        ret, frame = capture.read()
+        if (not ret): break
+        edgeimg = doCanny(frame, 30, 80, 3)
+        out = 255- edgeimg
+        cv2.imshow("Example9-in",frame)
+        cv2.imshow("Example9-out",out)
+        c = cv2.waitKey(33)
+        if (c==27): break

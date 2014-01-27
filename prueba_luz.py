@@ -28,30 +28,26 @@ def doCeq(im,a,t):
     m = np.mean(m)
     m = pow(m,1.0/a)
     im = im/m
-    #cdf_m = cdf_m/m
 
-    #cdf = np.ma.filled(cdf_m,0).astype('uint8')
-    #out = cdf[im]
-    #im= np.array(im, dtype=np.uint8)
-    #im = cv2.equalizeHist(im)
+    im = t*np.tanh(im/t)
+
     return im
 
 def process_image(img):
 
     gr =  cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
-    gr = np.array(gr, dtype=np.uint8)
+    #gr = np.array(gr, dtype=np.uint8)
     gf = correct_gamma(gr, gr, 0.2)
     #gf = gr
-    b1 = cv2.GaussianBlur(gf,(0,0), 1)
-    b2 = cv2.GaussianBlur(gf,(0,0), 2)
+    b1 = cv2.GaussianBlur(gf,(0,0), 1,1)
+    b2 = cv2.GaussianBlur(gf,(0,0), 2,2)
     b2 = cv2.subtract(b1, b2)
-    gr = b2
     gr = cv2.convertScaleAbs(b2, alpha=127, beta=127)
-    #gr2 = doCeq(gr, 0.1, 10)
+    gr2 = doCeq(gr, 0.1, 10)
     #gr2 = np.array(gr2, dtype=np.uint8)
-    #cv2.imshow("Example9-ouewqet",gr2)
+    cv2.imshow("Example9-ouewqet",gr2)
     gr = cv2.equalizeHist(gr)
-    #gr = np.array(gr, dtype=np.uint8)
+    gr = np.array(gr, dtype=np.uint8)
     return gr
 
 

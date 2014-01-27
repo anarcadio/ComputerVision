@@ -3,7 +3,6 @@ package com.mobvacc.videorecorder;
 import android.os.Bundle;
 import android.app.Activity;
 import android.view.Menu;
-
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -13,8 +12,6 @@ import java.util.Date;
 import com.mobvacc.videorecorder.R;
 import com.mobvacc.videorecorder.R.id;
 import com.mobvacc.videorecorder.R.layout;
-
-
 import android.content.Context;
 import android.content.pm.ActivityInfo;
 import android.hardware.Sensor;
@@ -46,7 +43,6 @@ public class MainActivity extends Activity implements SensorEventListener{
          String filename="/sdcard/rec"+dateString+".mp4";
          String Accfilename="acc"+dateString+".txt";
          //camera init
-         //
          camcorderView = (vcorderView) findViewById(R.id.vcorderView1); 
          camcorderView.setOutputFile(filename);
          
@@ -54,6 +50,7 @@ public class MainActivity extends Activity implements SensorEventListener{
          mSensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
          mAccelerometer = mSensorManager.getDefaultSensor(Sensor.TYPE_LINEAR_ACCELERATION);
          
+
          //open accelerometer file
          File file = new File(Environment.getExternalStorageDirectory() + File.separator +  Accfilename);
 
@@ -134,7 +131,6 @@ public class MainActivity extends Activity implements SensorEventListener{
     
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.main, menu);
         return true;
     }

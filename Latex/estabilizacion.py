@@ -46,22 +46,13 @@ if __name__ == '__main__':
     nframes = int(cap.get(cv.CV_CAP_PROP_FRAME_COUNT))
     print nframes
 
-    # Create some random colors
-    color = np.random.randint(0,255,(10000,3))
     
-    draw = False
-
     # Take first frame and find corners in it
     ret, old_frame = cap.read()
     old_gray = cv2.cvtColor(old_frame, cv2.COLOR_BGR2GRAY)
     p0 = cv2.goodFeaturesToTrack(old_gray, mask = None, **feature_params)
     cv2.cornerSubPix(old_gray, p0, (5, 5), (-1, -1), term)
 
-
-    # Create a mask image for drawing purposes
-    mask = np.zeros_like(old_frame)
-
-    #writer.write(old_frame)
     frames.append(old_frame)
     
     count = 1 
@@ -77,12 +68,9 @@ if __name__ == '__main__':
         frame_gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
 
         # calculate optical flow
-        #p1, st, err = cv2.calcOpticalFlowPyrLK(old_gray, frame_gray, p0, None, **lk_params)
-
         p2, trace_status = checkedTrace(old_gray, frame_gray, p0)
 
-        #good_new = p1[st==1]
-        #good_old = p0[st==1]
+
 
         p1 = p2[trace_status].copy()
         p0 = p0[trace_status].copy()

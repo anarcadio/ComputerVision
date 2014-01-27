@@ -4,11 +4,16 @@
 \usepackage{listings}
 \usepackage{color}
 \usepackage{amsmath}
+\usepackage{mathtools}
 \usepackage{graphicx}
+\usepackage{url}
 
 \definecolor{mygreen}{rgb}{0,0.6,0}
 \definecolor{mygray}{rgb}{0.5,0.5,0.5}
 \definecolor{mymauve}{rgb}{0.58,0,0.82}
+
+
+\spanishdecimal{.}
 
 \lstset{ %
   backgroundcolor=\color{white},   
@@ -65,7 +70,23 @@
 \chapter{Introducción}\label{cap.introduccion}
 \pagenumbering{arabic} % para empezar la numeración con números
 
-\section{Motivación}
+El interés inicial y motivo principal para la realización de este trabajo fue el acercamiento al interesante mundo de la visión artificial. Los campos relacionados con la visión artifical son amplísimos, abarcando casi la totalidad de las actuales actividades que incorporan algun tipo de imagen a su tecnología . El verdadero problema inicial fue elegir en qué centrar el interés de las numerosísimas actividades y tareas relacionadas con la visión artifical. Por acotar un poco el terreno, mi interés dentro de la visión artificial estaba en algo que tuviese una aplicación real en el mundo. Acudí a la presentación de una aplicación para móviles llamada Mementum. Esta aplicación, que se encuentra aún en una primera versión, pretende proporcionar una manera de controlar la evolución del Parkinson y otros trastornos del movimiento a los pacientes desde su casa a través del móvil. Por supuesto, esta aplicación usa visión artificial; por ello, hablé con uno de los responsables del proyecto. Me dijo que algunos de los problemas que tenían en esta versión estaban relacionados con la estabilización de la imagen y la iluminación y, por ello, me sugirió que podía orientar mi trabajo en esta dirección.
+
+
+Esta aplicación para el control del Parkinson consiste en que una segunda persona graba al enfermo de Parkinson y tras procesar el vídeo, devuelve un número que representa la cantidad de movimiento del paciente y que se puede utilizar para hacer un seguimiento del mismo. Podría considerarse como un ``termómetro del Parkinson''. El problema que surge con una aplicación para el móvil es que al movimiento del enfermo, hay que sumarle el posible movimiento involuntario de la cámara producido por la persona que está grabando. El reto, por tanto, está en intentar eliminar dicho movimiento involuntario. Una idea que me sugirieron era, ya que estaban trabajando con móviles, intentar aprovechar los sensores de que estos disponen, como el acelerómetro, para corregir este  movimiento.
+\newpage
+Finalmente decidí realizar el trabajo en esta dirección, y por tanto centrarme en las tareas de: estabilización de la imagen con algoritmos de visión artificial, intentar estabilizar la imagen con ayuda de los datos del aceleŕometro y estabilización de la iluminación.
+En primer lugar, para poder realizar los algoritmos de visión artificial tuve que aprender a utilizar la librería openCV y familiarizarme con algunos algoritmos típicos de visión artificial. Además como iba a intentar hacer uso del acelerómetro, tuve que aprender a realizar aplicaciones para Android y cómo interactuar con el hardware de los móviles. Tras todo este trabajo previo ya estaba en condiciones de centrarme en las tareas anteriormente mencionadas.
+
+Por tanto, el trabajo está estructurado de la siguiente manera:
+en primer lugar un capítulo dando una breve visión de conjunto de OpenCV y algunos códigos sencillos de ejemplo que hice durante el proceso de aprendizaje.
+\newline
+El siguiente capítulo está dedicado a otras librerías que, sin jugar un papel tan portagonista como OpenCV, he tenido que aprender y usar durante el trabajo. La parte central de este capítulo es Android y una pequeña noción de cómo se estructuran este sistema operativo y sus aplicaciones.
+\newline
+El siguiente capítulo trata sobre la estabilización de la imagen y abarca tanto los algoritmos puramente de visión artificial para estabilizar la imagen, como los intentos de usar el acelerómetro con este objeto. Cabe señalar que, debido a las motivaciones del trabajo comentadas anteriormente, durante todo el capítulo se supondrá que la cámara está estática, en el sentido de que el único movimiento producido por esta es leve y es el que queremos corregir.
+\newline
+Y finalmente el último capítulo está dedicado a la estabilización de la luz.
+
 \chapter{OpenCV}
 
 \section{Introducción}
@@ -94,7 +115,7 @@ Dichas funciones se pueden dividir en varios grupos:
 \end{itemize}
 Por supuesto openCV es una libería enorme y consta de muchísimas más funciones que las aquí mencionadas\newpage
 \section{Ejemplos}
-A continuación veremos una serie de ejemplos sencillos de uso de openCV con python, similares a los propuestos en el capítulo 2 de \textit{"Learning OpenCV" \cite{oreilly}}. No obstante en el libro estos ejemplos están programados en C con una versión antigua de la librería y aquí se presentan en Python y actualizados.
+A continuación veremos una serie de ejemplos sencillos de uso de openCV con Python, similares a los propuestos en el capítulo 2 de \textit{"Learning OpenCV" \cite{oreilly}}. No obstante en el libro estos ejemplos están programados en C con una versión antigua de la librería y aquí se presentan en Python y actualizados.
 \subsection*{Ejemplo 1}
 En primer lugar veamos como mostrar una imagen en una ventana
 \lstinputlisting[language=Python, frame= single]{ejemplos/ejemplo1.py}
@@ -102,7 +123,7 @@ Como vemos se trata de un código muy sencillo. Al ser ejecutado con un argument
 
 La función \lstinline|cv2.imread()| es la que se encarga de cargar la imagen desde un archivo.  Esta función toma como argumentos el nombre del archivo que se quiere abrir y además podemos especificar con un segundo parámetro opcional el modo de color en que se carga la imagen.
 
-La función devuelve la imagen (en forma de array de numpy).
+La función devuelve la imagen (en forma de array de Numpy).
 \newline
 Una vez hemos cargado la imagen, la mostramos en una ventana usando \lstinline|cv2.imshow(winname, image)|, donde \lstinline|winname| es el nombre de la ventana e \lstinline|image| es la imagen que queremos mostrar.
 Por último, utilizamos \lstinline|cv2.waitKey(0)| para esperar a que el usuario pulse una tecla. Esta función recibe un único parámetro que indica el tiempo de espera en milisegundos para la pulsación de una tecla. Si este parámetro es menor o igual que cero, esperará indefinidamente.
@@ -137,7 +158,7 @@ Para esto usamos \lstinline|cv2.createTrackbar(trackbarName, windowName, value, 
 \newpage
 
 \subsection*{Ejemplo 4}
-Ahora vamos a ver un ejemplo de una transformación muy sencilla, vamos a abrir una imagen y a aplicarle un desenfoque gaussiano y a mostrar tanto la imagen original como la resultante por pantalla. El desenfoque gaussiano es un filtro usado para suavizar imágenes y desenfocarlas. Funciona de la siguiente manera: para cada píxel de la imagen mezcla su color con los de un ventana a su alrededor (de altura y anchura dadas). Esta mezcla es una media, ponderada con la distribución Gaussiana, de los píxeles que están dentro de la ventana.
+Ahora vamos a ver un ejemplo de una transformación muy sencilla, vamos a abrir una imagen y a aplicarle un desenfoque gaussiano y a mostrar tanto la imagen original como la resultante por pantalla. El desenfoque gaussiano es un filtro usado para suavizar imágenes y desenfocarlas. Funciona de la siguiente manera: para cada píxel de la imagen mezcla su color con los de un ventana a su alrededor (de altura y anchura dadas). Esta mezcla es una media, ponderada con la distribución gaussiana, de los píxeles que están dentro de la ventana.
 \lstinputlisting[language=Python, frame= single]{ejemplos/ejemplo4.py}
 La única función nueva es 
 \lstinline|cv2.GaussianBlur()|, que es la que realiza el desenfoque.
@@ -153,8 +174,8 @@ En este ejemplo realizamos otra transformación, en este caso reducimos la image
 Como vemos, en el resto del código no hay nada nuevo, a excepción de la función ya nombrada.
 \newpage
 \subsection*{Ejemplo 6}
-En este ejemplo utilizamos el algoritmo de Canny \cite{canny86} de detección de bordes, usando para ello la función \lstinline|cv2.Canny|
- Este algoritmo funciona de la siguiente manera: en primer lugar utiliza un desenfoque gaussiano a la imagen para reducir el ruido. Posteriormente calcula el gradiente de la imagen. Esto lo hace aplicando dos matrices de convolución para calcular las derivadas en las direcciones $x$ e $y$:
+En este ejemplo utilizamos el algoritmo de Canny \cite{canny86} de detección de bordes, usando para ello la función \lstinline|cv2.Canny|.
+ Este algoritmo funciona de la siguiente manera: en primer lugar aplica un desenfoque gaussiano a la imagen para reducir el ruido. Posteriormente calcula el gradiente de la imagen. Esto lo hace aplicando dos matrices de convolución para calcular las derivadas en las direcciones $x$ e $y$:
 
 \begin{equation*}
 G_{x} = \begin{bmatrix} -1 & 0 & +1 \\ -2 & 0 & +2 \\ -1 & 0 & +1 \end{bmatrix},  G_{y} = \begin{bmatrix} -1 & -2 & -1 \\ 0 & 0 & 0 \\ +1 & +2 & +1 \end{bmatrix}
@@ -175,7 +196,7 @@ Por último, para decidir si los píxeles pertenecen a un borde, se utilizan dos
 A continuación vemos un ejemplo que muestra la imagen de la \textit{webcam} y utiliza el algoritmo de Canny de detección de bordes.
 
 \newpage
-\lstinputlisting[language=Python, frame= single]{ejemplos/ejemplo8.py}
+\lstinputlisting[language=Python, frame= single]{ejemplos/ejemplo6.py}
 Como vemos el código para mostrar una imagen de la \textit{webcam} es exactamente el mismo que el de mostrar un video por pantalla, excepto que a la función \lstinline|cv2.VideoCapture| le pasamos como argumento, en lugar del nombre del archivo, un entero que representa el índice de la cámara (si solo hay una cámara, debe ser 0).
 \newpage
 
@@ -232,9 +253,9 @@ Los recursos se encuentran en la carpeta \lstinline|res|. Además de las imágen
 El archivo ``\lstinline|manifest.xml|'' es un fichero XML donde se declaran los componentes que conforman la aplicación, así como se indican los permisos necesarios que requiere la aplicación, las funciones de \textit{hardware} o \textit{software} que se necesitan (la cámara, el acelerómetro, los servicios de \textit{bluetooth}...) y algunás características más del programa.
 
 \section{Numpy}
-Numpy (NUMerical PYthon) es una extensión para Python que agrega un montón de funcionalidades para el calculo matemático. La más destacable que incorpora es el soporte para arrays N-dimensonales y funciones para operar con ellos. Además incluye numerosas funciones de álgebra lineal,transformadas de fourier, estadística básica...
+Numpy (NUMerical PYthon) es una extensión para Python que agrega una gran cantidad de funcionalidades para el calculo matemático. La más destacable que incorpora es el soporte para arrays n-dimensonales y funciones para operar con ellos. Además incluye numerosas funciones de álgebra lineal, transformadas de Fourier, estadística básica...
 \newline
-El núcleo de Numpy es el objeto \lstinline|ndarray|, que es la estructura de datos que representa los arrays N-dimensionales. Estos arrays, a diferencia de las listas de python, deben estar formados por elementos del mismo tipo.
+El núcleo de Numpy es el objeto \lstinline|ndarray|, que es la estructura de datos que representa los arrays n-dimensionales. Estos arrays, a diferencia de las listas de Python, deben estar formados por elementos del mismo tipo.
 La manera más usual de crear estos arrays es a partir de una lista de Python: \lstinline|numpy.array([1,2,3,4])|. También pueden usarse las funciones \lstinline|numpy.zeros(n,m)| y \lstinline|numpy.ones((n,m))| para crear matrices $nxm$ formadas solo por ceros o por unos, respectivamente.
 \newline
 Los operadores aritméticos pueden usarse con los arrays y se aplican elemento a elemento y devuelven un nuevo array con el resultado.
@@ -253,7 +274,8 @@ Los principales atributos de \lstinline|ndarray| son:
 
 \item \lstinline|ndarray.data|: el búfer que contiene los elementos del array. Generalmente no se usa este atributo ya que se suele acceder a los elementos usando índices.
  \end{itemize}
-
+Nuestras imágenes de OpenCV serán arrays de Numpy cuyo atributo \lstinline|ndim| será 2 si la imagen es en blanco y negro y 3 si tiene más de un canal.
+El atributo \lstinline|shape| será de la forma \lstinline|(h,w,n)| (o \lstinline|(h,w)| si es en blanco y negro), donde \lstinline|h| es la altura de la imagen, \lstinline|w| es el ancho y \lstinline|n| es el número de canales de la imagen.
 \chapter{Estabilización de imagen}\label{cap.}
 
 \section{Algoritmo básico}
@@ -447,10 +469,10 @@ Pero como no todos los puntos encajan en la transformación ya que puede haber e
 \subsection{Código}
 \lstinputlisting[language=Python, frame= single]{estabilizacion.py}
 \subsection{Comentarios y variaciones del algoritmo}
-Este algoritmo funciona bastante bien en la mayoría de los casos; sin embargo cuando el movimiento (ya sea el de la imagen o el de lo que estamos grabando) es muy brusco, puede producir efectos no deseados y ser contraproducente. Si asumimos que la camara no sufre rotaciones y solo hay traslación, en lugar de estimar la homografía podemos usar una traslación de razón la media o la mediana de lo que e ha movido cada píxel detectado. La media no es muy recomendable sin algún filtro, ya que es muy sensible a los valores atípicos y si ha objetos moviéndose se producirá traslación aun cuando la cámara este completamente quieta. Sin embargo la media funciona bastante bien y es más rápida que el algoritmo original. Sin embargo si no requerimos rapidez no supone una gran mejora.
+Este algoritmo funciona bastante bien en la mayoría de los casos; sin embargo cuando el movimiento (ya sea el de la imagen o el de lo que estamos grabando) es muy brusco, puede producir efectos no deseados y ser contraproducente. Si suponemos que la cámara no sufre rotaciones y sólo hay traslación, en lugar de estimar la homografía podemos usar una traslación de razón la media o la mediana de lo que se ha movido cada píxel detectado. La media no es muy recomendable sin algún filtro, ya que es muy sensible a los valores atípicos y si hay objetos moviéndose se producirá traslación aún cuando la cámara este completamente quieta. Sin embargo la media funciona bastante bien y es más rápida que el algoritmo original. Sin embargo si no requerimos rapidez no supone una gran mejora.
 \newpage
 \section{Algoritmo basado en la correlación de fase}
-Otro algoritmo bastante utilizado y más rápido que el anterior está basado en la correlación de fase. Supone que la cámara no sufre rotaciones y que el único movimiento no deseado es de traslación y emplea el nombrado método para calcular esta traslación.
+Otro algoritmo bastante utilizado y más rápido que el anterior está basado en la correlación de fase. Supone que la cámara no sufre rotaciones y que el único movimiento no deseado es de traslación y emplea el método citado anteriormente para calcular esta traslación.
 \newline
 La correlación de fase es un método de registro de imagen que utiliza el dominio de la frecuencia para estimar la traslación entre dos imágenes similares. Lo hace de la siguiente forma:
 
@@ -461,7 +483,11 @@ Dadas dos imágenes ($\ g_a$ y $\ g_b$), se les aplica una función ventana y se
     \mathbf{G}_a = \mathcal{F}\{g_a\}, \; \mathbf{G}_b = \mathcal{F}\{g_b\}
 \end{equation*}
 
-Calculamos la densidad espectral cruzada y normalizamos por su producto.
+Calculamos la densidad espectral cruzada \footnote{La densidad espectral cruzada se define como la tranformada de Fourier de la correlación cruzada ($ 
+    S_{xy}(f)=\mbox{DFT}\left\{R_{xy}(\tau)\right\} $).
+La correlación cruzada es 
+    $(f\star g)_i \ \stackrel{\mathrm{def}}{=}\ \sum_j f^*_j\,g_{i+j}$.    
+     } y normalizamos con su producto.
 \begin{equation*}
    \ R = \frac{ \mathbf{G}_a \circ \mathbf{G}_b^*}{|\mathbf{G}_a \mathbf{G}_b^*|}
 \end{equation*}
@@ -478,9 +504,9 @@ Por último, localizamos el máximo  $r$.
 OpenCV dispone de la función \lstinline|cv2.phaseCorrelate| que se encarga de todo esto.
 \newpage
 \section{Uso del acelerómetro para estabilizar}
-Se trata de intentar utilizar los datos extra de los que disponemos, es decir, los que nos proporciona el acelerómetro del móvil para intentar estabilizar la imagen utilizando estos datos.
+Se trata de intentar utilizar la información extra de los que disponemos, en concreto la que nos proporciona el acelerómetro del móvil, para intentar estabilizar la imagen utilizando estos datos.
 Para ello en primer lugar hacemos un programa para Android que se encargue de recoger estos datos, grabando el vídeo a la vez que registra los datos del acelerómetro y los guarda en un archivo junto con el momento exacto en el que se han registrado los datos.
-Luego, un segundo programa en el ordenador procesa los archivos para intentar estabilizar la imagen: recoge los datos de aceleración en cada instante de media y aproxima el movimiento en dichos instantes. Luego calcula mediante interpolación cuanto se ha movido la cámara en el instante del fotograma y recoloca el fotograma de acuerdo con lo obtenido.
+Luego, un segundo programa en el ordenador procesa los archivos para intentar estabilizar la imagen: recoge los datos de aceleración en cada instante de medida y aproxima el movimiento en dichos instantes. Luego calcula mediante interpolación cuanto se ha movido la cámara en el instante del fotograma y recoloca el fotograma de acuerdo con lo obtenido.
 
 \subsection{Programa para Android}
 Se trata de un programa bastante simple. Al abrirlo desde el móvil vemos la pantalla en negro (aunque con un marco blanco alrededor). Si pulsamos el boton de subir volumen, empezamos a ver vídeo por pantalla y el dispositivo empieza a grabar. Cuando le volvemos a dar al botón de subir volumen, el programa termina la grabación y guarda dos archivos: uno de vídeo y otro de texto con la siguiente información: en la primera línea el instante en el que comenzamos a grabar y en las siguientes lineas, separados por espacios las aceleraciones lineales medidas en cada eje, así como el instante en que han sido medidas.
@@ -498,10 +524,10 @@ Como lo que queremos en realidad es el desplazamiento en cada instante lo aproxi
              \end{array}
    \right.
 \end{equation}
-tomando $v_{x0}=0$ y $x_0=0$
+tomando $v_{x0}=0$ y $x_0=0$.
 Para calcular $y_i$ y $z_i$ se realiza de manera equivalente.
 \newline
-Para conocer el desplazamiento en el instante de cada fotograma utilizamos \lstinline|numpy.interp()| para calcular la interpolación lineal del conjunto de datos que tenemos en el instante deseado. Ya sabemos el desplazamiento dela cámara en un instante dado, pero queremos saber el movimiento relativo en la imagen. Para esto, suponemos que estamos grabando a un objeto a una distancia $d$ conocida y que dicho objeto está centrado en la imagen.
+Para conocer el desplazamiento en el instante de cada fotograma utilizamos \lstinline|numpy.interp()| que calcula la interpolación lineal del conjunto de datos que tenemos en el instante deseado. Ya sabemos el desplazamiento de la cámara en un instante dado, pero queremos saber el movimiento relativo en la imagen. Para esto, suponemos que estamos grabando a un objeto a una distancia $d$ conocida y que dicho objeto está centrado en la imagen.
 Veamos desde arriba la situación, siendo $A$ el objeto, $P1$ la posición inicial de la cámara y $P2$ a donde se ha movido. 
 
 \includegraphics{tales1}
@@ -522,10 +548,58 @@ X=\dfrac{m}{d}(d+f)
 siendo f la distancia focal de la cámara.
 Para obtener el desplazamiento en la imagen en el eje y, los cálculos son análogos.
 \newpage
-\lstinputlisting[language=Python, frame= single]{estabilizacion_acelerometro.py}
-\newpage
+
 
 \subsection{Resultados}
+Lamentablemente este método no produce resultados satisfactorios. En algunas ocasiones, sin llegar a producir buenos resultados, estos parecerían acercarse un poco a lo que desearíamos, otras veces no tanto. Esto es debido  (como apuntan en la charla de Google \textit{Sensor Fusion on Android Devices: A Revolution in Motion Processing} \cite{googlesensor}) principalmente a dos motivos:
+\begin{itemize}
+\item El primero es por el error producido al aproximar la doble integral que tenemos que calcular para obtener la posición a partir de la aceleración. Según la exposición, manteniendo el dispositivo quieto durante un segundo, se produciría un error de 20 segundos.
+\item El segundo motivo es el realmente problemático. Se trata del posible error producido al calcular la aceleración lineal. Recordemos que esto se hacía restando la fuerza de la gravedad de los datos obtenidos por el acelerómetro, y para ello hay que calcular la fuerza de la gravedad. Un pequeño error calculando el ángulo de la gravedad supone un error enorme tras las dos integrales: una diferencia de un grado supondría un error de 8.5 metros.
+\end{itemize}
+
+\chapter{Estabilización de la luz}
+Por último vamos a ver por encima algunos de los recursos de que disponemos para trabajar con la luz y un algoritmo para intentar estabilizar la iluminación.
+\newline
+En primer lugar, hablemos de los histogramas. Un histograma es una gráfica que representa frecuencias, en este caso los niveles de intensidad de los píxeles. Es decir, relaciona cada nivel de intensidad de la imagen con el número de píxeles que tienen dicho nivel de intensidad. Por tanto cada canal de la imagen tiene su propio histograma; no obstante generalemente trabajaremos con imágenes en escala de grises, que solo  tienen un único canal.
+\newline
+Las principales funciones a la hora de trabajar con histogramas son:
+\newline
+\lstinline|cv2.calcHist(images, channels, mask, histSize, ranges)| y
+\newline \lstinline| cv2.equalizeHist(src)|.
+La primera se encarga de calcular el histograma y la segunda lo ecualiza.
+\newline 
+La ecualización de un histograma es un método para mejorar el contraste de la imagen modificando el histograma. La idea intuitiva es encontrar el intervalo del histograma en el que se encuentran la mayor parte de los píxeles y de alguna forma ``alargar'' este intervalo. Esto lo realiza de la siguiente manera: lo que queremos es transformar una distribución (el histograma original) en otra: Para esta transformación usaremos la función de distribución acumulada. Para un histograma $H(i)$, su función de distribución acumulada $H'(i)$ es:
+\begin{equation*}
+H^{'}(i) = \sum_{0 \le j < i} H(j)
+\end{equation*}
+Por último tenemos que normalizar para que el valor máximo sea 255:
+\begin{equation*}
+H^{'}(i) =\frac{H^{'}(i) - \min\{H^{'}(j)\}} {\max\{H^{'}(j)\}-\min\{H^{'}(j)\}} \cdot255
+\end{equation*}
+Para finalmente poder aplicar la tansformación:
+\begin{equation*}
+equalized( x, y ) = H^{'}( src(x,y) )
+\end{equation*}
+
+La ecualización es muy importante y es bastante usada para corregir el contraste de la imagen, pero por sí sola es completamente insuficiente a la hora de normalizar la iluminación. En el texto \textit{Enhanced Local Texture Feature Sets for Face Recognition Under Difficult Lighting Conditions} \cite{illuFace} se propone un algoritmo para normalizar la iluminación para la posterior detección de caras.
+\newline
+Dicho algoritmo consta de tres pasos:
+\begin{enumerate}
+\item \textbf{Corrección gamma:} 
+se trata de una transformación no lineal que dada una imagen $I$ en escala de grises la reemplaza por ${(\frac{I}{255})}^{\gamma}\cdot255$, con $\gamma \in [0,1]$. Utilizaremos como parámetro $\gamma = 0.2$. Para hacer la potencia utilizamos la función \lstinline|cv2.pow(I,| $\gamma$ \lstinline|)|.
+
+\item \textbf{Diferencia gaussiana:} consiste en, dada una imagen, obtener dos imágenes desenfocadas de la original (una más desefoncada que la otra) utilizando filtro gaussiano y luego obtener la diferencia de ambas. Utilizaremos $\sigma_0 =1$ y $\sigma_1=2$ para los filtros y para obtener la diferencia utilizaremos la función \lstinline|cv2.subtract()|
+
+\item \textbf{Ecualización de contraste}: hay que reescalar la intensidad de la imagen para estandarizar el contraste. Un opción podría ser ecualizar el histograma, pero en el papel citado proponen un método en dos fáses:
+\begin{equation}
+I(x,y) \leftarrow \frac{I(x,y)}{ {(\text{mean}(|I(x',y')|^a))}^{1/a}}
+\end{equation}
+
+\begin{equation}
+I(x,y) \leftarrow \frac{I(x,y)}{ {(\text{mean}({\min(\tau, |I(x',y')|)}^a))}^{1/a}}
+\end{equation}
+Donde $a$ es un componente de compresión y $\tau$ es el umbral de truncamiento. Se usará $a=0.1$ y $\tau=10$.
+\end{enumerate}
 
 \appendix
 \chapter{Código de Android}
@@ -549,7 +623,9 @@ Por último vemos el archivo XML que describe la interfaz de nuestra única acti
 \lstinputlisting[language=Xml, frame= single]{Android/res/layout/activity_main.xml}
 \end{description}
 
-
+\chapter{Código de procesado de los datos}
+\lstinputlisting[language=Python, frame= single]{estabilizacion_acelerometro.py}
+\newpage
 
 
 \cleardoublepage

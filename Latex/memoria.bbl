@@ -24,10 +24,23 @@ B.~D. Lucas and T.~Kanade.
 \newblock In {\em Proceedings of Imaging Understanding Workshop}, pages
   121--130, 1981.
 
+\bibitem{googlesensor}
+David Sachs.
+\newblock Sensor fusion on android devices: A revolution in motion processing.
+\newblock \url{http://www.youtube.com/watch?v=C7JQ7Rpwn2k}.
+\newblock min 23:20.
+
 \bibitem{shiandtomasi}
 Jianbo Shi and Carlo Tomasi.
 \newblock Good features to track.
 \newblock In Springer, editor, {\em 9th IEEE Conference on Computer Vision and
   Pattern Recognition}, 1994.
+
+\bibitem{illuFace}
+Xiaoyang Tan and Bill Triggs.
+\newblock Enhanced local texture feature sets for face recognition under
+  difficult lighting conditions.
+\newblock In {\em IEEE Transactions on Image Processing 19}, pages 1635--1650,
+  2010.
 
 \end{thebibliography}
