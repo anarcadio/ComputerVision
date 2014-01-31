@@ -7,8 +7,6 @@ def load (name):
         cv2.imshow("Example2",frame)
         c = cv2.waitKey(33)
         if (c==27): break
-
-
 if __name__ == '__main__':
     import sys
     try: name = sys.argv[1]

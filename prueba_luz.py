@@ -5,10 +5,8 @@ import numpy as np
 def correct_gamma(img, dst, correction):
 
     temp = img.copy()/255.0
-    #temp = cv2.convertScaleAbs(img, alpha=1.0/255, beta=0) 
     temp = np.array(temp, dtype=np.float32)
     temp = cv2.pow(temp, correction)*255.0
-    #dst = cv2.convertScaleAbs(temp, alpha=255, beta=0)
     return temp
 
 def doCeq(im,a,t):
