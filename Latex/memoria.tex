@@ -74,34 +74,44 @@
 El interés inicial y motivo principal para la realización de este trabajo fue el acercamiento al interesante mundo de la visión artificial. Los campos relacionados con la visión artificial son amplísimos, abarcando casi la totalidad de las actuales actividades que incorporan algún tipo de imagen a su tecnología . El verdadero problema inicial fue elegir en qué centrar el interés de las numerosísimas actividades y tareas relacionadas con la visión artificial. Por acotar un poco el terreno, mi interés dentro de la visión artificial estaba en algo que tuviese una aplicación real en el mundo. Acudí a la presentación de una aplicación para móviles llamada Mememtum \footnote{\url{http://mememtum.com}}. Esta aplicación, que se encuentra aún en una primera versión, pretende proporcionar una manera de controlar la evolución del Parkinson y otros trastornos del movimiento a los pacientes desde su casa a través del móvil. Por supuesto, esta aplicación usa visión artificial; por ello, hablé con uno de los responsables del proyecto. Me dijo que algunos de los problemas que tenían en esta versión estaban relacionados con la estabilización de la imagen y la iluminación y, por ello, me sugirió que podía orientar mi trabajo en esta dirección.
 
 
-Esta aplicación para el control del Parkinson consiste en que una segunda persona graba al enfermo de Parkinson y tras procesar el vídeo, devuelve un número que representa la cantidad de movimiento del paciente y que se puede utilizar para hacer un seguimiento del mismo. Podría considerarse como un ``termómetro del Parkinson''. El problema que surge con una aplicación para el móvil es que al movimiento del enfermo, hay que sumarle el posible movimiento involuntario de la cámara producido por la persona que está grabando. El reto, por tanto, está en intentar eliminar dicho movimiento involuntario. Una idea que me sugirieron era, ya que estaban trabajando con móviles, intentar aprovechar los sensores de que estos disponen, como el acelerómetro, para corregir este  movimiento.
+Esta aplicación para el control del Parkinson consiste en que una segunda persona graba al enfermo de Parkinson y tras procesar el vídeo, devuelve un número que representa la cantidad de movimiento del paciente y que se puede utilizar para hacer un seguimiento del mismo. Podría considerarse como un ``termómetro del Parkinson''. El problema que surge con una aplicación para el móvil es que al movimiento del enfermo, hay que sumarle el posible movimiento involuntario de la cámara producido por la persona que está grabando. El reto, por tanto, está en intentar eliminar dicho movimiento involuntario. Otro de los problemas eran los posibles cambios de iluminación, que dificultan encontrar al paciente de manerfa eficaz. Por tanto hay que encontrar una manera de minimizar el efecto de los cambios de iluminación.
+Una idea que me sugirieron era, ya que estaban trabajando con móviles, intentar aprovechar los sensores de que estos disponen, como el acelerómetro y el sensor de luz, para corregir este  movimiento.
 \newpage
-Finalmente decidí realizar el trabajo en esta dirección, y por tanto centrarme en las tareas de: estabilización de la imagen con algoritmos de visión artificial, intentar estabilizar la imagen con ayuda de los datos del aceleŕometro y estabilización de la iluminación.
-En primer lugar, para poder realizar los algoritmos de visión artificial tuve que aprender a utilizar la librería openCV y familiarizarme con algunos algoritmos típicos de visión artificial. Además como iba a intentar hacer uso del acelerómetro, tuve que aprender a realizar aplicaciones para Android y cómo interactuar con el hardware de los móviles. Tras todo este trabajo previo ya estaba en condiciones de centrarme en las tareas anteriormente mencionadas.
+Finalmente decidí realizar el trabajo en esta dirección, y por tanto centrarme en las tareas de: estabilización de la imagen con algoritmos de visión artificial, intentar estabilizar la imagen con ayuda de los datos del aceleŕometro y estabilización de la iluminación, al igual que antes primero con algoritmos de visión artificial y luego con los datos extra del sensor de luz en este caso.
+En primer lugar, para poder realizar los algoritmos de visión artificial tuve que aprender a utilizar la librería OpenCV\cite{opencvrefman} y familiarizarme con algunos algoritmos típicos de visión artificial. Además como iba a intentar hacer uso del acelerómetro, tuve que aprender a realizar aplicaciones para Android y cómo interactuar con el hardware de los móviles. Tras todo este trabajo previo ya estaba en condiciones de centrarme en las tareas anteriormente mencionadas.
 
-Por tanto, el trabajo está estructurado de la siguiente manera:
-en primer lugar un capítulo dando una breve visión de conjunto de OpenCV y algunos códigos sencillos de ejemplo que hice durante el proceso de aprendizaje.
+Por tanto, el trabajo está estructurado de la siguiente manera: en primer lugar un capítulo dando una breve visión de conjunto de OpenCV y algunos
+códigos sencillos de ejemplo que hice durante el proceso de aprendizaje.
+El siguiente capítulo está dedicado a otras librerías que, sin jugar un papel
+an protagonista como OpenCV, he tenido que aprender y usar durante el
+trabajo. La parte central de este capítulo es Android y una pequeña noción
+sobree cómo se estructuran este sistema operativo y sus aplicaciones.
+El siguiente capítulo trata sobre la estabilización de la imagen y abarca tanto los algoritmos puramente de visión artificial para estabilizar la imagen, como los intentos de usar el acelerómetro con este objeto. Finalmente, el último capítulo está dedicado a la estabilización de la luz.
 \newline
-El siguiente capítulo está dedicado a otras librerías que, sin jugar un papel tan protagonista como OpenCV, he tenido que aprender y usar durante el trabajo. La parte central de este capítulo es Android y una pequeña noción de cómo se estructuran este sistema operativo y sus aplicaciones.
-\newline
-El siguiente capítulo trata sobre la estabilización de la imagen y abarca tanto los algoritmos puramente de visión artificial para estabilizar la imagen, como los intentos de usar el acelerómetro con este objeto. Cabe señalar que, debido a las motivaciones del trabajo comentadas anteriormente, durante todo el capítulo se supondrá que la cámara está estática, en el sentido de que el único movimiento producido por esta es leve y es el que queremos corregir.
-\newline
-Y finalmente el último capítulo está dedicado a la estabilización de la luz.
 
-\chapter{OpenCV}
+En resumen el trabajo ha consistido en:
+\begin{itemize}
+\item El estudio de la librería openCV.
+\item Una introducción a la programación en Android.
+\item Búsqueda de algoritmos para la estabilización de la imagen.
+\item Programar un algoritmo de estabilización basado en acelerómetros.
+\item Búsqueda de algoritmos para la estabilización de la luz.
+\item Programar un algoritmo para estabilizar la luz usando el sensor.
+\end{itemize}
+\chapter{OpenCV} \label{cap.opencv}
 
 \section{Introducción}
-OpenCV es una librería de código abierto escrita en C y C++ destinada a la visión artificial y al tratamiento de imágenes. Se trata de una librería multiplataforma con versiones para GNU/Linux, Windows, Mac OS y Android y actualmente cuenta con interfaces para Python, Java y MATLAB/OCTAVE. Las últimas versiones incluyen soporte para CUDA, lo que nos permite ejecutar paralelamente funciones en la unidad de procesamiento gráfico o GPU de nuestro ordenador .
+OpenCV\cite{opencvrefman} es una librería de código abierto escrita en C y C++ destinada a la visión artificial y al tratamiento de imágenes. Se trata de una librería multiplataforma con versiones para GNU/Linux, Windows, Mac OS y Android. Actualmente cuenta con interfaces para Python, Java y MATLAB/OCTAVE. Además las últimas versiones incluyen soporte para CUDA, lo que nos permite ejecutar paralelamente funciones en la unidad de procesamiento gráfico o GPU de nuestro ordenador .
 Desarrollada originalmente por Intel, su primera versión alfa se publicó en el año 2000 en el \textit{IEEE Conference on Computer Vision and Pattern Recognition}. OpenCV nació inicialmente como un proyecto para avanzar en las aplicaciones de uso intenso de la CPU y dando gran importancia a las aplicaciones en tiempo real. Hoy en día cuenta con más 2500 algoritmos optimizados que abarcan todo tipo de campos relacionados con la visión artificial.
 Estos algoritmos pueden ser usados para tareas como: detección y reconocimiento de caras y gestos, identificación objetos, detección de características 2D y 3D, estimación y seguimiento del movimiento, visión estéreo y calibración de la cámara, eliminación los ojos rojos de las fotografías realizadas con flash...
-\newline
+
 OpenCV es ampliamente utilizada por todo tipo de empresas (desde grandes empresas como Google, Yahoo, Microsoft, Intel, IBM, Sony, Honda, Toyota a pequeñas empresas), grupos de investigación y organismos gubernamentales y en sectores de todo tipo como: inspección de los productos en las fábricas, seguridad, usos médicos, robótica...
-\newline
+
 Como ya hemos dicho, openCV incluye todo tipo de funciones e implementaciones de algoritmos. 
 Dichas funciones se pueden dividir en varios grupos:
 \begin{itemize}
 \item Las relacionadas con el interfaz gráfico: se encargan de crear ventanas, mostrar imágenes por pantalla, registrar las pulsaciones del teclado, y de crear la interfaz de usuario (botones, barras de desplazamiento, etc). Veremos las más importantes en los ejemplos de la sección siguiente.
-\item Las estructuras básicas como las matrices y las funciones para trabajar con ellas. En la versión para python esto no es muy importante porque está adaptada para trabajar con arrays de Numpy (una extensión para python que añade funciones para el cálculo científico y sobre la que hablaremos un poco más en detalle en el siguiente capítulo).
+\item Las estructuras básicas como las matrices y las funciones para trabajar con ellas. En la versión para Python esto no es muy importante porque está adaptada para trabajar con arrays de Numpy\cite{numpyrefman} (una extensión para Python que añade funciones para el cálculo científico y sobre la que hablaremos un poco más en detalle en el siguiente capítulo en la sección \ref{sec.numpy}).
 \item Las funciones de procesado de imágenes. Es la parte fundamental de openCV y contiene funciones de todo tipo: 
 \begin{itemize}
 \item Filtros de imagen, como desenfoques varios, ampliar o reducir una imagen, calcular el gradiente de una imagen mediante el operador Sobel...
@@ -111,21 +121,20 @@ Dichas funciones se pueden dividir en varios grupos:
 \item Funciones de estimación de movimiento y detección de características. La más importantes son usadas y explicadas en el capítulo 4.
 \end{itemize}
 \item Funciones de calibrado de la cámara (para corregir la distorsión provocada por la lente) y de reconstrucción 3D usando visión estéreo (dos cámaras).
-\item Funciones para detectar objetos y caras. Destaca la clase \lstinline|CascadeClassifier|.
+\item Funciones para detectar objetos y caras. La clase más importante para esto es \lstinline|CascadeClassifier| que puede ser entrenada mediante muestras para reconocer objetos.
 \item Además, openCV consta de una librería de aprendizaje automático (\textit{machine learning}) que está formada por funciones de clasificación estadística, árboles de decisión, redes neuronales...
 \end{itemize}
 Por supuesto openCV es una librería enorme y consta de muchísimas más funciones que las aquí mencionadas\newpage
 \section{Ejemplos}
-A continuación veremos una serie de ejemplos sencillos de uso de openCV con Python, similares a los propuestos en el capítulo 2 de \textit{"Learning OpenCV" \cite{oreilly}}. No obstante en el libro estos ejemplos están programados en C con una versión antigua de la librería y aquí se presentan en Python y actualizados. Al tratarse de una librería tan extensa, es imposible cubrirla o resumirla en unos ejemplos. Por tanto, los códigos que vienen a continuación pretenden tan solo dar una idea de algunos funciones básicas a hora de trabajar con la librería como abrir y mostrar vídeos e imágenes y algunas transformaciones sencillas.
+A continuación veremos una serie de ejemplos sencillos de uso de openCV con Python, similares a los propuestos en el capítulo 2 de \textit{"Learning OpenCV" \cite{oreilly}}. No obstante en el libro estos ejemplos están programados en C con una versión antigua de la librería (1.0) y aquí se presentan en Python y actualizados a la versión 2. Al tratarse de una librería tan extensa, es imposible cubrirla o resumirla en unos ejemplos. Por tanto, los códigos que vienen a continuación pretenden tan solo dar una idea de algunos funciones básicas a hora de trabajar con la librería como abrir y mostrar vídeos e imágenes y algunas transformaciones sencillas.
 \subsection*{Ejemplo 1}
 En primer lugar veamos como mostrar una imagen en una ventana
 \lstinputlisting[language=Python, frame= single]{ejemplos/ejemplo1.py}
 Como vemos se trata de un código muy sencillo. Al ser ejecutado con un argumento, carga una imagen y la muestra en una ventana; luego espera hasta que el usuario pulse una tecla.
 
-La función \lstinline|cv2.imread()| es la que se encarga de cargar la imagen desde un archivo.  Esta función toma como argumentos el nombre del archivo que se quiere abrir y además podemos especificar con un segundo parámetro opcional el modo de color en que se carga la imagen.
+La función \lstinline|cv2.imread()| es la que se encarga de cargar la imagen desde un archivo.  Esta función toma como argumentos el nombre del archivo que se quiere abrir y además podemos especificar con un segundo parámetro opcional el modo de color en que se carga la imagen.La función devuelve la imagen (en forma de array de Numpy).
 
-La función devuelve la imagen (en forma de array de Numpy).
-\newline
+
 Una vez hemos cargado la imagen, la mostramos en una ventana usando \lstinline|cv2.imshow(winname, image)|, donde \lstinline|winname| es el nombre de la ventana e \lstinline|image| es la imagen que queremos mostrar.
 Por último, utilizamos \lstinline|cv2.waitKey(0)| para esperar a que el usuario pulse una tecla. Esta función recibe un único parámetro que indica el tiempo de espera en milisegundos para la pulsación de una tecla. Si este parámetro es menor o igual que cero, esperará indefinidamente.
 
@@ -145,7 +154,7 @@ En este ejemplo mejoraremos un poco el reproductor de vídeo que hemos programad
 Como vemos, en este código hemos introducido unas cuantas funciones nuevas.
 En primer lugar, hemos usado varias veces la función \lstinline|cv2.VideoCapture.get(propId)| con distintos argumentos.
 Esta función devuelve el valor de distintas propiedades del video con el que estamos trabajando. El argumento es el identificador de la propiedad entre los que destacan: \lstinline|CV_CAP_PROP_POS_FRAMES| (posición del próximo fotograma que va a ser decodificado/capturado), \lstinline|CV_CAP_PROP_FPS| (fotogramas por segundo) y \lstinline|CV_CAP_PROP_FRAME_WIDTH|y \lstinline|CV_CAP_PROP_FRAME_HEIGHT| (anchura y altura de los fotogramas del video respectivamente).
-La lista completa de opciones puede ser encontrada fácilmente en la documentacíon de openCV.
+La lista completa de opciones puede ser encontrada fácilmente en la documentación de OpenCV\footnote{\url{http://docs.opencv.org/modules/highgui/doc/reading_and_writing_images_and_video.html#videocapture-get}}.
 
 También usamos la función \lstinline|cv2.VideoCapture.set(propId, value)|, usada para fijar el valor de alguna de las propiedades del vídeo. Por tanto los valores que puede tomar \lstinline|propId| son los mismos que para la función \lstinline|cv2.VideoCapture.get()| y el argumento \lstinline|value| indica el nuevo valor que tomará la propiedad indicada.
 
@@ -157,8 +166,8 @@ Para esto usamos \lstinline|cv2.createTrackbar(trackbarName, windowName, value, 
 \newpage
 
 \subsection*{Ejemplo 4}
-Ahora vamos a ver un ejemplo de una transformación muy sencilla, vamos a abrir una imagen y a aplicarle un desenfoque gaussiano y a mostrar tanto la imagen original como la resultante por pantalla. El desenfoque gaussiano es un filtro usado para suavizar imágenes y desenfocarlas. Funciona de la siguiente manera: cada píxel de la imagen mezcla su color con los de un ventana a su alrededor (de altura y anchura dadas). Esta mezcla es una media de los píxeles que están dentro de la ventana ponderada con un núcleo gaussiano (es decir la media de los píxeles multiplicando cada uno de ellos por un peso, que en este caso lo da el núcleo gaussiano\footnote{Un núcleo gaussiano de tamaño $\texttt{ksize}$ es una matriz de dimensiones $ \texttt{ksize}\times1$ con coeficientes:
-$ G_i= \alpha *e^{-(i-( \texttt{ksize} -1)/2)^2/(2* \texttt{sigma} )^2}$ donde i va de $0$ a$\texttt{ksize}-1$ y $\alpha$ es tal que  $\sum_i G_i=1$. }). 
+Ahora vamos a ver un ejemplo de una transformación muy sencilla, vamos a abrir una imagen y a aplicarle un desenfoque gaussiano y a mostrar tanto la imagen original como la resultante por pantalla. El desenfoque gaussiano es un filtro usado para suavizar imágenes y desenfocarlas. Funciona de la siguiente manera: cada píxel de la imagen mezcla su color con los de un ventana a su alrededor (de altura y anchura dadas). Esta mezcla es una media de los píxeles que están dentro de la ventana ponderada con un núcleo gaussiano (es decir la media de los píxeles multiplicando cada uno de ellos por un peso, que en este caso lo da el núcleo gaussiano). Un núcleo gaussiano (de una dimensión) de tamaño $\texttt{ksize}$ es una matriz de dimensiones $ \texttt{ksize}\times1$ con coeficientes:
+$ G_i= \alpha \cdot e^{-(i-( \texttt{ksize} -1)/2)^2/(2* \sigma )^2}$ \footnote{Está fórmula proviene de la de la distribución gaussiana.} donde i va de $0$ a $\texttt{ksize}-1$ y $\alpha$ es tal que  $\sum_i G_i=1$. Como las imágenes son en dos dimensiones el núcleo gaussiano que se aplica es de dos dimensiones (esto es equivalente a aplicar un núcleo gaussiano en cada dirección), por lo que habrá dos parámetros $\sigma$, que llamaremos $\sigma_1$ y $\sigma_2$.
 \lstinputlisting[language=Python, frame= single]{ejemplos/ejemplo4.py}
 La única función nueva es 
 \lstinline|cv2.GaussianBlur()|, que es la que realiza el desenfoque.
@@ -212,7 +221,8 @@ Ahora simplemente vamos a combinar los dos ejemplos anteriores, reduciendo dos v
 \lstinputlisting[language=Python, frame= single]{ejemplos/ejemplo7.py}
 \newpage
 
-\chapter{Otras librerías usadas}
+\chapter{Otras librerías usadas} \label{cap.otras}
+En este capítulo veremos una introducción a otras librerías usadas durante el trabajo. En primer lugar hablaremos sobre Android y el desarrollo de aplicaciones para este. Luego hablaremos de la librería Numpy.
 \section{Android}
 
 Android es un sistema operativo desarrollado por Google y orientado a móviles y tablets. Está basado en Linux y es de código abierto. Actualmente se estima que en torno a un 80\% de los dispositívos móviles usan el sistema operativo Android.
@@ -224,9 +234,9 @@ Este sistema operativo está estructurado en 4 capas:
    Asimismo funciona como una capa de abstracción entre el \textit{hardware} y el resto del \textit{software}.
    
   \item[Librerías y \textit{runtime} de Android] \hfill \\
-  Por encima del núcleo, hay una serie de librerías usadas por componentes del sistema, entre ellas destacan Surface Manager, Media Framework, SQLite, WebKit, SGL y Open GL
-  \newline
-  El runtime de Android proporciona un componente clave,la máquina virtual Dalvik. Cada aplicación Android corre su propio proceso, con su propia instancia de esta máquina virtual.
+  Por encima del núcleo, hay una serie de librerías usadas por componentes del sistema, entre ellas destacan Surface Manager, Media Framework, SQLite, WebKit, SGL y OpenGL.
+
+  El runtime de Android proporciona un componente clave, la máquina virtual Dalvik. Cada aplicación Android corre su propio proceso, con su propia instancia de esta máquina virtual.
   Además, el \textit{runtime} de Android proporciona librerías básicas que proporcionan la mayor parte de las funciones del lenguaje de programación Java.
   
   \item[Marco de trabajo(\textit{framework}) de aplicaciones] \hfill \\
@@ -240,7 +250,7 @@ Este sistema operativo está estructurado en 4 capas:
 Las aplicaciones Android están formadas por los llamados componentes de aplicación. Hay cuatro tipo de componentes:
 \begin{description}
   \item[Activities] \hfill \\
-  Representa una única pantalla de la aplicación con su interfaz de usuario.
+  Representa una única pantalla de nuestra aplicación con su interfaz de usuario.
   \item[Services] \hfill \\
   Son componentes que se ejecutan en segundo plano y que no constan de interfaz gráfica.
   \item[Content providers] \hfill \\
@@ -258,15 +268,15 @@ El archivo ``\lstinline|manifest.xml|'' es un fichero XML donde se declaran los 
 
 En el apéndice \ref{android_ap_acc} se incluye el código de Android realizado, donde se pueden ver el código de la actividad principal y su \lstinline|layout|, así como el fichero ``\lstinline|manifest.xml|''.
 
-\section{Numpy}
+\section{Numpy} \label{sec.numpy}
 Numpy (NUMerical PYthon) es una extensión para Python que agrega una gran cantidad de funcionalidades para el calculo matemático. La más destacable que incorpora es el soporte para arrays n-dimensonales y funciones para operar con ellos. Además incluye numerosas funciones de álgebra lineal, transformadas de Fourier, estadística básica...
-\newline
+
 El núcleo de Numpy es el objeto \lstinline|ndarray|, que es la estructura de datos que representa los arrays n-dimensionales. Estos arrays, a diferencia de las listas de Python, deben estar formados por elementos del mismo tipo.
 La manera más usual de crear estos arrays es a partir de una lista de Python: \lstinline|numpy.array([1,2,3,4])|. También pueden usarse las funciones \lstinline|numpy.zeros(n,m)| y \lstinline|numpy.ones((n,m))| para crear matrices $nxm$ formadas solo por ceros o por unos, respectivamente.
-\newline
+
 Los operadores aritméticos pueden usarse con los arrays y se aplican elemento a elemento y devuelven un nuevo array con el resultado.
 El operador \lstinline|*| es la multiplicación elemento a elemento, para la multiplicación de matrices se usa la función \lstinline|numpy.dot(A,B)|.
-Otros ejemplos de funciones son: \lstinline|numpy.sum()|,\lstinline|numpy.min()| y \lstinline|numpy.max()|.
+Otros ejemplos de funciones son: \lstinline|numpy.sum()|, \lstinline|numpy.min()| y \lstinline|numpy.max()|.
 
 Los principales atributos de \lstinline|ndarray| son:
  \begin{itemize}
@@ -282,12 +292,12 @@ Los principales atributos de \lstinline|ndarray| son:
  \end{itemize}
 Nuestras imágenes de OpenCV serán arrays de Numpy cuyo atributo \lstinline|ndim| será 2 si la imagen es en blanco y negro y 3 si tiene más de un canal.
 El atributo \lstinline|shape| será de la forma \lstinline|(h,w,n)| (o \lstinline|(h,w)| si es en blanco y negro), donde \lstinline|h| es la altura de la imagen, \lstinline|w| es el ancho y \lstinline|n| es el número de canales de la imagen.
-\chapter{Estabilización de imagen}\label{cap.}
-
+\chapter{Estabilización de imagen}\label{cap.estab}
+Cabe señalar que, debido a las motivaciones del trabajo comentadas anteriormente, durante todo el capítulo se supondrá que la cámara está estática, en el sentido de que el único movimiento producido por esta es leve y es el que queremos corregir.
 \section{Algoritmo básico}
 Se trata de un algoritmo básico de estabilización de imagen para eliminar el posible movimiento de agitación la cámara. Dicho algoritmo se basa en la suposición de que el único movimiento de la cámara es el que queremos eliminar; es decir, excepto por ligeros movimientos no deseados, la cámara está estática.
 La idea del algoritmo es muy sencilla: 
-Tomamos dos fotogramas consecutivos y buscamos una serie de puntos característicos mediante el algoritmo propuesto por Shi y Tomashi \cite{shiandtomasi}, usando la función: \lstinline|goodFeaturesToTrack|; después vemos a donde se han movido esos puntos en el siguiente fotograma mediante el algoritmo de flujo óptico de Lucas-Kanade.
+Tomamos dos fotogramas consecutivos y buscamos una serie de puntos característicos mediante el algoritmo propuesto por Shi y Tomashi \cite{shiandtomasi}. Existe una función en OpenCV que implemente este algoritmo: \lstinline|goodFeaturesToTrack|. Después vemos a donde se han movido esos puntos en el siguiente fotograma mediante el algoritmo de flujo óptico de Lucas-Kanade\cite{LucasKanade}.
 Finalmente calculamos la homografía que lleva los puntos originales a donde hemos calculado que se han movido y le aplicamos la inversa de esa transformación al segundo fotograma para colocarlo donde debería estar.
 \subsection{Algoritmo para encontrar puntos característicos}
 
@@ -329,7 +339,7 @@ Sean $\lambda_1$ y $\lambda_2$ dichos autovalores, entonces:
 \begin{itemize}
 \item Si  $ \lambda_1 \approx 0 $ y $\lambda_2 \approx 0 $ entonces el punto no tiene interés.
 \item Si  $ \lambda_1 \approx 0 $ y $\lambda_2 $ es positivo y suficientemente grande entonces hemos encontrado un borde.
-\item Si  $ \lambda_1 $ y $\lambda_2 $ son positivos y suficientemente grandes entonces hemos encontrado un punto de interés. Este punto es la intersección de dos bordes,por ello, estos puntos también son llamados esquinas .
+\item Si  $ \lambda_1 $ y $\lambda_2 $ son positivos y suficientemente grandes entonces hemos encontrado un punto de interés. Este punto es la intersección de dos bordes,por ello, estos puntos también son llamados esquinas.
 \end{itemize}
 Como función para valorar la calidad de los autovalores, Shi y Tomasi \cite{shiandtomasi} propusieron:
 \begin{equation*}
@@ -340,7 +350,7 @@ en lugar de la propuesta por Harris\cite{harris88}
 R = \lambda_1 \lambda_2 - k(\lambda_1 + \lambda_2)^2
 \end{equation*}
 La función propuesta por Shi y Tomasi proporciona mejores resultados que la original.
-De hacer todo esto se encarga la función \lstinline|cv2.goodFeaturesToTrack()|, que calcula las segundas derivadas utilizando el operador Sobel (es el método que explicamos en el ejemplo 6 del capítulo 2 para calcular el gradiente de una imagen) y luego calcula los autovalores.
+De todo esto se encarga la función \lstinline|cv2.goodFeaturesToTrack()|, que calcula las segundas derivadas utilizando el operador Sobel (es el método que explicamos en el ejemplo 6 del capítulo 2 para calcular el gradiente de una imagen) y luego calcula los autovalores.
 Sus argumentos son:
 \newline
 \lstinline|cv2.goodFeaturesToTrack(image, maxCorners, qualityLevel, minDistance[, corners[, mask[, blockSize[, useHarrisDetector[, k]]]]]) |
@@ -409,8 +419,13 @@ es decir:
 \end{equation*}
 y la solución a esta ecuación es $\left(\begin{array}{c}u\\v\end{array}\right) = (A^t A)^{-1} A^t b $  
 
-El problema hasta ahora son las suposiciones de los movimientos pequeños y coherentes. Queremos usar una ventana grande para captar movimientos grandes pero esto puede romper dichas suposiciones. Para solventar esto aplicamos el algoritmo iterativamente a una pirámide de imágenes del fotograma. Primero se aplica el algoritmo a la imagen en la cima de la pirámide para seguir los movimiento grandes y luego según se va bajando en la pirámide se va refinando iterativamente el resultado partiendo del anterior. De esta manera los movimientos grandes se van convirtiendo en movimientos pequeños.
-\newline
+El problema hasta ahora son las suposiciones de los movimientos pequeños y coherentes. Queremos usar una ventana grande para captar movimientos grandes pero esto puede romper dichas suposiciones. Para solventar esto aplicamos el algoritmo iterativamente a una pirámide de imágenes del fotograma. Primero se aplica el algoritmo a la imagen en la cima de la pirámide para seguir los movimiento grandes y luego según se va bajando en la pirámide se va refinando iterativamente el resultado partiendo del anterior, como podemos observar en la imagen. De esta manera los movimientos grandes se van convirtiendo en movimientos pequeños.
+
+
+\includegraphics{pyramid}
+
+
+
 Este algoritmo lo realiza openCV mediante la función: \newline
 \lstinline|cv2.calcOpticalFlowPyrLK(prevImg, nextImg, prevPts[, nextPts[, status[, err[, winSize[, maxLevel[, criteria[, flags[, minEigThreshold]]]]]]]])|
 $\rightarrow$  \lstinline|nextPts, status, err|
@@ -419,7 +434,7 @@ $\rightarrow$  \lstinline|nextPts, status, err|
 Donde:
 \begin{itemize}
 \item \lstinline|prevImg| y \lstinline|nextImg| son las dos imágenes entre las que queremos detectar movimiento y \lstinline|prevPts| los puntos que queremos seguir.
-\item \lstinline|nextPts| es el vector de salida que contiene las nuevas posiciones de los puntos de entrada. Si se usa el argumento \lstinline|OPTFLOW_USE_INITIAL_FLOW|, este vector deberá tener el mismo tamaño que el de entrada.
+\item \lstinline|nextPts| es el vector de salida que contiene las nuevas posiciones de los puntos de entrada. Si se usa el argumento \lstinline|OPTFLOW_USE_INITIAL_FLOW|para usar una estimación inicial, este vector deberá tener el mismo tamaño que el de entrada.
 
 \item \lstinline|status| es un vector de salida en el que cada elemento es 1 si el flujo para el punto correspondiente se ha encontrado y 0 en otro caso.
 
@@ -439,7 +454,7 @@ o cuando la ventana de búsqueda se mueve menos que un épsilon dado.
     
     \item \lstinline|OPTFLOW_LK_GET_MIN_EIGENVALS| utiliza los autovalores mínimos como medida de error. Si este parámetro no se indica se usará como medida de error la distancia $L_1$ entre los bloques del punto original y un punto movido, dividido por el número de píxeles en una ventana.
 	\end{itemize}
-\item \lstinline|minEigThreshold| –  El algortimo calcula el menor autovalor de la matriz de las ecuaciones del flujo. Si este valor dividido por el número de píxeles en una ventana es menor que \lstinline|minEigThreshold|, entonces el punto es filtrado y no se calcula su flujo.
+\item \lstinline|minEigThreshold| –  El algoritmo calcula el menor autovalor de la matriz de las ecuaciones del flujo. Si este valor dividido por el número de píxeles en una ventana es menor que \lstinline|minEigThreshold|, entonces el punto es filtrado y no se calcula su flujo.
 
 \end{itemize}
 \newpage
@@ -573,7 +588,7 @@ Lamentablemente este método no produce resultados satisfactorios. En algunas oc
 \item El segundo motivo es el realmente problemático. Se trata del posible error producido al calcular la aceleración lineal. Recordemos que esto se hacía restando la fuerza de la gravedad de los datos obtenidos por el acelerómetro, y para ello hay que calcular la fuerza de la gravedad. Un pequeño error calculando el ángulo de la gravedad supone un error enorme tras las dos integrales: una diferencia de un grado supondría un error de 8.5 metros.
 \end{itemize}
 
-\chapter{Estabilización de la luz}
+\chapter{Estabilización de la luz} \label{cap.luz}
 \section{Introducción}
 Por último vamos a ver por encima algunos de los recursos de que disponemos para trabajar con la luz y un algoritmo para intentar estabilizar la iluminación.
 \newline
