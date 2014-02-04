@@ -80,15 +80,6 @@ Una idea que me sugirieron era, ya que estaban trabajando con móviles, intentar
 Finalmente decidí realizar el trabajo en esta dirección, y por tanto centrarme en las tareas de: estabilización de la imagen con algoritmos de visión artificial, intentar estabilizar la imagen con ayuda de los datos del aceleŕometro y estabilización de la iluminación, al igual que antes primero con algoritmos de visión artificial y luego con los datos extra del sensor de luz en este caso.
 En primer lugar, para poder realizar los algoritmos de visión artificial tuve que aprender a utilizar la librería OpenCV\cite{opencvrefman} y familiarizarme con algunos algoritmos típicos de visión artificial. Además como iba a intentar hacer uso del acelerómetro, tuve que aprender a realizar aplicaciones para Android y cómo interactuar con el hardware de los móviles. Tras todo este trabajo previo ya estaba en condiciones de centrarme en las tareas anteriormente mencionadas.
 
-Por tanto, el trabajo está estructurado de la siguiente manera: en primer lugar un capítulo dando una breve visión de conjunto de OpenCV y algunos
-códigos sencillos de ejemplo que hice durante el proceso de aprendizaje.
-El siguiente capítulo está dedicado a otras librerías que, sin jugar un papel
-an protagonista como OpenCV, he tenido que aprender y usar durante el
-trabajo. La parte central de este capítulo es Android y una pequeña noción
-sobree cómo se estructuran este sistema operativo y sus aplicaciones.
-El siguiente capítulo trata sobre la estabilización de la imagen y abarca tanto los algoritmos puramente de visión artificial para estabilizar la imagen, como los intentos de usar el acelerómetro con este objeto. Finalmente, el último capítulo está dedicado a la estabilización de la luz.
-\newline
-
 En resumen el trabajo ha consistido en:
 \begin{itemize}
 \item El estudio de la librería openCV.
@@ -98,6 +89,16 @@ En resumen el trabajo ha consistido en:
 \item Búsqueda de algoritmos para la estabilización de la luz.
 \item Programar un algoritmo para estabilizar la luz usando el sensor.
 \end{itemize}
+
+Por tanto, el trabajo está estructurado de la siguiente manera: en primer lugar un capítulo dando una breve visión de conjunto de OpenCV y algunos
+códigos sencillos de ejemplo que hice durante el proceso de aprendizaje.
+El siguiente capítulo está dedicado a otras librerías que, sin jugar un papel
+an protagonista como OpenCV, he tenido que aprender y usar durante el
+trabajo. La parte central de este capítulo es Android y una pequeña noción
+sobree cómo se estructuran este sistema operativo y sus aplicaciones.
+El siguiente capítulo trata sobre la estabilización de la imagen y abarca tanto los algoritmos puramente de visión artificial para estabilizar la imagen, como los intentos de usar el acelerómetro con este objeto. Finalmente, el último capítulo está dedicado a la estabilización de la luz.
+\newline
+
 \chapter{OpenCV} \label{cap.opencv}
 
 \section{Introducción}
@@ -290,8 +291,11 @@ Los principales atributos de \lstinline|ndarray| son:
 
 \item \lstinline|ndarray.data|: el búfer que contiene los elementos del array. Generalmente no se usa este atributo ya que se suele acceder a los elementos usando índices.
  \end{itemize}
-Nuestras imágenes de OpenCV serán arrays de Numpy cuyo atributo \lstinline|ndim| será 2 si la imagen es en blanco y negro (y por tanto sólo tiene un canal) y 3 si tiene más de un canal.
-El atributo \lstinline|shape| será de la forma \lstinline|(h,w,n)| (o \lstinline|(h,w)| si es en blanco y negro), donde \lstinline|h| es la altura de la imagen, \lstinline|w| es el ancho y \lstinline|n| es el número de canales de la imagen.
+
+Para una imagen en blanco y negro solo hace falta un dato por píxel: la intensidad. Sin embargo, cuando las imágenes son a color, hacen falta más valores. Estos valores así como el número usado variarán según el modelo de color usado (RGB, RGBA, HSV...). Los conjuntos de cada tipo de valores de los píxeles forman los llamados canales. Por ejemplo en el modelo RGB hay un canal para el rojo, otro para el verde y otro para el azul y cada uno de ellos contiene las intensidades de ese color en cada píxel.
+
+Por tanto, nuestras imágenes de OpenCV serán arrays de Numpy cuyo atributo \lstinline|shape| será de la forma \lstinline|(h,w,n)| (o \lstinline|(h,w)| si es en blanco y negro), donde \lstinline|h| es la altura de la imagen, \lstinline|w| es el ancho y \lstinline|n| es el número de canales de la imagen. 
+El atributo \lstinline|ndim| será 2 si la imagen es en blanco y negro (y por tanto sólo tiene un canal) y 3 si tiene más de un canal.
 \chapter{Estabilización de imagen}\label{cap.estab}
 En este capítulo trataremos algunos algoritmos de estabilización de imagen, incluyendo el intento de usar el acelerómetro.
 Cabe señalar que, debido a las motivaciones del trabajo comentadas anteriormente, durante todo el capítulo se supondrá que la cámara está estática, en el sentido de que el único movimiento producido por esta es leve y es el que queremos corregir.
@@ -592,15 +596,15 @@ Lamentablemente este método no produce resultados satisfactorios. En algunas oc
 \chapter{Estabilización de la luz} \label{cap.luz}
 \section{Introducción}
 Por último vamos a ver por encima algunos de los recursos de que disponemos para trabajar con la luz y un algoritmo para intentar estabilizar la iluminación.
-\newline
+
 En primer lugar, hablemos de los histogramas. Un histograma es una gráfica que representa frecuencias, en este caso los niveles de intensidad de los píxeles. Es decir, relaciona cada nivel de intensidad de la imagen con el número de píxeles que tienen dicho nivel de intensidad. Por tanto cada canal de la imagen tiene su propio histograma; no obstante nosotros trabajaremos con imágenes en escala de grises, que solo  tienen un único canal.
-\newline
+
 Las principales funciones a la hora de trabajar con histogramas son:
 \newline
 \lstinline|cv2.calcHist(images, channels, mask, histSize, ranges)| y
-\newline \lstinline| cv2.equalizeHist(src)|.
+\newline\lstinline|cv2.equalizeHist(src)|.
 La primera se encarga de calcular el histograma y la segunda lo ecualiza.
-\newline 
+
 La ecualización de un histograma es un método para mejorar el contraste de la imagen modificando el histograma. La idea intuitiva es encontrar el intervalo del histograma en el que se encuentran la mayor parte de los píxeles y de alguna forma ``alargar'' este intervalo aplanando el histograma. Lo que queremos es transformar una distribución (el histograma original) en otra; para esta transformación usaremos la función de distribución acumulada. Para un histograma $H(i)$, su función de distribución acumulada $H'(i)$ es:
 \begin{equation*}
 H^{'}(i) = \sum_{0 \le j < i} H(j)
@@ -613,6 +617,7 @@ Para finalmente poder aplicar la transformación:
 \begin{equation*}
 equalized( x, y ) = H^{'}( src(x,y) )
 \end{equation*}
+
 Otra transformación parecida a la ecualización de un histograma es la normalización. En este caso se ajusta el valor mínimo del histograma al 0 y el máximo al 255, manteniendo la forma original del histograma. Esta operación se puede realizar con la función \lstinline| cv2.normalize()| con los parámetros \lstinline|alpha=0|,\lstinline|beta=255| y \lstinline|norm_type=cv2.NORM_MINMAX|.
 
 \section{Un algoritmo de normalización de luz}

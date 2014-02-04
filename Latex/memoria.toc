@@ -3,33 +3,33 @@
 \contentsline {chapter}{\numberline {1}OpenCV}{3}
 \contentsline {section}{\numberline {1.1}Introducci\IeC {\'o}n}{3}
 \contentsline {section}{\numberline {1.2}Ejemplos}{5}
-\contentsline {chapter}{\numberline {2}Otras librer\IeC {\'\i }as usadas}{15}
-\contentsline {section}{\numberline {2.1}Android}{15}
-\contentsline {section}{\numberline {2.2}Numpy}{17}
-\contentsline {chapter}{\numberline {3}Estabilizaci\IeC {\'o}n de imagen}{19}
-\contentsline {section}{\numberline {3.1}Algoritmo b\IeC {\'a}sico}{19}
-\contentsline {subsection}{\numberline {3.1.1}Algoritmo para encontrar puntos caracter\IeC {\'\i }sticos}{19}
-\contentsline {subsection}{\numberline {3.1.2}Algoritmo de Lucas-Kanade}{22}
-\contentsline {subsection}{\numberline {3.1.3}C\IeC {\'a}lculo de la homograf\IeC {\'\i }a}{26}
-\contentsline {subsection}{\numberline {3.1.4}C\IeC {\'o}digo}{27}
-\contentsline {subsection}{\numberline {3.1.5}Comentarios y variaciones del algoritmo}{29}
-\contentsline {section}{\numberline {3.2}Algoritmo basado en la correlaci\IeC {\'o}n de fase}{30}
-\contentsline {section}{\numberline {3.3}Uso del aceler\IeC {\'o}metro para estabilizar}{31}
-\contentsline {subsection}{\numberline {3.3.1}Programa para Android}{31}
-\contentsline {subsection}{\numberline {3.3.2}Programa de procesado de los datos}{32}
-\contentsline {subsection}{\numberline {3.3.3}Resultados}{34}
-\contentsline {chapter}{\numberline {4}Estabilizaci\IeC {\'o}n de la luz}{35}
-\contentsline {section}{\numberline {4.1}Introducci\IeC {\'o}n}{35}
-\contentsline {section}{\numberline {4.2}Un algoritmo de normalizaci\IeC {\'o}n de luz}{36}
-\contentsline {section}{\numberline {4.3}Correcci\IeC {\'o}n de la iluminaci\IeC {\'o}n usando el sensor}{37}
-\contentsline {chapter}{\numberline {A}C\IeC {\'o}digo del aceler\IeC {\'o}metro}{39}
-\contentsline {section}{\numberline {A.1}C\IeC {\'o}digo de Android}{39}
-\contentsline {subsection}{\numberline {A.1.1}MainActivity}{39}
-\contentsline {subsection}{\numberline {A.1.2}Clase vcorderView}{44}
-\contentsline {subsection}{\numberline {A.1.3}Android manifest}{47}
-\contentsline {subsection}{\numberline {A.1.4}Activity layout}{48}
-\contentsline {section}{\numberline {A.2}C\IeC {\'o}digo de procesado de los datos}{49}
-\contentsline {chapter}{\numberline {B}C\IeC {\'o}digo del sensor de luz}{53}
-\contentsline {section}{\numberline {B.1}C\IeC {\'o}digo de Android}{53}
-\contentsline {section}{\numberline {B.2}C\IeC {\'o}digo de procesado de los datos}{58}
-\contentsline {chapter}{Bibliograf\IeC {\'\i }a}{61}
+\contentsline {chapter}{\numberline {2}Otras librer\IeC {\'\i }as usadas}{17}
+\contentsline {section}{\numberline {2.1}Android}{17}
+\contentsline {section}{\numberline {2.2}Numpy}{19}
+\contentsline {chapter}{\numberline {3}Estabilizaci\IeC {\'o}n de imagen}{21}
+\contentsline {section}{\numberline {3.1}Algoritmo b\IeC {\'a}sico}{21}
+\contentsline {subsection}{\numberline {3.1.1}Algoritmo para encontrar puntos caracter\IeC {\'\i }sticos}{21}
+\contentsline {subsection}{\numberline {3.1.2}Algoritmo de Lucas-Kanade}{24}
+\contentsline {subsection}{\numberline {3.1.3}C\IeC {\'a}lculo de la homograf\IeC {\'\i }a}{28}
+\contentsline {subsection}{\numberline {3.1.4}C\IeC {\'o}digo}{29}
+\contentsline {subsection}{\numberline {3.1.5}Comentarios y variaciones del algoritmo}{31}
+\contentsline {section}{\numberline {3.2}Algoritmo basado en la correlaci\IeC {\'o}n de fase}{32}
+\contentsline {section}{\numberline {3.3}Uso del aceler\IeC {\'o}metro para estabilizar}{33}
+\contentsline {subsection}{\numberline {3.3.1}Programa para Android}{33}
+\contentsline {subsection}{\numberline {3.3.2}Programa de procesado de los datos}{34}
+\contentsline {subsection}{\numberline {3.3.3}Resultados}{36}
+\contentsline {chapter}{\numberline {4}Estabilizaci\IeC {\'o}n de la luz}{37}
+\contentsline {section}{\numberline {4.1}Introducci\IeC {\'o}n}{37}
+\contentsline {section}{\numberline {4.2}Un algoritmo de normalizaci\IeC {\'o}n de luz}{38}
+\contentsline {section}{\numberline {4.3}Correcci\IeC {\'o}n de la iluminaci\IeC {\'o}n usando el sensor}{39}
+\contentsline {chapter}{\numberline {A}C\IeC {\'o}digo del aceler\IeC {\'o}metro}{41}
+\contentsline {section}{\numberline {A.1}C\IeC {\'o}digo de Android}{41}
+\contentsline {subsection}{\numberline {A.1.1}MainActivity}{41}
+\contentsline {subsection}{\numberline {A.1.2}Clase vcorderView}{46}
+\contentsline {subsection}{\numberline {A.1.3}Android manifest}{49}
+\contentsline {subsection}{\numberline {A.1.4}Activity layout}{50}
+\contentsline {section}{\numberline {A.2}C\IeC {\'o}digo de procesado de los datos}{51}
+\contentsline {chapter}{\numberline {B}C\IeC {\'o}digo del sensor de luz}{55}
+\contentsline {section}{\numberline {B.1}C\IeC {\'o}digo de Android}{55}
+\contentsline {section}{\numberline {B.2}C\IeC {\'o}digo de procesado de los datos}{60}
+\contentsline {chapter}{Bibliograf\IeC {\'\i }a}{63}

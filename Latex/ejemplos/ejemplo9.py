@@ -10,15 +10,16 @@ def main ():
     cv2.namedWindow("Blur")
     capture =  cv2.VideoCapture(0)
     cv2.createTrackbar("Radio","Blur",r,30,call)
-    while (True):
+    ret = True
+    while (ret):
         ret, frame = capture.read()
-        if (not ret): break
-        if ( r!=0):
-            out = cv2.blur(frame, (r,r))
-            cv2.imshow("Blur",out)
-        else:
-            cv2.imshow("Blur",frame)
-        c = cv2.waitKey(33)
-        if (c==27): break
+        if (ret):
+            if ( r!=0):
+                out = cv2.blur(frame, (r,r))
+                cv2.imshow("Blur",out)
+            else:
+                cv2.imshow("Blur",frame)
+            c = cv2.waitKey(33)
+            if (c==27): ret = False
     cv2.destroyAllWindows()
 main()

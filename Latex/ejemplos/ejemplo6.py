@@ -11,13 +11,13 @@ def doCanny(im, lowThresh, highThresh, aperture):
 if __name__ == '__main__':
 
     capture =  cv2.VideoCapture(0)
-
-    while (True):
+    ret = True
+    while (ret):
         ret, frame = capture.read()
-        if (not ret): break
-        edgeimg = doCanny(frame, 30, 80, 3)
-        out = 255- edgeimg
-        cv2.imshow("Example9-in",frame)
-        cv2.imshow("Example9-out",out)
-        c = cv2.waitKey(33)
-        if (c==27): break
+        if (ret): 
+            edgeimg = doCanny(frame, 30, 80, 3)
+            out = 255- edgeimg
+            cv2.imshow("Example9-in",frame)
+            cv2.imshow("Example9-out",out)
+            c = cv2.waitKey(33)
+            if (c==27): ret = False
