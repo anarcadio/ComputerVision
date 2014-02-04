@@ -167,7 +167,7 @@ Para esto usamos \lstinline|cv2.createTrackbar(trackbarName, windowName, value, 
 
 \subsection*{Ejemplo 4}
 Ahora vamos a ver un ejemplo de una transformación muy sencilla, vamos a abrir una imagen y a aplicarle un desenfoque gaussiano y a mostrar tanto la imagen original como la resultante por pantalla. El desenfoque gaussiano es un filtro usado para suavizar imágenes y desenfocarlas. Funciona de la siguiente manera: cada píxel de la imagen mezcla su color con los de un ventana a su alrededor (de altura y anchura dadas). Esta mezcla es una media de los píxeles que están dentro de la ventana ponderada con un núcleo gaussiano (es decir la media de los píxeles multiplicando cada uno de ellos por un peso, que en este caso lo da el núcleo gaussiano). Un núcleo gaussiano (de una dimensión) de tamaño $\texttt{ksize}$ es una matriz de dimensiones $ \texttt{ksize}\times1$ con coeficientes:
-$ G_i= \alpha \cdot e^{-(i-( \texttt{ksize} -1)/2)^2/(2* \sigma )^2}$ \footnote{Está fórmula proviene de la de la distribución gaussiana.} donde i va de $0$ a $\texttt{ksize}-1$ y $\alpha$ es tal que  $\sum_i G_i=1$. Como las imágenes son en dos dimensiones el núcleo gaussiano que se aplica es de dos dimensiones (esto es equivalente a aplicar un núcleo gaussiano en cada dirección), por lo que habrá dos parámetros $\sigma$, que llamaremos $\sigma_1$ y $\sigma_2$.
+$ G_i= \alpha \cdot e^{-(i-( \texttt{ksize} -1)/2)^2/(2* \sigma )^2}$ \footnote{Está fórmula proviene de la de la función de densidad de la distribución gaussiana: $f(x)=\frac1{\sigma\sqrt{2\pi}}\; e^{ - \frac{1}{2} \left(\frac{x-\mu}{\sigma}\right)^2}$.} donde i va de $0$ a $\texttt{ksize}-1$ y $\alpha$ es tal que  $\sum_i G_i=1$. Como las imágenes son en dos dimensiones el núcleo gaussiano que se aplica es de dos dimensiones (esto es equivalente a aplicar un núcleo gaussiano en cada dirección), por lo que habrá dos parámetros $\sigma$, que llamaremos $\sigma_1$ y $\sigma_2$.
 \lstinputlisting[language=Python, frame= single]{ejemplos/ejemplo4.py}
 La única función nueva es 
 \lstinline|cv2.GaussianBlur()|, que es la que realiza el desenfoque.
@@ -290,9 +290,10 @@ Los principales atributos de \lstinline|ndarray| son:
 
 \item \lstinline|ndarray.data|: el búfer que contiene los elementos del array. Generalmente no se usa este atributo ya que se suele acceder a los elementos usando índices.
  \end{itemize}
-Nuestras imágenes de OpenCV serán arrays de Numpy cuyo atributo \lstinline|ndim| será 2 si la imagen es en blanco y negro y 3 si tiene más de un canal.
+Nuestras imágenes de OpenCV serán arrays de Numpy cuyo atributo \lstinline|ndim| será 2 si la imagen es en blanco y negro (y por tanto sólo tiene un canal) y 3 si tiene más de un canal.
 El atributo \lstinline|shape| será de la forma \lstinline|(h,w,n)| (o \lstinline|(h,w)| si es en blanco y negro), donde \lstinline|h| es la altura de la imagen, \lstinline|w| es el ancho y \lstinline|n| es el número de canales de la imagen.
 \chapter{Estabilización de imagen}\label{cap.estab}
+En este capítulo trataremos algunos algoritmos de estabilización de imagen, incluyendo el intento de usar el acelerómetro.
 Cabe señalar que, debido a las motivaciones del trabajo comentadas anteriormente, durante todo el capítulo se supondrá que la cámara está estática, en el sentido de que el único movimiento producido por esta es leve y es el que queremos corregir.
 \section{Algoritmo básico}
 Se trata de un algoritmo básico de estabilización de imagen para eliminar el posible movimiento de agitación la cámara. Dicho algoritmo se basa en la suposición de que el único movimiento de la cámara es el que queremos eliminar; es decir, excepto por ligeros movimientos no deseados, la cámara está estática.
