@@ -23,7 +23,6 @@ def checkedTrace(img0, img1, p0, back_threshold = 1.0):
     return p1, status
 
 if __name__ == '__main__':
-    frames = []
     import sys
     try: 
         name = sys.argv[1]
@@ -31,7 +30,7 @@ if __name__ == '__main__':
     except: 
         print("Error, introduce los nombre de los ficheros de entrada y salida")
         sys.exit()
-
+    frames = []
     cap = cv2.VideoCapture(name)
     fps = cap.get(cv2.cv.CV_CAP_PROP_FPS)
     size = (int(cap.get( cv.CV_CAP_PROP_FRAME_WIDTH)),int(cap.get(cv.CV_CAP_PROP_FRAME_HEIGHT)))
@@ -62,14 +61,13 @@ if __name__ == '__main__':
             except:
                 pass
 
-                old_frame = cv2.warpPerspective(frame, H, (w, h),  flags=cv2.INTER_LINEAR + cv2.WARP_INVERSE_MAP)
-                frames.append(old_frame)
-                old_gray = cv2.cvtColor(old_frame, cv2.COLOR_BGR2GRAY)
-                p0 = cv2.goodFeaturesToTrack(old_gray, mask = None, **feature_params)
-                cv2.cornerSubPix(old_gray, p0, (5, 5), (-1, -1), term)
-                count += 1
+            old_frame = cv2.warpPerspective(frame, H, (w, h),  flags=cv2.INTER_LINEAR + cv2.WARP_INVERSE_MAP)
+            frames.append(old_frame)
+            old_gray = cv2.cvtColor(old_frame, cv2.COLOR_BGR2GRAY)
+            p0 = cv2.goodFeaturesToTrack(old_gray, mask = None, **feature_params)
+            cv2.cornerSubPix(old_gray, p0, (5, 5), (-1, -1), term)
+            count += 1
     writer = cv2.VideoWriter(nout, cv.CV_FOURCC('M','J','P','G'), fps, size)
     for frm in frames:
         writer.write(frm)
-    cv2.destroyAllWindows()
     cap.release()

@@ -86,33 +86,31 @@ if __name__ == '__main__':
     array = get_array(illuname)
     fps = 22
     i = 0
-    t = array[0][1]
+    ret = True
     while(1):
         ret,frame = cap.read()
-        #t = cap.get(cv2.cv.CV_CAP_PROP_POS_MSEC)/1000
+        t = cap.get(cv2.cv.CV_CAP_PROP_POS_MSEC)/1000
         #t = t*1.197
-        if not ret:
-            break
-        i = 0
-        while i < len(array)-1:
-            if (array[i][1]<=t) and (t<array[i+1][1]):
-                break
-            i = i+1
-        lux = array[i][0]
-        if lux > 400:
-            lux = 400
-        k = pow((lux/400),1./4)
-        x = -2*k+1
-        y = pow(10,x)
-        t = t+ 1./fps
-        print t
+        if ret:
+            i = 0
+            while i < len(array)-1:
+                if (array[i][1]<=t) and (t<array[i+1][1]):
+                    break
+                i = i+1
+            lux = array[i][0]
+            if lux > 400:
+                lux = 400
+            k = pow((lux/400),1./4)
+            x = -2*k+1
+            y = pow(10,x)
+
         
-        gr =  cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
-        out = autolevels(gr, y)
-        cv2.imshow('Sensor-in',gr)
-        cv2.imshow("Sensor-out", out)
-        #draw_hist(gr, "hist_in")
-        #draw_hist(out, "hist_out")
+            gr =  cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
+            out = autolevels(gr, y)
+            cv2.imshow('Sensor-in',gr)
+            cv2.imshow("Sensor-out", out)
+            #draw_hist(gr, "hist_in")
+            #draw_hist(out, "hist_out")
         
-        c = cv2.waitKey(33)
-        if (c==27): break
+            c = cv2.waitKey(33)
+            if (c==27): ret =False

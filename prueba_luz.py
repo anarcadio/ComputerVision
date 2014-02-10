@@ -10,42 +10,37 @@ def correct_gamma(img, dst, correction):
     return temp
 
 def doCeq(im,a,t):
-    #im =  cv2.cvtColor(im, cv2.COLOR_BGR2GRAY)
-    #hist_item = cv2.calcHist([im],[0],None,[256],[0,256])
-    #cdf = hist_item.cumsum()
-
     aint = np.abs(im)
     m = np.power(aint, a)
     m = np.mean(m)
-    m = pow(m,1.0/a)
+    m = np.power(m,1.0/a)
 
     im = im/m
+    aint = np.abs(im)
 
+    #m = np.array([[pow(min(t,x),a) for x in y] for y in aint])
+    m = np.minimum(aint, t)
+    m = np.power(m, a)
 
-    m = np.array([[pow(min(t,x),a) for x in y] for y in aint])
     m = np.mean(m)
-    m = pow(m,1.0/a)
+    m = np.power(m,1.0/a)
     im = im/m
 
     im = t*np.tanh(im/t)
-
+    im = cv2.convertScaleAbs(im, alpha=127, beta=0)
     return im
 
 def process_image(img):
 
     gr =  cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
-    #gr = np.array(gr, dtype=np.uint8)
+    gr = np.array(gr, dtype=np.uint8)
     gf = correct_gamma(gr, gr, 0.2)
-    #gf = gr
     b1 = cv2.GaussianBlur(gf,(0,0), 1,1)
     b2 = cv2.GaussianBlur(gf,(0,0), 2,2)
     b2 = cv2.subtract(b1, b2)
     gr = cv2.convertScaleAbs(b2, alpha=127, beta=127)
-    gr2 = doCeq(gr, 0.1, 10)
-    #gr2 = np.array(gr2, dtype=np.uint8)
-    cv2.imshow("Example9-ouewqet",gr2)
-    gr = cv2.equalizeHist(gr)
-    gr = np.array(gr, dtype=np.uint8)
+    gr = doCeq(gr, 0.1, 10)
+    #gr = cv2.normalize(gr,alpha = 0,beta = 255,norm_type = cv2.NORM_MINMAX)
     return gr
 
 

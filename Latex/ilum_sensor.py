@@ -10,7 +10,7 @@ def get_array(filename):
     array = []
     first = True
     old_date = 0.0
-    for line        t = t + 1/fps in acc_file:
+    for line in acc_file:
         if first:
             aux_date = line.split(":")
             t0 = ((int(aux_date[0])*60 + int(aux_date[1]))*60 + float(aux_date[2])) 
@@ -81,31 +81,42 @@ if __name__ == '__main__':
     except: 
         print("Error, introduce nombre del archivo de entrada")
         sys.exit()
+    frames = []
+    nout = "out-" + name
     cap = cv2.VideoCapture(name)
     array = get_array(illuname)
     i = 0
-    while(1):
+    fps = cap.get(cv2.cv.CV_CAP_PROP_FPS)
+    fps = 16
+    size = (int(cap.get( cv.CV_CAP_PROP_FRAME_WIDTH)),int(cap.get(cv.CV_CAP_PROP_FRAME_HEIGHT)))
+    ret = True
+    while(ret):
         ret,frame = cap.read()
         t = cap.get(cv2.cv.CV_CAP_PROP_POS_MSEC)/1000
-        if not ret:
-            break
-        i = 0
-        while i < len(array)-1:
-            if (array[i][1]<=t) and (t<array[i+1][1]):
-                break
-            i = i+1
-        lux = array[i][0]
-        if lux > 400:
-            lux = 400
-        k = pow((lux/400),1./4)
-        x = -2*k+1
-        y = pow(10,x)
+        t = t*1.197
+        if ret:
+            i = 0
+            while i < len(array)-1:
+                if (array[i][1]<=t) and (t<array[i+1][1]):
+                    break
+                i = i+1
+            lux = array[i][0]
+            if lux > 400:
+                lux = 400
+            k = pow((lux/400),1./4)
+            x = -2*k+1
+            y = pow(10,x)
 
         
-        gr =  cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
-        out = autolevels(gr, y)
-        cv2.imshow('Sensor-in',gr)
-        cv2.imshow("Sensor-out", out)
+            gr =  cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
+            out = autolevels(gr, y)
+            out = cv2.cvtColor(out, cv2.COLOR_GRAY2BGR)
+            frames.append(out)
+
         
-        c = cv2.waitKey(33)
-        if (c==27): break
+
+    writer = cv2.VideoWriter(nout, cv.CV_FOURCC('M','J','P','G'), fps, size)
+    for frm in frames:
+        writer.write(frm)
+    cv2.destroyAllWindows()
+    cap.release()

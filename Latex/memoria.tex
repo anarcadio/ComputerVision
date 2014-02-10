@@ -50,11 +50,32 @@
 \begin{document}
 
 \begin{titlepage}
+
+
 \begin{center}
-\begin{Huge}
-\textsc{Título}
-\end{Huge}
+\vspace*{-1in}
+\begin{figure}[htb]
+\begin{center}
+\includegraphics[width=8cm]{logo}
 \end{center}
+\end{figure}
+
+FACULTAD DE MATEMÁTICAS\\
+\vspace*{0.7in}
+
+\begin{Large}
+\textbf{VISIÓN ARTIFICIAL CON OPENCV: ESTABILIZACIÓN DE IMAGEN Y LUZ} \\
+\end{Large}
+\vspace*{0.5in}
+\begin{large}
+Andrés A. Sánchez González\\
+\end{large}
+\vspace*{0.3in}
+\rule{80mm}{0.1mm}\\
+\vspace*{0.1in}
+
+\end{center}
+
 \end{titlepage}
 
 \newpage
@@ -185,11 +206,6 @@ Sus parámetros obligatorios son la imagen y el tamaño del núcleo. Puede adem�
 \newpage
 
 \subsection*{Ejemplo 5}
-En este ejemplo realizamos otra transformación, en este caso reducimos la imagen a la mitad. Esta tarea la realiza la función \lstinline|cv2.pyrDown|
-\lstinputlisting[language=Python, frame= single]{ejemplos/ejemplo5.py}
-Como vemos, en el resto del código no hay nada nuevo, a excepción de la función ya nombrada.
-\newpage
-\subsection*{Ejemplo 6}
 En este ejemplo utilizamos el algoritmo de Canny \cite{canny86} de detección de bordes, usando para ello la función \lstinline|cv2.Canny|.
  Este algoritmo funciona de la siguiente manera: en primer lugar aplica un desenfoque gaussiano a la imagen para reducir el ruido. Posteriormente calcula el gradiente de la imagen. Esto lo hace aplicando dos matrices de convolución para calcular las derivadas en las direcciones $x$ e $y$:
 
@@ -217,8 +233,8 @@ Como vemos el código para mostrar una imagen de la \textit{webcam} es exactamen
 \newpage
 
 \newpage 
-\subsection*{Ejemplo 7}
-Ahora simplemente vamos a combinar los dos ejemplos anteriores, reduciendo dos veces la imagen original con \lstinline|pyrDown| y luego encontrando los bordes con \lstinline|Canny|
+\subsection*{Ejemplo 6}
+Ahora simplemente vamos a combinar los dos ejemplos anteriores, reduciendo la imagen a la cuarta parte de su tamaño original. Esto lo hacemos aplicando dos veces \lstinline|pyrDown| y luego encontrando los bordes con \lstinline|Canny|
 \lstinputlisting[language=Python, frame= single]{ejemplos/ejemplo7.py}
 \newpage
 
@@ -498,9 +514,9 @@ En la línea 7 y en la 13 vemos los parámetros que usaremos para el algoritmo d
 
 En la línea 18 podemos ver la función que calcula el flujo óptico, usando vuelta atrás para comprobar la coincidencia de los puntos obtenidos con \lstinline|cv2.calcOpticalFlowPyrLK()|.
 
-De la línea 35 a la 44 inicializamos las variables que vamos a usar en el algoritmo, abrimos el vídeo, tomamos el primer fotograma y buscamos esquinas. Utilizamos la función \lstinline|cv2.cornerSubPix()| para refinar la precisión de las esquinas.
+De la línea 33 a la 44 inicializamos las variables que vamos a usar en el algoritmo, abrimos el vídeo, tomamos el primer fotograma y buscamos esquinas. Utilizamos la función \lstinline|cv2.cornerSubPix()| para refinar la precisión de las esquinas.
 
-Finalmente, dentro del bucle, vamos tomando cada fotograma, calculamos el flujo óptico con respecto al fotograma anterior en la línea 55, intentamos buscar la homografía en la línea 63 y la aplicamos en la línea 67. Por último en las líneas 70 y 71 buscamos las esquinas del fotograma que acabamos de transformar.
+Finalmente, dentro del bucle, vamos tomando cada fotograma, calculamos el flujo óptico con respecto al fotograma anterior en la línea 52, intentamos buscar la homografía en la línea 60 y la aplicamos en la línea 64. Por último en las líneas 67 y 68 buscamos las esquinas del fotograma que acabamos de transformar.
  
 \subsection{Comentarios y variaciones del algoritmo}
 Este algoritmo funciona bastante bien en la mayoría de los casos; sin embargo cuando el movimiento (ya sea el de la imagen o el de lo que estamos grabando) es muy brusco, puede producir efectos no deseados y ser contraproducente. Si suponemos que la cámara no sufre rotaciones y sólo hay traslación, en lugar de estimar la homografía podemos usar una traslación de razón la media o la mediana de lo que se ha movido cada píxel detectado. La media no es muy recomendable sin algún filtro, ya que es muy sensible a los valores atípicos y si hay objetos moviéndose se producirá traslación aún cuando la cámara este completamente quieta. Sin embargo la media funciona bastante bien y es más rápida que el algoritmo original. Sin embargo si no requerimos rapidez no supone una gran mejora.
@@ -660,7 +676,7 @@ Los datos de que nosotros disponemos parten de la iluminación media y, por tant
 Esto lo hacemos mediante la transformación $10^{-2k+1}$.
 Como límites mínimo y máximo utilizamos los percentiles 1 y 99 respectivamente\footnote{El percentil i-ésimo es aquel valor tal que que un i\% de los valores es menor que él.}.
 
-De las pruebas realizadas podemos observar que el algoritmo funciona bastante bien pero tiene algunas limitaciones: en primer lugar, los cambios bruscos de iluminación,como por otra parte era imaginable,siguen dando problemas, ya que se sigue notando el cambio brusco y, algunas zonas muy oscuras de las imágenes aclaradas siguen quedando totalmente negras. Como ya hemos dicho, esto era esperable. Sin embargo existe otro problema y es que los cambios más leves el sensor algunas veces no los refleja. 
+De las pruebas realizadas podemos observar que el algoritmo funciona bastante bien pero tiene algunas limitaciones: en primer lugar, los cambios bruscos de iluminación,como por otra parte era imaginable, siguen dando problemas, ya que se sigue notando el cambio brusco y, algunas zonas muy oscuras de las imágenes aclaradas siguen quedando totalmente negras. Como ya hemos dicho, esto era esperable. Sin embargo existe otro problema y es que los cambios más leves el sensor algunas veces no los refleja. 
 No obstante para cambios no muy bruscos de la iluminación, se puede usar este código, aunque probablemente haya que aplicar posteriormente otro (como el propuesto en el apartado anterior).
 Se adjunta el código en el apéndice \ref{ap_illu}.
 \appendix
