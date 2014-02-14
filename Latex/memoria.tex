@@ -1,4 +1,4 @@
-\documentclass[a4paper,openright, 12pt]{book}
+ \documentclass[a4paper,openright, 12pt]{book}
 \usepackage[spanish]{babel} 
 \usepackage[utf8]{inputenc} 
 \usepackage{listings}
@@ -205,7 +205,7 @@ Sus parámetros obligatorios son la imagen y el tamaño del núcleo. Puede adem�
 
 \newpage
 
-\subsection*{Ejemplo 5}
+\subsection*{Ejemplo 5} \label{derivadas}
 En este ejemplo utilizamos el algoritmo de Canny \cite{canny86} de detección de bordes, usando para ello la función \lstinline|cv2.Canny|.
  Este algoritmo funciona de la siguiente manera: en primer lugar aplica un desenfoque gaussiano a la imagen para reducir el ruido. Posteriormente calcula el gradiente de la imagen. Esto lo hace aplicando dos matrices de convolución para calcular las derivadas en las direcciones $x$ e $y$:
 
@@ -329,13 +329,13 @@ La idea básica es encontrar la diferencia de la intensidad de la imagen en un r
 \begin{equation}
 E(x,y)= \sum_{u,v} w(u,v) [I(u+x,v+y)-I(u,v)]^2
 \end{equation}
-Donde $w(x,y)$ es una función ventana, que asocia un peso a cada punto, e $I(x,y)$ es la intensidad de la imagen en cada punto.
-Por tanto si E(x,y) es suficientemente grande, (x,y) será un buen punto.
+Donde $w(x,y)$ es una función ventana, que asocia un peso a cada punto, e $I(x,y)$ es la intensidad de la imagen en el punto $(x,y)$.
+Por tanto si $E(x,y)$ es suficientemente grande, $(x,y)$ será un buen punto.
 Aplicando el desarrollo en serie de Taylor a $I(u+x,v+y)$ obtenemos:
 \begin{equation}
 I(u+x,v+y) \approx I(u, v) + I_x(u,v)x + I_y(u,v)y
 \end{equation}
-Donde $I_x$ e $I_y$ son las derivadas parciales en x e y respectivamente.
+Donde $I_x$ e $I_y$ son las derivadas parciales de la función intesidad en las direcciones $x$ e $y$ respectivamente\footnote{Estas derivadas se aproximan como hemos explicado en el ejemplo 5 de \ref{derivadas} }.
 Esto nos lleva a la aproximación:
 \begin{equation*}
 E(x,y) \approx \sum_{u,v} w(u,v)[I_x(u,v)x + I_y(u,v)y]^2
@@ -355,12 +355,12 @@ I_x^2 & I_xI_y\\
 I_xI_y & I_y^2
  \end{array} \right)
 \end{equation*}
-Como nuestro objetivo era que E(x,y) fuese lo suficientemente grande, si estudiamos los autovalores de $M$, lo que querremos es que ambos sean suficientemente grandes.
+Como nuestro objetivo era que $E(x,y)$ fuese lo suficientemente grande, si estudiamos los autovalores de $M$, lo que querremos es que ambos sean suficientemente grandes.
 Sean $\lambda_1$ y $\lambda_2$ dichos autovalores, entonces:
 \begin{itemize}
 \item Si  $ \lambda_1 \approx 0 $ y $\lambda_2 \approx 0 $ entonces el punto no tiene interés.
 \item Si  $ \lambda_1 \approx 0 $ y $\lambda_2 $ es positivo y suficientemente grande entonces hemos encontrado un borde.
-\item Si  $ \lambda_1 $ y $\lambda_2 $ son positivos y suficientemente grandes entonces hemos encontrado un punto de interés. Este punto es la intersección de dos bordes,por ello, estos puntos también son llamados esquinas.
+\item Si  $ \lambda_1 $ y $\lambda_2 $ son positivos y suficientemente grandes entonces hemos encontrado un punto de interés. Este punto es la intersección de dos bordes, por ello, estos puntos también son llamados esquinas.
 \end{itemize}
 Como función para valorar la calidad de los autovalores, Shi y Tomasi \cite{shiandtomasi} propusieron:
 \begin{equation*}
@@ -368,9 +368,19 @@ R = min(\lambda_1, \lambda_2)
 \end{equation*}
 en lugar de la propuesta por Harris\cite{harris88}
 \begin{equation*}
-R = \lambda_1 \lambda_2 - k(\lambda_1 + \lambda_2)^2
+R = \lambda_1 \lambda_2 - k(\lambda_1 + \lambda_2)^2 = \operatorname{det}(M) - k\cdot(\operatorname{tr}(M))^2
 \end{equation*}
-La función propuesta por Shi y Tomasi proporciona mejores resultados que la original.
+La idea de la función propuesta inicialmente por Harris era que no hacía falta calcular explícitamente los autovalores de la matriz y que se cumplía que:
+\begin{itemize}
+ \item Si $|R|$ es pequeño, $\lambda_1$ y $\lambda_2$ también son pequeños.
+ \item Si $R<0$ entonces $\lambda_1>>\lambda_2$ o bien $\lambda_2>>\lambda_1$, en cuyo caso se trata de un borde.
+ \item Si R es grande, entonces  $\lambda_1$ y $\lambda_2$ también lo son y $\lambda_1 \sim \lambda_2$, por lo que se trata de una esquina.
+ \end{itemize}
+ 
+Sin embargo Shi y Tomasi argumentaron que bastaba con que el mínimo de los dos autovalores fuese suficientemente grande, debido a que las diferencias de intensidad están acotadas por el valor máximo de intensidad de los píxeles, lo que impide que el mayor autovalor sea arbitrariamente grande.
+La función propuesta por Shi y Tomasi proporciona por tanto buenos resultados y, empíricamente se ha observado que en muchos caso mejores que los que proporciona la original de Harris.
+
+
 De todo esto se encarga la función \lstinline|cv2.goodFeaturesToTrack()|, que calcula las segundas derivadas utilizando el operador Sobel (es el método que explicamos en el ejemplo 6 del capítulo 2 para calcular el gradiente de una imagen) y luego calcula los autovalores.
 Sus argumentos son:
 \newline
@@ -389,7 +399,7 @@ Sus argumentos son:
 
 \newpage
 \subsection{Algoritmo de Lucas-Kanade}
-El algortimo de Lucas-Kanade \cite{LucasKanade} es un método que sirve para calcular el flujo óptico.
+Para estimar el movimiento de los puntos característicos de un fotograma a otro usaremos el algortimo de Lucas-Kanade \cite{LucasKanade}. Dicho algoritmo es un método que sirve para calcular el flujo óptico.
 El flujo óptico es el patrón de movimiento aparente de los objetos entre un fotograma y el siguiente causado por un movimiento de la cámara o de los objetos. Se trata de un campo vectorial de dos dimensiones donde cada vector es un vector de desplazamiento de un punto entre ambos fotogramas.
 Este algoritmo está basado en tres suposiciones:
 \begin{enumerate}
@@ -397,11 +407,15 @@ Este algoritmo está basado en tres suposiciones:
 \item Los objetos no se mueven muy rápido.
 \item Coherencia espacial: los píxeles vecinos tienen movimiento similar.
 \end{enumerate}
-El hecho de que el brillo no varíe, es decir, que la intensidad de un píxel se mantiene nos lleva a la siguiente igualdad:
-\begin{equation}
+El hecho de que el brillo no varíe, es decir, que la intensidad de un píxel se mantiene, junto con que hemos supuesto que el movimiento entre dos fotogramas es relativamente pequeño nos lleva a la siguiente igualdad:
+\begin{equation} \label{ig_intensidad}
 I(x,y,t)=I(x+dx,y+dy,t+dt)
 \end{equation}
-Como hemos supuesto que el movimiento entre dos fotogramas es relativamente pequeño, podemos aproximar por desarrollo de Taylor la parte derecha de la igualdad anterior, de donde obtenemos:
+Podemos aproximar por desarrollo de Taylor la parte derecha de la igualdad anterior, de donde obtenemos:
+\begin{equation}
+I(x+dx,y+dy,t+dt) = I(x,y,t) + I_x(x,y,t)\cdot dx + I_y(x,y,t)\cdot dy + I_t(x,y,t)\cdot dt
+\end{equation}
+Sustituyendo en \ref{ig_intensidad}, despejando y dividiendo por $dt$ obtenemos:
 \begin{equation}
 \label{optflow}
 I_x u + I_y v + I_t = 0
@@ -443,7 +457,7 @@ y la solución a esta ecuación es $\left(\begin{array}{c}u\\v\end{array}\right)
 El problema hasta ahora son las suposiciones de los movimientos pequeños y coherentes. Queremos usar una ventana grande para captar movimientos grandes pero esto puede romper dichas suposiciones. Para solventar esto aplicamos el algoritmo iterativamente a una pirámide de imágenes del fotograma. Primero se aplica el algoritmo a la imagen en la cima de la pirámide para seguir los movimiento grandes y luego según se va bajando en la pirámide se va refinando iterativamente el resultado partiendo del anterior, como podemos observar en la imagen. De esta manera los movimientos grandes se van convirtiendo en movimientos pequeños.
 
 
-\includegraphics{pyramid}
+\includegraphics[scale=0.6]{pyramid}
 
 
 
@@ -468,7 +482,6 @@ Donde:
 
 \item \lstinline|criteria| es un parámetero que indica el criterio para terminar la búsqueda iterativa del algoritmo: después de un número máximo de iteraciones
 o cuando la ventana de búsqueda se mueve menos que un épsilon dado.
-\newpage
 \item \lstinline|flags|:
 	\begin{itemize}
     \item \lstinline|OPTFLOW_USE_INITIAL_FLOW| utiliza estimaciones iniciales, almacenadas en \lstinline|nextPst|. Si no, copia \lstinline|prevPts| a \lstinline|nextPts| y los considera la estimación inicial.
@@ -506,24 +519,25 @@ que en un principio devuelve dicha matriz minimizando el error:
 + 
 \left( y'_i - \dfrac{h_{21}x_i + h_{22}y_i + h_{23}}{h_{31}x_i + h_{32}y_i + h_{33}} \right) ^2 
 \end{equation*}
-Pero como no todos los puntos encajan en la transformación ya que puede haber errores u otros movimientos que no son los de la cámara utilizaremos un método robusto llamado RANSAC (RANdom SAmple Consensus). Se trata de un método iterativo para estimar los parámetros de un modelo matemático que contiene valores atípicos. La idea básica de este algoritmo es resolver varias veces el problema con distintos subconjuntos aleatorios de los puntos dados y luego tomar como solución particular la más cercana a la media/mediana de las soluciones.
+Pero como no todos los puntos encajan en la transformación ya que puede haber errores u otros movimientos que no son los de la cámara, utilizaremos un método robusto llamado RANSAC (RANdom SAmple Consensus). Se trata de un método iterativo para estimar los parámetros de un determinado modelo matemático (en este caso una homografía) a partir de un conjunto de datos que contiene valores atípicos (valores numéricamente distantes a los del resto del conjunto). La idea básica de este algoritmo es resolver varias veces el problema con distintos subconjuntos aleatorios de los puntos dados y luego tomar como solución particular la más cercana a la media/mediana de las soluciones.
 \newpage
 \subsection{Código}
 \lstinputlisting[language=Python, frame= single]{estabilizacion.py}
 En la línea 7 y en la 13 vemos los parámetros que usaremos para el algoritmo de Shi-Tomashi y para el de Lucas-Kanade respectivamente.
 
-En la línea 18 podemos ver la función que calcula el flujo óptico, usando vuelta atrás para comprobar la coincidencia de los puntos obtenidos con \lstinline|cv2.calcOpticalFlowPyrLK()|.
+En la línea 18 podemos ver la función que calcula el flujo óptico, usando \lstinline|cv2.calcOpticalFlowPyrLK()| primero para calcular la estimación de a donde se han movido los puntos al segundo fotograma y una segunda vez para ver a donde van a parar estos puntos obtenidos del segundo fotograma al primero para así comprobar la coincidencia de los puntos obtenidos con los originales y no tener en cuenta los que no tengan coincidencia.
 
 De la línea 33 a la 44 inicializamos las variables que vamos a usar en el algoritmo, abrimos el vídeo, tomamos el primer fotograma y buscamos esquinas. Utilizamos la función \lstinline|cv2.cornerSubPix()| para refinar la precisión de las esquinas.
 
 Finalmente, dentro del bucle, vamos tomando cada fotograma, calculamos el flujo óptico con respecto al fotograma anterior en la línea 52, intentamos buscar la homografía en la línea 60 y la aplicamos en la línea 64. Por último en las líneas 67 y 68 buscamos las esquinas del fotograma que acabamos de transformar.
  
 \subsection{Comentarios y variaciones del algoritmo}
-Este algoritmo funciona bastante bien en la mayoría de los casos; sin embargo cuando el movimiento (ya sea el de la imagen o el de lo que estamos grabando) es muy brusco, puede producir efectos no deseados y ser contraproducente. Si suponemos que la cámara no sufre rotaciones y sólo hay traslación, en lugar de estimar la homografía podemos usar una traslación de razón la media o la mediana de lo que se ha movido cada píxel detectado. La media no es muy recomendable sin algún filtro, ya que es muy sensible a los valores atípicos y si hay objetos moviéndose se producirá traslación aún cuando la cámara este completamente quieta. Sin embargo la media funciona bastante bien y es más rápida que el algoritmo original. Sin embargo si no requerimos rapidez no supone una gran mejora.
+Este algoritmo funciona bastante bien en la mayoría de los casos; sin embargo cuando el movimiento (ya sea el de la imagen o el de lo que estamos grabando) es muy brusco, puede producir efectos no deseados y ser contraproducente. Si suponemos que la cámara no sufre rotaciones y sólo hay traslación, en lugar de estimar la homografía podemos usar una traslación de razón la media o la mediana de lo que se ha movido cada píxel detectado. La media no es muy recomendable sin algún filtro, ya que es muy sensible a los valores atípicos y si hay objetos moviéndose se producirá traslación aún cuando la cámara este completamente quieta. Sin embargo la media funciona bastante bien y es más rápida que el algoritmo del apartado anterior. Sin embargo si no requerimos rapidez no supone una gran mejora.
 \newpage
 \section{Algoritmo basado en la correlación de fase}
-Otro algoritmo bastante utilizado y más rápido que el anterior está basado en la correlación de fase \cite{kug75}. Supone que la cámara no sufre rotaciones y que el único movimiento no deseado es de traslación y emplea el método citado anteriormente para calcular esta traslación.
-\newline
+Otro algoritmo bastante utilizado y más rápido que el anterior está basado en la correlación de fase \cite{kug75}. Supone que la cámara no sufre rotaciones y que el único movimiento no deseado es de traslación y calcula esta traslación mediante la correlación de fase.
+
+
 La correlación de fase es un método de registro de imagen que utiliza el dominio de la frecuencia para estimar la traslación entre dos imágenes similares. Lo hace de la siguiente forma:
 
 
@@ -537,26 +551,23 @@ Calculamos la densidad espectral cruzada \footnote{La densidad espectral cruzada
     S_{xy}(f)=\mbox{DFT}\left\{R_{xy}(\tau)\right\} $).
 La correlación cruzada es 
     $(f\star g)_i \ \stackrel{\mathrm{def}}{=}\ \sum_j f^*_j\,g_{i+j}$.    
-     } y normalizamos con su producto.
+     } y normalizamos con su producto:
 \begin{equation*}
-   \ R = \frac{ \mathbf{G}_a \circ \mathbf{G}_b^*}{|\mathbf{G}_a \mathbf{G}_b^*|}
+   \ R = \frac{ \mathbf{G}_a \circ \mathbf{G}_b^*}{|\mathbf{G}_a \circ \mathbf{G}_b^*|}
 \end{equation*}
-Donde $\circ$ es el producto de Hadamard.
+Donde $\circ$ es el producto elemento a elemento (o producto de Hadamard).
 
 Obtenemos la correlación cruzada normalizada aplicando la inversa de la transformada de Fourier
 \begin{equation*}
     \ r = \mathcal{F}^{-1}\{R\}
 \end{equation*}
-Por último, localizamos el máximo  $r$.
-\begin{equation*}
-    \ (\Delta x, \Delta y) = \arg \max_{(x, y)}\{r\} 
-\end{equation*}
-OpenCV dispone de la función \lstinline|cv2.phaseCorrelate| que se encarga de todo esto.
+Por último, localizamos el máximo de $r$, y no quedamos con las cordenadas de este, que será el desplazamiento que se ha producido entre un fotograma y otro.
+OpenCV dispone de la función \lstinline|cv2.phaseCorrelate(src1, src2[, window])| que se encarga de todo esto. Los dos primeros argumentos son las dos imágenes. El último argumento es opcional y es un array con los coeficientes para la función ventana.
 \newpage
 \section{Uso del acelerómetro para estabilizar}
 Se trata de intentar utilizar la información extra de los que disponemos, en concreto la que nos proporciona el acelerómetro del móvil, para intentar estabilizar la imagen utilizando estos datos.
 Para ello en primer lugar hacemos un programa para Android que se encargue de recoger estos datos, grabando el vídeo a la vez que registra los datos del acelerómetro y los guarda en un archivo junto con el momento exacto en el que se han registrado los datos.
-Luego, un segundo programa en el ordenador procesa los archivos para intentar estabilizar la imagen: recoge los datos de aceleración en cada instante de medida y aproxima el movimiento en dichos instantes. Luego calcula mediante interpolación cuanto se ha movido la cámara en el instante del fotograma y recoloca el fotograma de acuerdo con lo obtenido.
+Luego, un segundo programa en un PC procesa los archivos para intentar estabilizar la imagen: recoge los datos de aceleración en cada instante de medida y aproxima el movimiento en dichos instantes. Luego calcula mediante interpolación cuanto se ha movido la cámara en el instante del fotograma y recoloca el fotograma de acuerdo con lo obtenido.
 
 \subsection{Programa para Android}
 Se trata de un programa bastante simple. Al abrirlo desde el móvil vemos la pantalla en negro (aunque con un marco blanco alrededor). Si pulsamos el botón de subir volumen, empezamos a ver vídeo por pantalla y el dispositivo empieza a grabar. Cuando le volvemos a dar al botón de subir volumen, el programa termina la grabación y guarda dos archivos: uno de vídeo y otro de texto con la siguiente información: en la primera línea el instante en el que comenzamos a grabar y en las siguientes lineas, separados por espacios las aceleraciones lineales medidas en cada eje, así como el instante en que han sido medidas.
@@ -576,7 +587,8 @@ Como lo que queremos en realidad es el desplazamiento en cada instante lo aproxi
 \end{equation}
 tomando $v_{x0}=0$ y $x_0=0$.
 Para calcular $y_i$ y $z_i$ se realiza de manera equivalente.
-\newline
+
+
 Para conocer el desplazamiento en el instante de cada fotograma utilizamos \lstinline|numpy.interp()| que calcula la interpolación lineal del conjunto de datos que tenemos en el instante deseado. Ya sabemos el desplazamiento de la cámara en un instante dado, pero queremos saber el movimiento relativo en la imagen. Para esto, suponemos que estamos grabando a un objeto a una distancia $d$ conocida y que dicho objeto está centrado en la imagen.
 Veamos desde arriba la situación, siendo $A$ el objeto, $P1$ la posición inicial de la cámara y $P2$ a donde se ha movido. 
 
@@ -603,9 +615,10 @@ El código se incluye al final en el apéndice \ref{ap_acc}.
 
 
 \subsection{Resultados}
-Lamentablemente este método no produce resultados satisfactorios. En algunas ocasiones, sin llegar a producir buenos resultados, estos parecerían acercarse un poco a lo que desearíamos, otras veces no tanto. Esto es debido  (como apuntan en la charla de Google \textit{Sensor Fusion on Android Devices: A Revolution in Motion Processing} \cite{googlesensor}) principalmente a dos motivos:
+Lamentablemente este método no produce resultados satisfactorios. En algunas ocasiones, sin llegar a producir buenos resultados, estos parecerían acercarse un poco a lo que desearíamos, otras veces no tanto. El mayo problema de esto es debido al error producido al calcular lo que se ha desplazado el teléfono móvil a partir de los datos del acelerómetro.
+Este error está provocado  (como apuntan en la charla de Google \textit{Sensor Fusion on Android Devices: A Revolution in Motion Processing} \cite{googlesensor}) principalmente por dos motivos:
 \begin{itemize}
-\item El primero es por el error producido al aproximar la doble integral que tenemos que calcular para obtener la posición a partir de la aceleración. Según la exposición, manteniendo el dispositivo quieto durante un segundo, se produciría un error de 20 segundos.
+\item El primero es por el error producido al aproximar la doble integral que tenemos que calcular para obtener la posición a partir de la aceleración. Según la exposición, manteniendo el dispositivo quieto durante un segundo, se produce un error de unos 20 centímetros.
 \item El segundo motivo es el realmente problemático. Se trata del posible error producido al calcular la aceleración lineal. Recordemos que esto se hacía restando la fuerza de la gravedad de los datos obtenidos por el acelerómetro, y para ello hay que calcular la fuerza de la gravedad. Un pequeño error calculando el ángulo de la gravedad supone un error enorme tras las dos integrales: una diferencia de un grado supondría un error de 8.5 metros.
 \end{itemize}
 
@@ -613,15 +626,14 @@ Lamentablemente este método no produce resultados satisfactorios. En algunas oc
 \section{Introducción}
 Por último vamos a ver por encima algunos de los recursos de que disponemos para trabajar con la luz y un algoritmo para intentar estabilizar la iluminación.
 
-En primer lugar, hablemos de los histogramas. Un histograma es una gráfica que representa frecuencias, en este caso los niveles de intensidad de los píxeles. Es decir, relaciona cada nivel de intensidad de la imagen con el número de píxeles que tienen dicho nivel de intensidad. Por tanto cada canal de la imagen tiene su propio histograma; no obstante nosotros trabajaremos con imágenes en escala de grises, que solo  tienen un único canal.
+En primer lugar, hablemos de los histogramas. Un histograma es una gráfica que representa frecuencias, en este caso los niveles de intensidad de los píxeles. Es decir, relaciona cada nivel de intensidad de la imagen con el número de píxeles que tienen dicho nivel de intensidad. Por tanto cada canal de la imagen tiene su propio histograma; no obstante en este capítulo, por simplicidad, trabajaremos con imágenes en escala de grises, que solo  tienen un único canal.
 
 Las principales funciones a la hora de trabajar con histogramas son:
 \newline
 \lstinline|cv2.calcHist(images, channels, mask, histSize, ranges)| y
 \newline\lstinline|cv2.equalizeHist(src)|.
 La primera se encarga de calcular el histograma y la segunda lo ecualiza.
-
-La ecualización de un histograma es un método para mejorar el contraste de la imagen modificando el histograma. La idea intuitiva es encontrar el intervalo del histograma en el que se encuentran la mayor parte de los píxeles y de alguna forma ``alargar'' este intervalo aplanando el histograma. Lo que queremos es transformar una distribución (el histograma original) en otra; para esta transformación usaremos la función de distribución acumulada. Para un histograma $H(i)$, su función de distribución acumulada $H'(i)$ es:
+La ecualización de un histograma es un método para mejorar el contraste de la imagen modificando el histograma. La idea intuitiva es encontrar el intervalo del histograma en el que se encuentran la mayor parte de los píxeles y de alguna forma ``alargar'' este intervalo aplanando el histograma. Lo que queremos es transformar una distribución (el histograma original) en otra; para esta transformación usaremos la función de distribución acumulada. Para un histograma $H(i)$ ( $H(i)$ representa el número de píxeles con intensidad $i$ en la imagen, con $i$ entre 0 y 255 \footnote{Supondremos durante todo el capítulo que la intensidad varía entre 0 y 255 porque trabajaremos con imágenes de 8 bits.}) , su función de distribución acumulada $H'(i)$ es:
 \begin{equation*}
 H^{'}(i) = \sum_{0 \le j < i} H(j)
 \end{equation*}
@@ -642,19 +654,19 @@ La ecualización es muy importante y es bastante usada para corregir el contrast
 Dicho algoritmo consta de tres pasos:
 \begin{enumerate}
 \item \textbf{Corrección gamma:} 
-se trata de una transformación no lineal que dada una imagen $I$ en escala de grises la reemplaza por ${(\frac{I}{255})}^{\gamma}\cdot255$, con $\gamma \in [0,1]$. Utilizaremos como parámetro $\gamma = 0.2$. Para hacer la potencia utilizamos la función \lstinline|cv2.pow(I,| $\gamma$ \lstinline|)|.
+se trata de una transformación no lineal que dada una imagen $I$ en escala de grises la reemplaza por ${(\frac{I}{255})}^{\gamma}\cdot255$, con $\gamma \in [0,1]$. Utilizaremos como parámetro $\gamma = 0.2$ \footnote{Usaremos estos valores porque son los propuestos en el papel original.}. Para hacer la potencia utilizamos la función \lstinline|cv2.pow(I,| $\gamma$ \lstinline|)|.
 
 \item \textbf{Diferencia gaussiana:} consiste en, dada una imagen, obtener dos imágenes desenfocadas de la original (una más desenfocada que la otra) utilizando filtro gaussiano y luego obtener la diferencia de ambas. Utilizaremos $\sigma_0 =1$ y $\sigma_1=2$ para los filtros y para obtener la diferencia utilizaremos la función \lstinline|cv2.subtract()|
 
 \item \textbf{Ecualización de contraste}: hay que reescalar la intensidad de la imagen para estandarizar el contraste. Un opción podría ser ecualizar o normalizar el histograma, pero en el papel citado proponen un método en dos fases:
 \begin{equation}
-I(x,y) \leftarrow \frac{I(x,y)}{ {(\text{mean}(|I(x',y')|^a))}^{1/a}}
+I(x,y) \leftarrow \frac{I(x,y)}{ {(\text{media}(|I(x',y')|^a))}^{1/a}}
 \end{equation}
 
 \begin{equation}
-I(x,y) \leftarrow \frac{I(x,y)}{ {(\text{mean}({\min(\tau, |I(x',y')|)}^a))}^{1/a}}
+I(x,y) \leftarrow \frac{I(x,y)}{ {(\text{media}({\min(\tau, |I(x',y')|)}^a))}^{1/a}}
 \end{equation}
-Donde $a$ es un componente de compresión y $\tau$ es el umbral de truncamiento. Se usará $a=0.1$ y $\tau=10$.
+Donde $a$ es un componente de compresión y $\tau$ es el umbral de truncamiento. Se usará $a=0.1$ y $\tau=10$ \footnotemark[\value{footnote}].
 \end{enumerate}
 
 \section{Corrección de la iluminación usando el sensor}
@@ -665,7 +677,7 @@ La manera de acceder al sensor de luz es análoga a la de acceder al acelerómet
 Una vez que tenemos los lux medidos en cada instante tenemos que ver que podemos hacer con ellos. 
 
 En primer lugar estableceremos una escala, para ello supondremos que nos encontramos en una habitación.En este caso podemos suponer que a partir de 400 lx la habitación está muy iluminada. Por tanto fijamos 400 como el máximo y reescalamos a un  $k \in [0,1]$ dividiendo por 400. Queremos que estos datos representen lo iluminada que está la imagen. 
-Como la relación entre lo iluminada que está una imagen y la iluminación ambiental no es lineal, elevamos los datos a un $\alpha  \in [0,1]$, en concreto hemos decidido usar  $\alpha = 1/4$.
+Como la relación entre lo iluminada que está una imagen y la iluminación ambiental no es lineal, elevamos los datos a un $\alpha  \in [0,1]$, en concreto hemos decidido usar  $\alpha = 1/4$ ya que tras varías pruebas es la que mejores resultados parece proporcionar.
 
 Antes de ver cómo usamos estos datos, veamos primero la transformación que proponemos. Se trata de algo que en muchos programas de edición de imagen se conoce como ajuste de niveles. 
 La idea es la siguiente, tenemos tres parámetros. Los dos primeros son un límite inferior y un límite superior.  Todos los píxeles de la imagen que tengan una intensidad igual o inferior al límite inferior pasan a ser 0. Análogamente todos los píxeles de la imagen que tengan una intensidad igual o superior pasan a ser 255. El límite inferior y superior pueden tomar valores de 0 a 255 siempre que el inferior sea menor o igual que el superior.
@@ -674,7 +686,7 @@ El último valor(que llamaremos $\gamma$ y supondremos entre 0.1 y 10) lo que ha
 
 Los datos de que nosotros disponemos parten de la iluminación media y, por tanto podemos relacionarlos con los tonos medios de la imagen. Por tanto lo que queremos es, si la imagen es muy clara oscurecerla disminuyendo $\gamma$ y si es muy oscura, aclararla aumentando $\gamma$.
 Esto lo hacemos mediante la transformación $10^{-2k+1}$.
-Como límites mínimo y máximo utilizamos los percentiles 1 y 99 respectivamente\footnote{El percentil i-ésimo es aquel valor tal que que un i\% de los valores es menor que él.}.
+Como límites mínimo y máximo utilizamos los percentiles 1 y 99 respectivamente.
 
 De las pruebas realizadas podemos observar que el algoritmo funciona bastante bien pero tiene algunas limitaciones: en primer lugar, los cambios bruscos de iluminación,como por otra parte era imaginable, siguen dando problemas, ya que se sigue notando el cambio brusco y, algunas zonas muy oscuras de las imágenes aclaradas siguen quedando totalmente negras. Como ya hemos dicho, esto era esperable. Sin embargo existe otro problema y es que los cambios más leves el sensor algunas veces no los refleja. 
 No obstante para cambios no muy bruscos de la iluminación, se puede usar este código, aunque probablemente haya que aplicar posteriormente otro (como el propuesto en el apartado anterior).
