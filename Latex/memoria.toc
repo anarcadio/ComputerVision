@@ -32,4 +32,7 @@
 \contentsline {chapter}{\numberline {B}C\IeC {\'o}digo del sensor de luz}{53}
 \contentsline {section}{\numberline {B.1}C\IeC {\'o}digo de Android}{53}
 \contentsline {section}{\numberline {B.2}C\IeC {\'o}digo de procesado de los datos}{58}
-\contentsline {chapter}{Bibliograf\IeC {\'\i }a}{63}
+\contentsline {chapter}{\numberline {C}Otros c\IeC {\'o}digos}{63}
+\contentsline {section}{\numberline {C.1}C\IeC {\'o}digo del algoritmo de correlaci\IeC {\'o}n de fase}{63}
+\contentsline {section}{\numberline {C.2}C\IeC {\'o}digo del algoritmo de nomalizaci\IeC {\'o}n de luz}{64}
+\contentsline {chapter}{Bibliograf\IeC {\'\i }a}{67}

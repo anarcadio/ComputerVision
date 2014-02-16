@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.1415926-2.5-1.40.14 (TeX Live 2013/Debian) (format=pdflatex 2013.11.30)  14 FEB 2014 18:00
+This is pdfTeX, Version 3.1415926-2.5-1.40.14 (TeX Live 2013/Debian) (format=pdflatex 2013.11.30)  16 FEB 2014 19:35
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -662,7 +662,7 @@ LaTeX Info: Redefining \% on input line 494.
  [25]
 LaTeX Info: Redefining \. on input line 523.
 LaTeX Info: Redefining \% on input line 523.
- [26] (./estabilizacion.py
+ [26] (../estabilizacion.py
 LaTeX Info: Redefining \. on input line 37.
 LaTeX Info: Redefining \% on input line 37.
  [27]
@@ -675,39 +675,39 @@ LaTeX Info: Redefining \. on input line 536.
 LaTeX Info: Redefining \% on input line 536.
 
 [29]
-LaTeX Info: Redefining \. on input line 566.
-LaTeX Info: Redefining \% on input line 566.
+LaTeX Info: Redefining \. on input line 568.
+LaTeX Info: Redefining \% on input line 568.
  [30]
-LaTeX Info: Redefining \. on input line 577.
-LaTeX Info: Redefining \% on input line 577.
+LaTeX Info: Redefining \. on input line 579.
+LaTeX Info: Redefining \% on input line 579.
  [31] <tales1.png, id=141, 392.9079pt x 237.7683pt>
 File: tales1.png Graphic file (type png)
  <use tales1.png>
-Package pdftex.def Info: tales1.png used on input line 595.
+Package pdftex.def Info: tales1.png used on input line 597.
 (pdftex.def)             Requested size: 392.90694pt x 237.7677pt.
 
-Overfull \hbox (20.53175pt too wide) in paragraph at lines 595--596
+Overfull \hbox (20.53175pt too wide) in paragraph at lines 597--598
 [][] 
  []
 
-LaTeX Info: Redefining \. on input line 596.
-LaTeX Info: Redefining \% on input line 596.
+LaTeX Info: Redefining \. on input line 598.
+LaTeX Info: Redefining \% on input line 598.
 [32 <./tales1.png>] <tales2.png, id=146, 525.4029pt x 317.988pt>
 File: tales2.png Graphic file (type png)
 
 <use tales2.png>
-Package pdftex.def Info: tales2.png used on input line 605.
+Package pdftex.def Info: tales2.png used on input line 607.
 (pdftex.def)             Requested size: 525.40161pt x 317.98721pt.
 
-Overfull \hbox (135.40161pt too wide) in paragraph at lines 604--607
+Overfull \hbox (135.40161pt too wide) in paragraph at lines 606--609
 []
  []
 
-LaTeX Info: Redefining \. on input line 614.
-LaTeX Info: Redefining \% on input line 614.
+LaTeX Info: Redefining \. on input line 616.
+LaTeX Info: Redefining \% on input line 616.
 [33 <./tales2.png>]
-LaTeX Info: Redefining \. on input line 625.
-LaTeX Info: Redefining \% on input line 625.
+LaTeX Info: Redefining \. on input line 627.
+LaTeX Info: Redefining \% on input line 627.
  [34]
 Cap\'{\i }tulo 4.
 
@@ -716,15 +716,15 @@ Underfull \vbox (badness 3895) has occurred while \output is active []
  [35
 
 ]
-LaTeX Info: Redefining \. on input line 664.
-LaTeX Info: Redefining \% on input line 664.
+LaTeX Info: Redefining \. on input line 666.
+LaTeX Info: Redefining \% on input line 666.
 
 [36]
-LaTeX Info: Redefining \. on input line 686.
-LaTeX Info: Redefining \% on input line 686.
+LaTeX Info: Redefining \. on input line 688.
+LaTeX Info: Redefining \% on input line 688.
  [37]
-LaTeX Info: Redefining \. on input line 695.
-LaTeX Info: Redefining \% on input line 695.
+LaTeX Info: Redefining \. on input line 697.
+LaTeX Info: Redefining \% on input line 697.
  [38]
 Ap\'{e}ndice A.
 (/usr/share/texlive/texmf-dist/tex/latex/listings/lstlang1.sty
@@ -748,8 +748,8 @@ Underfull \vbox (badness 10000) has occurred while \output is active []
 LaTeX Info: Redefining \. on input line 132.
 LaTeX Info: Redefining \% on input line 132.
  [42])
-LaTeX Info: Redefining \. on input line 702.
-LaTeX Info: Redefining \% on input line 702.
+LaTeX Info: Redefining \. on input line 704.
+LaTeX Info: Redefining \% on input line 704.
 
 [43] (./Android/Acelerometro/vcorderView.java
 LaTeX Info: Redefining \. on input line 38.
@@ -760,8 +760,8 @@ Underfull \vbox (badness 10000) has occurred while \output is active []
 LaTeX Info: Redefining \. on input line 74.
 LaTeX Info: Redefining \% on input line 74.
  [45])
-LaTeX Info: Redefining \. on input line 707.
-LaTeX Info: Redefining \% on input line 707.
+LaTeX Info: Redefining \. on input line 709.
+LaTeX Info: Redefining \% on input line 709.
 
 [46] (/usr/share/texlive/texmf-dist/tex/latex/listings/lstlang1.sty
 File: lstlang1.sty 2013/06/27 1.5pre1 listings language file
@@ -774,10 +774,10 @@ LaTeX Info: Redefining \. on input line 30.
 LaTeX Info: Redefining \% on input line 30.
  [47])
 (./Android/Acelerometro/res/layout/activity_main.xml)
-LaTeX Info: Redefining \. on input line 716.
-LaTeX Info: Redefining \% on input line 716.
+LaTeX Info: Redefining \. on input line 718.
+LaTeX Info: Redefining \% on input line 718.
  [48]
-(./estabilizacion_acelerometro.py
+(../estabilizacion_acelerometro.py
 Underfull \vbox (badness 2057) has occurred while \output is active []
 
 LaTeX Info: Redefining \. on input line 35.
@@ -793,8 +793,8 @@ Underfull \vbox (badness 10000) has occurred while \output is active []
 LaTeX Info: Redefining \. on input line 113.
 LaTeX Info: Redefining \% on input line 113.
  [51])
-LaTeX Info: Redefining \. on input line 720.
-LaTeX Info: Redefining \% on input line 720.
+LaTeX Info: Redefining \. on input line 722.
+LaTeX Info: Redefining \% on input line 722.
 
 [52]
 Ap\'{e}ndice B.
@@ -816,10 +816,10 @@ Underfull \vbox (badness 10000) has occurred while \output is active []
 LaTeX Info: Redefining \. on input line 135.
 LaTeX Info: Redefining \% on input line 135.
  [56])
-LaTeX Info: Redefining \. on input line 727.
-LaTeX Info: Redefining \% on input line 727.
+LaTeX Info: Redefining \. on input line 729.
+LaTeX Info: Redefining \% on input line 729.
 
-[57] (./ilum_sensor.py
+[57] (../ilum_sensor.py
 Underfull \vbox (badness 4846) has occurred while \output is active []
 
 LaTeX Info: Redefining \. on input line 39.
@@ -835,15 +835,29 @@ Underfull \vbox (badness 10000) has occurred while \output is active []
 LaTeX Info: Redefining \. on input line 119.
 LaTeX Info: Redefining \% on input line 119.
  [60])
-LaTeX Info: Redefining \. on input line 730.
-LaTeX Info: Redefining \% on input line 730.
+LaTeX Info: Redefining \. on input line 732.
+LaTeX Info: Redefining \% on input line 732.
 
 [61]
 LaTeX Info: Redefining \. on input line 733.
 LaTeX Info: Redefining \% on input line 733.
  [62
 
-] (./memoria.bbl
+]
+Ap\'{e}ndice C.
+(../estabilizacion_pc.py [63]) (../luz.py
+LaTeX Info: Redefining \. on input line 13.
+LaTeX Info: Redefining \% on input line 13.
+ [64]
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+LaTeX Info: Redefining \. on input line 53.
+LaTeX Info: Redefining \% on input line 53.
+ [65])
+LaTeX Info: Redefining \. on input line 738.
+LaTeX Info: Redefining \% on input line 738.
+
+[66] (./memoria.bbl
 Underfull \hbox (badness 10000) in paragraph at lines 12--14
 []\OT1/cmr/m/n/12 The opencv re-fe-ren-ce ma-nual.  $\OT1/cmtt/m/n/12 http : / 
 / docs . opencv . org /
@@ -855,20 +869,21 @@ Underfull \hbox (badness 3471) in paragraph at lines 46--50
 at-
  []
 
-[63
+[67
+
 
 ])
-LaTeX Info: Redefining \. on input line 740.
-LaTeX Info: Redefining \% on input line 740.
- [64] (./memoria.aux
+LaTeX Info: Redefining \. on input line 745.
+LaTeX Info: Redefining \% on input line 745.
+ [68] (./memoria.aux
 LaTeX Info: Redefining \. on input line 6.
 LaTeX Info: Redefining \% on input line 6.
 ) ) 
 Here is how much of TeX's memory you used:
- 6061 strings out of 494969
- 81432 string characters out of 6179592
- 374512 words of memory out of 5000000
- 9125 multiletter control sequences out of 15000+600000
+ 6083 strings out of 494969
+ 81678 string characters out of 6179592
+ 374534 words of memory out of 5000000
+ 9140 multiletter control sequences out of 15000+600000
  13075 words of font info for 48 fonts, out of 8000000 for 9000
  40 hyphenation exceptions out of 8191
  37i,9n,52p,1312b,1893s stack positions out of 5000i,500n,10000p,200000b,80000s
@@ -895,10 +910,10 @@ msfonts/cm/cmsy8.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts
 /cm/cmti12.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cm
 tt10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmtt12.p
 fb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmtt8.pfb>
-Output written on memoria.pdf (68 pages, 959713 bytes).
+Output written on memoria.pdf (72 pages, 969883 bytes).
 PDF statistics:
- 333 PDF objects out of 1000 (max. 8388607)
- 228 compressed objects within 3 object streams
+ 345 PDF objects out of 1000 (max. 8388607)
+ 236 compressed objects within 3 object streams
  0 named destinations out of 1000 (max. 500000)
  21 words of extra memory for PDF output out of 10000 (max. 10000000)
 

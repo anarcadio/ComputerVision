@@ -51,7 +51,6 @@ def adjust_levels(im,bot,mid,top):
         mid = 0.1
     aux = correct_gamma(aux, mid)
     aux = np.array(aux, dtype=np.uint8)
-    #aux = cv2.equalizeHist(aux)
     return aux
 
 def autolevels(im, mid=1):
@@ -82,15 +81,19 @@ if __name__ == '__main__':
     except: 
         print("Error, introduce nombre del archivo de entrada")
         sys.exit()
+    frames = []
+    nout = "out-" + name
     cap = cv2.VideoCapture(name)
     array = get_array(illuname)
-    fps = 22
     i = 0
+    fps = cap.get(cv2.cv.CV_CAP_PROP_FPS)
+    fps = 16
+    size = (int(cap.get( cv.CV_CAP_PROP_FRAME_WIDTH)),int(cap.get(cv.CV_CAP_PROP_FRAME_HEIGHT)))
     ret = True
-    while(1):
+    while(ret):
         ret,frame = cap.read()
         t = cap.get(cv2.cv.CV_CAP_PROP_POS_MSEC)/1000
-        #t = t*1.197
+        t = t*1.197
         if ret:
             i = 0
             while i < len(array)-1:
@@ -107,10 +110,13 @@ if __name__ == '__main__':
         
             gr =  cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
             out = autolevels(gr, y)
-            cv2.imshow('Sensor-in',gr)
-            cv2.imshow("Sensor-out", out)
-            #draw_hist(gr, "hist_in")
-            #draw_hist(out, "hist_out")
+            out = cv2.cvtColor(out, cv2.COLOR_GRAY2BGR)
+            frames.append(out)
+
         
-            c = cv2.waitKey(33)
-            if (c==27): ret =False
+
+    writer = cv2.VideoWriter(nout, cv.CV_FOURCC('M','J','P','G'), fps, size)
+    for frm in frames:
+        writer.write(frm)
+    cv2.destroyAllWindows()
+    cap.release()

@@ -335,7 +335,7 @@ Aplicando el desarrollo en serie de Taylor a $I(u+x,v+y)$ obtenemos:
 \begin{equation}
 I(u+x,v+y) \approx I(u, v) + I_x(u,v)x + I_y(u,v)y
 \end{equation}
-Donde $I_x$ e $I_y$ son las derivadas parciales de la función intesidad en las direcciones $x$ e $y$ respectivamente\footnote{Estas derivadas se aproximan como hemos explicado en el ejemplo 5 de \ref{derivadas} }.
+Donde $I_x$ e $I_y$ son las derivadas parciales de la función intensidad en las direcciones $x$ e $y$ respectivamente\footnote{Estas derivadas se aproximan como hemos explicado en el ejemplo 5 de \ref{derivadas} }.
 Esto nos lleva a la aproximación:
 \begin{equation*}
 E(x,y) \approx \sum_{u,v} w(u,v)[I_x(u,v)x + I_y(u,v)y]^2
@@ -378,7 +378,7 @@ La idea de la función propuesta inicialmente por Harris era que no hacía falta
  \end{itemize}
  
 Sin embargo Shi y Tomasi argumentaron que bastaba con que el mínimo de los dos autovalores fuese suficientemente grande, debido a que las diferencias de intensidad están acotadas por el valor máximo de intensidad de los píxeles, lo que impide que el mayor autovalor sea arbitrariamente grande.
-La función propuesta por Shi y Tomasi proporciona por tanto buenos resultados y, empíricamente se ha observado que en muchos caso mejores que los que proporciona la original de Harris.
+La función propuesta por Shi y Tomasi proporciona por tanto buenos resultados y, empíricamente se ha observado que en muchos casos mejores que los que proporciona la original de Harris.
 
 
 De todo esto se encarga la función \lstinline|cv2.goodFeaturesToTrack()|, que calcula las segundas derivadas utilizando el operador Sobel (es el método que explicamos en el ejemplo 6 del capítulo 2 para calcular el gradiente de una imagen) y luego calcula los autovalores.
@@ -403,11 +403,11 @@ Para estimar el movimiento de los puntos característicos de un fotograma a otro
 El flujo óptico es el patrón de movimiento aparente de los objetos entre un fotograma y el siguiente causado por un movimiento de la cámara o de los objetos. Se trata de un campo vectorial de dos dimensiones donde cada vector es un vector de desplazamiento de un punto entre ambos fotogramas.
 Este algoritmo está basado en tres suposiciones:
 \begin{enumerate}
-\item Brillo constante: la apariencia de un píxel no cambia entre un frame y otro. Para una imagen en escala de grises esto es equivalente a que su brillo permanece constante
+\item Brillo constante: la apariencia de un píxel no cambia entre un frame y otro. Para una imagen en escala de grises esto es equivalente a que su brillo permanece constante (es decir, que la intensidad de un píxel se mantiene).
 \item Los objetos no se mueven muy rápido.
 \item Coherencia espacial: los píxeles vecinos tienen movimiento similar.
 \end{enumerate}
-El hecho de que el brillo no varíe, es decir, que la intensidad de un píxel se mantiene, junto con que hemos supuesto que el movimiento entre dos fotogramas es relativamente pequeño nos lleva a la siguiente igualdad:
+Las dos primeras suposiciones nos llevan a la siguiente igualdad:
 \begin{equation} \label{ig_intensidad}
 I(x,y,t)=I(x+dx,y+dy,t+dt)
 \end{equation}
@@ -522,17 +522,17 @@ que en un principio devuelve dicha matriz minimizando el error:
 Pero como no todos los puntos encajan en la transformación ya que puede haber errores u otros movimientos que no son los de la cámara, utilizaremos un método robusto llamado RANSAC (RANdom SAmple Consensus). Se trata de un método iterativo para estimar los parámetros de un determinado modelo matemático (en este caso una homografía) a partir de un conjunto de datos que contiene valores atípicos (valores numéricamente distantes a los del resto del conjunto). La idea básica de este algoritmo es resolver varias veces el problema con distintos subconjuntos aleatorios de los puntos dados y luego tomar como solución particular la más cercana a la media/mediana de las soluciones.
 \newpage
 \subsection{Código}
-\lstinputlisting[language=Python, frame= single]{estabilizacion.py}
+\lstinputlisting[language=Python, frame= single, title=estabilizacion.py]{../estabilizacion.py}
 En la línea 7 y en la 13 vemos los parámetros que usaremos para el algoritmo de Shi-Tomashi y para el de Lucas-Kanade respectivamente.
 
-En la línea 18 podemos ver la función que calcula el flujo óptico, usando \lstinline|cv2.calcOpticalFlowPyrLK()| primero para calcular la estimación de a donde se han movido los puntos al segundo fotograma y una segunda vez para ver a donde van a parar estos puntos obtenidos del segundo fotograma al primero para así comprobar la coincidencia de los puntos obtenidos con los originales y no tener en cuenta los que no tengan coincidencia.
+En la línea 18 podemos ver la función que calcula el flujo óptico, usando \lstinline|cv2.calcOpticalFlowPyrLK()| primero para calcular la estimación de a donde se han movido los puntos en el segundo fotograma y una segunda vez para ver a donde van a parar estos puntos obtenidos del segundo fotograma al primero, para así comprobar la coincidencia de los puntos obtenidos con los originales y no tener en cuenta los que no tengan coincidencia.
 
 De la línea 33 a la 44 inicializamos las variables que vamos a usar en el algoritmo, abrimos el vídeo, tomamos el primer fotograma y buscamos esquinas. Utilizamos la función \lstinline|cv2.cornerSubPix()| para refinar la precisión de las esquinas.
 
 Finalmente, dentro del bucle, vamos tomando cada fotograma, calculamos el flujo óptico con respecto al fotograma anterior en la línea 52, intentamos buscar la homografía en la línea 60 y la aplicamos en la línea 64. Por último en las líneas 67 y 68 buscamos las esquinas del fotograma que acabamos de transformar.
  
 \subsection{Comentarios y variaciones del algoritmo}
-Este algoritmo funciona bastante bien en la mayoría de los casos; sin embargo cuando el movimiento (ya sea el de la imagen o el de lo que estamos grabando) es muy brusco, puede producir efectos no deseados y ser contraproducente. Si suponemos que la cámara no sufre rotaciones y sólo hay traslación, en lugar de estimar la homografía podemos usar una traslación de razón la media o la mediana de lo que se ha movido cada píxel detectado. La media no es muy recomendable sin algún filtro, ya que es muy sensible a los valores atípicos y si hay objetos moviéndose se producirá traslación aún cuando la cámara este completamente quieta. Sin embargo la media funciona bastante bien y es más rápida que el algoritmo del apartado anterior. Sin embargo si no requerimos rapidez no supone una gran mejora.
+Este algoritmo funciona bastante bien en la mayoría de los casos; sin embargo cuando el movimiento (ya sea el de la imagen o el de lo que estamos grabando) es muy brusco, puede producir efectos no deseados y ser contraproducente. Si suponemos que la cámara no sufre rotaciones y sólo hay traslación, en lugar de estimar la homografía podemos usar una traslación de razón la media o la mediana de lo que se ha movido cada píxel detectado. La media no es muy recomendable sin algún filtro, ya que es muy sensible a los valores atípicos y si hay objetos moviéndose se producirá traslación aún cuando la cámara este completamente quieta. Sin embargo la mediana funciona bastante bien y es más rápida que el algoritmo del apartado anterior. Sin embargo si no requerimos rapidez no supone una gran mejora.
 \newpage
 \section{Algoritmo basado en la correlación de fase}
 Otro algoritmo bastante utilizado y más rápido que el anterior está basado en la correlación de fase \cite{kug75}. Supone que la cámara no sufre rotaciones y que el único movimiento no deseado es de traslación y calcula esta traslación mediante la correlación de fase.
@@ -563,6 +563,8 @@ Obtenemos la correlación cruzada normalizada aplicando la inversa de la transfo
 \end{equation*}
 Por último, localizamos el máximo de $r$, y no quedamos con las cordenadas de este, que será el desplazamiento que se ha producido entre un fotograma y otro.
 OpenCV dispone de la función \lstinline|cv2.phaseCorrelate(src1, src2[, window])| que se encarga de todo esto. Los dos primeros argumentos son las dos imágenes. El último argumento es opcional y es un array con los coeficientes para la función ventana.
+
+Podemos encontrar el código de este algoritmo en el apéndice \ref{ap_pc}.
 \newpage
 \section{Uso del acelerómetro para estabilizar}
 Se trata de intentar utilizar la información extra de los que disponemos, en concreto la que nos proporciona el acelerómetro del móvil, para intentar estabilizar la imagen utilizando estos datos.
@@ -668,7 +670,7 @@ I(x,y) \leftarrow \frac{I(x,y)}{ {(\text{media}({\min(\tau, |I(x',y')|)}^a))}^{1
 \end{equation}
 Donde $a$ es un componente de compresión y $\tau$ es el umbral de truncamiento. Se usará $a=0.1$ y $\tau=10$ \footnotemark[\value{footnote}].
 \end{enumerate}
-
+El código lo podemos encontar el el apéndice \ref{ap_luz}.
 \section{Corrección de la iluminación usando el sensor}
 Nuevamente intentamos usar para nuestros propósitos los sensores de que disponen los telefónos móviles. En este caso intentaremos utilizar los datos que nos proporciona el sensor de luz. Este sensor mide el nivel de luz ambiental en las unidades del Sistema Internacional para la iluminancia o nivel de iluminación, el lux.
 
@@ -716,7 +718,7 @@ Por último vemos el archivo XML que describe la interfaz de nuestra única acti
 \newpage
 \section{Código de procesado de los datos} \label{ap_acc}
 A continuación se incluye el programa que procesa los datos recogidos por el programa de Android.
-\lstinputlisting[language=Python, frame= single]{estabilizacion_acelerometro.py}
+\lstinputlisting[language=Python, frame= single, title= estabilizacion\_acelerometro.py]{../estabilizacion_acelerometro.py}
 \newpage
 
 
@@ -726,10 +728,13 @@ Solo incluimos el código de la actividad principal, porque el resto de archivos
 \lstinputlisting[language=Java, frame= single]{Android/Luz/MainActivity.java}
 \newpage
 \section{Código de procesado de los datos} \label{ap_illu}
-\lstinputlisting[language=Python, frame= single]{ilum_sensor.py}
+\lstinputlisting[language=Python, frame= single, title=ilum\_sensor.py]{../ilum_sensor.py}
 \newpage
-
-
+\chapter{Otros códigos} 
+\section{Código del algoritmo de correlación de fase} \label{ap_pc}
+\lstinputlisting[language=Python, frame= single, title=estabilizacion\_pc.py]{../estabilizacion_pc.py}
+\section{Código del algoritmo de nomalización de luz} \label{ap_luz}
+\lstinputlisting[language=Python, frame= single, title=luz.py]{../luz.py}
 \cleardoublepage
 \addcontentsline{toc}{chapter}{Bibliografía}
 \bibliographystyle{plain} % estilo de la bibliografía.
