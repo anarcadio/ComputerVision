@@ -22,7 +22,7 @@ def get_array(filename):
             #get the time in seconds
             date = ((int(aux_date[0])*60 + int(aux_date[1]))*60 + float(aux_date[2])) - t0
             fline = [float(aux[0]), float(aux[1]),float(aux[2]), date]
-
+       
             if date != old_date:
                 array.append( fline )
                 old_date = date
@@ -76,73 +76,52 @@ if __name__ == '__main__':
     except: 
         print("Error, introduce nombre del archivo de entrada")
         sys.exit()
+    frames = []
+    nout = "out-" + name
     cap = cv2.VideoCapture(name)
     x, y, z = calculate_movement(accname)
 
 
-    #esto hay que cambiarlo
-    fps = 15.0
-
+    fps = cap.get(cv2.cv.CV_CAP_PROP_FPS)
+    fps=16
+    size = (int(cap.get( cv.CV_CAP_PROP_FRAME_WIDTH)),int(cap.get(cv.CV_CAP_PROP_FRAME_HEIGHT)))
     t = 0.0
     f = 0.004
-    dist = 1.2
+    sens_size = 15.5
+    dist = 1.4
 
-    # Create some random colors
-    color = np.random.randint(0,255,(10000,3))
-    
-    # Take first frame and find corners in it
     ret, old_frame = cap.read()
     old_gray = cv2.cvtColor(old_frame, cv2.COLOR_BGR2GRAY)
 
+    frames.append(old_frame)
 
-    # Create a mask image for drawing purposes
-    mask = np.zeros_like(old_frame)
-
-    cv2.imshow('original',old_frame)
-    cv2.imshow('stabilized',old_frame)
-
-    while(1):
+    while(ret):
         ret,frame = cap.read()
-        cv2.imshow('original',frame)
-        frame_gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
+        if ret:
+            cv2.imshow('original',frame)
+            frame_gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
+            t = cap.get(cv2.cv.CV_CAP_PROP_POS_MSEC)/1000
+            h, w = old_frame.shape[:2]
 
+            #calculamos la traslacion
+            dx = np.interp(t,[d[0] for d in x], [d[1] for d in x])
+            dy = np.interp(t,[d[0] for d in y], [d[1] for d in y])
+            dz = np.interp(t,[d[0] for d in z], [d[1] for d in z])
 
-        h, w = old_frame.shape[:2]
+            dx = recalculate_pos(dx, dz, dist, f)
+            dy = recalculate_pos(dy, dz, dist, f)
 
-        #calculamos la traslacion
-        t = t + 1/fps
-        dx = np.interp(t,[d[0] for d in x], [d[1] for d in x])
-        dy = np.interp(t,[d[0] for d in y], [d[1] for d in y])
-        dz = np.interp(t,[d[0] for d in z], [d[1] for d in z])
+            dx = dx*149321.0
+            dy = dy*149321.0
+            M = np.array([[1, 0, dx],[0, 1, dy]])
 
+            old_frame = cv2.warpAffine(frame, M, (w,h), flags=cv2.INTER_LINEAR + cv2.WARP_INVERSE_MAP)
+            old_gray = cv2.cvtColor(old_frame, cv2.COLOR_BGR2GRAY)
 
-        
-        print "dx dy dz:", dx,dy, dz
-        dx = recalculate_pos(dx, dz, dist, f)
-        print "nuevi dx: ",dx
-        dy = recalculate_pos(dy, dz, dist, f)
-        print "nuevi dy: ",dy
+            frames.append(old_frame)
 
-        dx = dx*(7659.0)
-        dy = dy*(7659.0)
-
-        M = np.array([[1, 0, dx],[0, 1, dy]])
-
-
-        overlay = cv2.warpAffine(frame, M, (w,h), flags=cv2.INTER_LINEAR + cv2.WARP_INVERSE_MAP)
- 
-    
-        old_frame = overlay.copy()
-
-    
-        cv2.imshow('stabilized',overlay)
-        k = cv2.waitKey(30) & 0xff
-        if k == 27:
-            break
-
-        # Now update the previous frame and previous points
-
-        old_gray = cv2.cvtColor(old_frame, cv2.COLOR_BGR2GRAY)
-
+    writer = cv2.VideoWriter(nout, cv.CV_FOURCC('M','J','P','G'), fps, size)
+    for frm in frames:
+        writer.write(frm)
     cv2.destroyAllWindows()
     cap.release()

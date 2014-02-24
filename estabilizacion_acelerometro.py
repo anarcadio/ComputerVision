@@ -110,9 +110,8 @@ if __name__ == '__main__':
             dx = recalculate_pos(dx, dz, dist, f)
             dy = recalculate_pos(dy, dz, dist, f)
 
-            dx = dx*(7659.0)
-            dy = dy*(7659.0)
-
+            dx = dx*149321.0
+            dy = dy*149321.0
             M = np.array([[1, 0, dx],[0, 1, dy]])
 
             old_frame = cv2.warpAffine(frame, M, (w,h), flags=cv2.INTER_LINEAR + cv2.WARP_INVERSE_MAP)

@@ -547,11 +547,7 @@ Dadas dos imágenes ($\ g_a$ y $\ g_b$), se les aplica una función ventana y se
     \mathbf{G}_a = \mathcal{F}\{g_a\}, \; \mathbf{G}_b = \mathcal{F}\{g_b\}
 \end{equation*}
 
-Calculamos la densidad espectral cruzada \footnote{La densidad espectral cruzada se define como la transformada de Fourier de la correlación cruzada ($ 
-    S_{xy}(f)=\mbox{DFT}\left\{R_{xy}(\tau)\right\} $).
-La correlación cruzada es 
-    $(f\star g)_i \ \stackrel{\mathrm{def}}{=}\ \sum_j f^*_j\,g_{i+j}$.    
-     } y normalizamos con su producto:
+Mediante la siguiente fórmula calculamos la llamada densidad espectral cruzada (normalizada con su producto):
 \begin{equation*}
    \ R = \frac{ \mathbf{G}_a \circ \mathbf{G}_b^*}{|\mathbf{G}_a \circ \mathbf{G}_b^*|}
 \end{equation*}
@@ -611,6 +607,9 @@ X=\dfrac{m}{d}(d+f)
 \end{equation*}
 siendo f la distancia focal de la cámara.
 Para obtener el desplazamiento en la imagen en el eje y, los cálculos son análogos.
+
+Como el desplazamiento lo tenemos en metros pero tenemos que tratar con píxeles. Para realizar este cambio utilizaremos la densidad de píxeles de la cámara: $\frac{ \text{número de píxeles}}{\text{tamaño del sensor}}$.
+
 
 El código se incluye al final en el apéndice \ref{ap_acc}.
 \newpage
