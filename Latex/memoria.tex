@@ -79,25 +79,40 @@ Andrés A. Sánchez González\\
 \end{titlepage}
 
 \newpage
-\mbox{}
+
 \thispagestyle{empty} 
 
-
-\tableofcontents % indice de contenidos
+\begingroup
+\let\cleardoublepage\clearpage
+\tableofcontents
+\endgroup
 \newpage
-\thispagestyle{empty}
+\mbox{}
+\let\cleardoublepage\clearpage
+\chapter*{Introducción}
+\pagenumbering{arabic} % para empezar la numeración con números
+\addcontentsline{toc}{chapter}{\protect\numberline{}Introducción}%
+Este trabajo trata sobre visión artificial con la librería openCV y, en concreto, en estabilización de imagen e iluminación en vídeos. Se han buscado una serie de algoritmos para eliminar tanto los movimientos involuntarios que puede producir la persona que graba un vídeo, como los cambios de iluminación que se puedan producir durante la grabación. Se ha intentado utilizar con este propósito los sensores incorporados a los móviles como el acelerómetro y el sensor de luz. El trabajo ha consistido en el estudio de la librería openCV, el aprendizaje de programación básica en Android, la búsqueda de algoritmos para la estabilización de la imagen, la programación de un algoritmo de estabilización de imagen usando el acelerómetro, la búsqueda de algoritmos para la estabilización de la luz y programación de un algoritmo de estabilización de luz usando el sensor de luz.
+\newline
+\newline
+\newline
+\newline
+
+This paper deals with computer vision using the openCV library and, specifically, with video image stabilization and lighting stabilization. Several algorithms have been used in order to eliminate both the involuntary movements that can be produced by the person who records the video, and also the lighting changes that can happen during video recording.
+With this purpose, an attempt of using mobile sensors, such as accelerometers and light sensor, has been made.
+The present work consists of the study of the openCV library, the learning of basic Android programming, the search of image stabilization algorithms, the design and programming of an algorithm for image stabilization using the accelerometer, the search of algorithms for lighting stabilization and the design and programming of an algorithm for light stabilization using the light sensor.
 
 
 \chapter*{Motivación}\label{cap.introduccion}
 \addcontentsline{toc}{chapter}{\protect\numberline{}Motivación}%
-\pagenumbering{arabic} % para empezar la numeración con números
-
+\thispagestyle{empty} 
 El interés inicial y motivo principal para la realización de este trabajo fue el acercamiento al interesante mundo de la visión artificial. Los campos relacionados con la visión artificial son amplísimos, abarcando casi la totalidad de las actuales actividades que incorporan algún tipo de imagen a su tecnología . El verdadero problema inicial fue elegir en qué centrar el interés de las numerosísimas actividades y tareas relacionadas con la visión artificial. Por acotar un poco el terreno, mi interés dentro de la visión artificial estaba en algo que tuviese una aplicación real en el mundo. Acudí a la presentación de una aplicación para móviles llamada Mememtum \footnote{\url{http://mememtum.com}}. Esta aplicación, que se encuentra aún en una primera versión, pretende proporcionar una manera de controlar la evolución del Parkinson y otros trastornos del movimiento a los pacientes desde su casa a través del móvil. Por supuesto, esta aplicación usa visión artificial; por ello, hablé con uno de los responsables del proyecto. Me dijo que algunos de los problemas que tenían en esta versión estaban relacionados con la estabilización de la imagen y la iluminación y, por ello, me sugirió que podía orientar mi trabajo en esta dirección.
 
 
 Esta aplicación para el control del Parkinson consiste en que una segunda persona graba al enfermo de Parkinson y tras procesar el vídeo, devuelve un número que representa la cantidad de movimiento del paciente y que se puede utilizar para hacer un seguimiento del mismo. Podría considerarse como un ``termómetro del Parkinson''. El problema que surge con una aplicación para el móvil es que al movimiento del enfermo, hay que sumarle el posible movimiento involuntario de la cámara producido por la persona que está grabando. El reto, por tanto, está en intentar eliminar dicho movimiento involuntario. Otro de los problemas eran los posibles cambios de iluminación, que dificultan encontrar al paciente de manerfa eficaz. Por tanto hay que encontrar una manera de minimizar el efecto de los cambios de iluminación.
 Una idea que me sugirieron era, ya que estaban trabajando con móviles, intentar aprovechar los sensores de que estos disponen, como el acelerómetro y el sensor de luz, para corregir este  movimiento.
 \newpage
+\thispagestyle{empty} 
 Finalmente decidí realizar el trabajo en esta dirección, y por tanto centrarme en las tareas de: estabilización de la imagen con algoritmos de visión artificial, intentar estabilizar la imagen con ayuda de los datos del aceleŕometro y estabilización de la iluminación, al igual que antes primero con algoritmos de visión artificial y luego con los datos extra del sensor de luz en este caso.
 En primer lugar, para poder realizar los algoritmos de visión artificial tuve que aprender a utilizar la librería OpenCV\cite{opencvrefman} y familiarizarme con algunos algoritmos típicos de visión artificial. Además como iba a intentar hacer uso del acelerómetro, tuve que aprender a realizar aplicaciones para Android y cómo interactuar con el hardware de los móviles. Tras todo este trabajo previo ya estaba en condiciones de centrarme en las tareas anteriormente mencionadas.
 
