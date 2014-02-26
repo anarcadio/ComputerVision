@@ -547,8 +547,8 @@ De la línea 33 a la 44 inicializamos las variables que vamos a usar en el algor
 Finalmente, dentro del bucle, vamos tomando cada fotograma, calculamos el flujo óptico con respecto al fotograma anterior en la línea 52, intentamos buscar la homografía en la línea 60 y la aplicamos en la línea 64. Por último en las líneas 67 y 68 buscamos las esquinas del fotograma que acabamos de transformar.
  
 \subsection{Comentarios y variaciones del algoritmo}
-Este algoritmo funciona bastante bien en la mayoría de los casos; sin embargo cuando el movimiento (ya sea el de la imagen o el de lo que estamos grabando) es muy brusco, puede producir efectos no deseados y ser contraproducente. Si suponemos que la cámara no sufre rotaciones y sólo hay traslación, en lugar de estimar la homografía podemos usar una traslación de razón la media o la mediana de lo que se ha movido cada píxel detectado. La media no es muy recomendable sin algún filtro, ya que es muy sensible a los valores atípicos y si hay objetos moviéndose se producirá traslación aún cuando la cámara este completamente quieta. Sin embargo la mediana funciona bastante bien y es más rápida que el algoritmo del apartado anterior. Sin embargo si no requerimos rapidez no supone una gran mejora.
-\newpage
+Este algoritmo funciona bastante bien en la mayoría de los casos\footnote{Se puede encontrar un ejemplo de vídeo en \url{https://github.com/anarcadio/ComputerVision/tree/master/videos}}; sin embargo cuando el movimiento (ya sea el de la imagen o el de lo que estamos grabando) es muy brusco, puede producir efectos no deseados y ser contraproducente. Si suponemos que la cámara no sufre rotaciones y sólo hay traslación, en lugar de estimar la homografía podemos usar una traslación de razón la media o la mediana de lo que se ha movido cada píxel detectado. La media no es muy recomendable sin algún filtro, ya que es muy sensible a los valores atípicos y si hay objetos moviéndose se producirá traslación aún cuando la cámara este completamente quieta. Sin embargo la mediana funciona bastante bien y es más rápida que el algoritmo del apartado anterior. Sin embargo si no requerimos rapidez no supone una gran mejora.
+
 \section{Algoritmo basado en la correlación de fase}
 Otro algoritmo bastante utilizado y más rápido que el anterior está basado en la correlación de fase \cite{kug75}. Supone que la cámara no sufre rotaciones y que el único movimiento no deseado es de traslación y calcula esta traslación mediante la correlación de fase.
 
@@ -631,7 +631,7 @@ El código se incluye al final en el apéndice \ref{ap_acc}.
 
 
 \subsection{Resultados}
-Lamentablemente este método no produce resultados satisfactorios. En algunas ocasiones, sin llegar a producir buenos resultados, estos parecerían acercarse un poco a lo que desearíamos, otras veces no tanto. El mayo problema de esto es debido al error producido al calcular lo que se ha desplazado el teléfono móvil a partir de los datos del acelerómetro.
+Lamentablemente este método no produce resultados satisfactorios. En algunas ocasiones, sin llegar a producir buenos resultados, estos parecerían acercarse un poco a lo que desearíamos, otras veces no tanto\footnote{Se puede encontrar un ejemplo de vídeo en \url{https://github.com/anarcadio/ComputerVision/tree/master/videos}}. El mayor problema de esto es debido al error producido al calcular lo que se ha desplazado el teléfono móvil a partir de los datos del acelerómetro.
 Este error está provocado  (como apuntan en la charla de Google \textit{Sensor Fusion on Android Devices: A Revolution in Motion Processing} \cite{googlesensor}) principalmente por dos motivos:
 \begin{itemize}
 \item El primero es por el error producido al aproximar la doble integral que tenemos que calcular para obtener la posición a partir de la aceleración. Según la exposición, manteniendo el dispositivo quieto durante un segundo, se produce un error de unos 20 centímetros.
@@ -684,7 +684,7 @@ I(x,y) \leftarrow \frac{I(x,y)}{ {(\text{media}({\min(\tau, |I(x',y')|)}^a))}^{1
 \end{equation}
 Donde $a$ es un componente de compresión y $\tau$ es el umbral de truncamiento. Se usará $a=0.1$ y $\tau=10$ \footnotemark[\value{footnote}].
 \end{enumerate}
-El código lo podemos encontar el el apéndice \ref{ap_luz}.
+El código lo podemos encontar el el apéndice \ref{ap_luz} y se puede encontrar un ejemplo de vídeo en \url{https://github.com/anarcadio/ComputerVision/tree/master/videos}.
 \section{Corrección de la iluminación usando el sensor}
 Nuevamente intentamos usar para nuestros propósitos los sensores de que disponen los telefónos móviles. En este caso intentaremos utilizar los datos que nos proporciona el sensor de luz. Este sensor mide el nivel de luz ambiental en las unidades del Sistema Internacional para la iluminancia o nivel de iluminación, el lux.
 
@@ -704,7 +704,7 @@ Los datos de que nosotros disponemos parten de la iluminación media y, por tant
 Esto lo hacemos mediante la transformación $10^{-2k+1}$.
 Como límites mínimo y máximo utilizamos los percentiles 1 y 99 respectivamente.
 
-De las pruebas realizadas podemos observar que el algoritmo funciona bastante bien pero tiene algunas limitaciones: en primer lugar, los cambios bruscos de iluminación,como por otra parte era imaginable, siguen dando problemas, ya que se sigue notando el cambio brusco y, algunas zonas muy oscuras de las imágenes aclaradas siguen quedando totalmente negras. Como ya hemos dicho, esto era esperable. Sin embargo existe otro problema y es que los cambios más leves el sensor algunas veces no los refleja. 
+De las pruebas realizadas podemos observar que el algoritmo funciona bastante bien pero tiene algunas limitaciones: en primer lugar, los cambios bruscos de iluminación,como por otra parte era imaginable, siguen dando problemas, ya que se sigue notando el cambio brusco y, algunas zonas muy oscuras de las imágenes aclaradas siguen quedando totalmente negras. Como ya hemos dicho, esto era esperable. Sin embargo existe otro problema y es que los cambios más leves el sensor algunas veces no los refleja.\footnote{Se puede encontrar un ejemplo de vídeo en \url{https://github.com/anarcadio/ComputerVision/tree/master/videos}}
 No obstante para cambios no muy bruscos de la iluminación, se puede usar este código, aunque probablemente haya que aplicar posteriormente otro (como el propuesto en el apartado anterior).
 Se adjunta el código en el apéndice \ref{ap_illu}.
 \appendix
