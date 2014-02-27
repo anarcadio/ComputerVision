@@ -1,39 +1,39 @@
 \select@language {spanish}
-\contentsline {chapter}{\numberline {}Introducci\IeC {\'o}n}{1}
-\contentsline {chapter}{\numberline {}Motivaci\IeC {\'o}n}{2}
-\contentsline {chapter}{\numberline {1}OpenCV}{4}
-\contentsline {section}{\numberline {1.1}Introducci\IeC {\'o}n}{4}
-\contentsline {section}{\numberline {1.2}Ejemplos}{6}
-\contentsline {chapter}{\numberline {2}Otras librer\IeC {\'\i }as usadas}{16}
-\contentsline {section}{\numberline {2.1}Android}{16}
-\contentsline {section}{\numberline {2.2}Numpy}{18}
-\contentsline {chapter}{\numberline {3}Estabilizaci\IeC {\'o}n de imagen}{20}
-\contentsline {section}{\numberline {3.1}Algoritmo b\IeC {\'a}sico}{20}
-\contentsline {subsection}{\numberline {3.1.1}Algoritmo para encontrar puntos caracter\IeC {\'\i }sticos}{20}
-\contentsline {subsection}{\numberline {3.1.2}Algoritmo de Lucas-Kanade}{24}
-\contentsline {subsection}{\numberline {3.1.3}C\IeC {\'a}lculo de la homograf\IeC {\'\i }a}{27}
-\contentsline {subsection}{\numberline {3.1.4}C\IeC {\'o}digo}{28}
-\contentsline {subsection}{\numberline {3.1.5}Comentarios y variaciones del algoritmo}{30}
-\contentsline {section}{\numberline {3.2}Algoritmo basado en la correlaci\IeC {\'o}n de fase}{31}
-\contentsline {section}{\numberline {3.3}Uso del aceler\IeC {\'o}metro para estabilizar}{32}
-\contentsline {subsection}{\numberline {3.3.1}Programa para Android}{32}
-\contentsline {subsection}{\numberline {3.3.2}Programa de procesado de los datos}{33}
-\contentsline {subsection}{\numberline {3.3.3}Resultados}{35}
-\contentsline {chapter}{\numberline {4}Estabilizaci\IeC {\'o}n de la luz}{36}
-\contentsline {section}{\numberline {4.1}Introducci\IeC {\'o}n}{36}
-\contentsline {section}{\numberline {4.2}Un algoritmo de normalizaci\IeC {\'o}n de luz}{37}
-\contentsline {section}{\numberline {4.3}Correcci\IeC {\'o}n de la iluminaci\IeC {\'o}n usando el sensor}{38}
-\contentsline {chapter}{\numberline {A}C\IeC {\'o}digo del aceler\IeC {\'o}metro}{40}
-\contentsline {section}{\numberline {A.1}C\IeC {\'o}digo de Android}{40}
-\contentsline {subsection}{\numberline {A.1.1}MainActivity}{40}
-\contentsline {subsection}{\numberline {A.1.2}Clase vcorderView}{45}
-\contentsline {subsection}{\numberline {A.1.3}Android manifest}{48}
-\contentsline {subsection}{\numberline {A.1.4}Activity layout}{49}
-\contentsline {section}{\numberline {A.2}C\IeC {\'o}digo de procesado de los datos}{50}
-\contentsline {chapter}{\numberline {B}C\IeC {\'o}digo del sensor de luz}{54}
-\contentsline {section}{\numberline {B.1}C\IeC {\'o}digo de Android}{54}
-\contentsline {section}{\numberline {B.2}C\IeC {\'o}digo de procesado de los datos}{59}
-\contentsline {chapter}{\numberline {C}Otros c\IeC {\'o}digos}{63}
-\contentsline {section}{\numberline {C.1}C\IeC {\'o}digo del algoritmo de correlaci\IeC {\'o}n de fase}{63}
-\contentsline {section}{\numberline {C.2}C\IeC {\'o}digo del algoritmo de nomalizaci\IeC {\'o}n de luz}{64}
-\contentsline {chapter}{Bibliograf\IeC {\'\i }a}{67}
+\contentsline {chapter}{\numberline {}Introducci\IeC {\'o}n}{1}{chapter*.2}
+\contentsline {chapter}{\numberline {}Motivaci\IeC {\'o}n}{2}{chapter*.3}
+\contentsline {chapter}{\numberline {1}OpenCV}{4}{chapter.1}
+\contentsline {section}{\numberline {1.1}Introducci\IeC {\'o}n}{4}{section.1.1}
+\contentsline {section}{\numberline {1.2}Ejemplos}{6}{section.1.2}
+\contentsline {chapter}{\numberline {2}Otras librer\IeC {\'\i }as usadas}{14}{chapter.2}
+\contentsline {section}{\numberline {2.1}Android}{14}{section.2.1}
+\contentsline {section}{\numberline {2.2}Numpy}{16}{section.2.2}
+\contentsline {chapter}{\numberline {3}Estabilizaci\IeC {\'o}n de imagen}{18}{chapter.3}
+\contentsline {section}{\numberline {3.1}Algoritmo b\IeC {\'a}sico}{18}{section.3.1}
+\contentsline {subsection}{\numberline {3.1.1}Algoritmo para encontrar puntos caracter\IeC {\'\i }sticos}{18}{subsection.3.1.1}
+\contentsline {subsection}{\numberline {3.1.2}Algoritmo de Lucas-Kanade}{22}{subsection.3.1.2}
+\contentsline {subsection}{\numberline {3.1.3}C\IeC {\'a}lculo de la homograf\IeC {\'\i }a}{25}{subsection.3.1.3}
+\contentsline {subsection}{\numberline {3.1.4}C\IeC {\'o}digo}{26}{subsection.3.1.4}
+\contentsline {subsection}{\numberline {3.1.5}Comentarios y variaciones del algoritmo}{28}{subsection.3.1.5}
+\contentsline {section}{\numberline {3.2}Algoritmo basado en la correlaci\IeC {\'o}n de fase}{29}{section.3.2}
+\contentsline {section}{\numberline {3.3}Uso del aceler\IeC {\'o}metro para estabilizar}{30}{section.3.3}
+\contentsline {subsection}{\numberline {3.3.1}Programa para Android}{30}{subsection.3.3.1}
+\contentsline {subsection}{\numberline {3.3.2}Programa de procesado de los datos}{31}{subsection.3.3.2}
+\contentsline {subsection}{\numberline {3.3.3}Resultados}{33}{subsection.3.3.3}
+\contentsline {chapter}{\numberline {4}Estabilizaci\IeC {\'o}n de la luz}{34}{chapter.4}
+\contentsline {section}{\numberline {4.1}Introducci\IeC {\'o}n}{34}{section.4.1}
+\contentsline {section}{\numberline {4.2}Un algoritmo de normalizaci\IeC {\'o}n de luz}{35}{section.4.2}
+\contentsline {section}{\numberline {4.3}Correcci\IeC {\'o}n de la iluminaci\IeC {\'o}n usando el sensor}{36}{section.4.3}
+\contentsline {chapter}{\numberline {A}C\IeC {\'o}digo del aceler\IeC {\'o}metro}{38}{appendix.Alph1}
+\contentsline {section}{\numberline {A.1}C\IeC {\'o}digo de Android}{38}{section.Alph1.1}
+\contentsline {subsection}{\numberline {A.1.1}MainActivity}{38}{subsection.Alph1.1.1}
+\contentsline {subsection}{\numberline {A.1.2}Clase vcorderView}{43}{subsection.Alph1.1.2}
+\contentsline {subsection}{\numberline {A.1.3}Android manifest}{46}{subsection.Alph1.1.3}
+\contentsline {subsection}{\numberline {A.1.4}Activity layout}{47}{subsection.Alph1.1.4}
+\contentsline {section}{\numberline {A.2}C\IeC {\'o}digo de procesado de los datos}{48}{section.Alph1.2}
+\contentsline {chapter}{\numberline {B}C\IeC {\'o}digo del sensor de luz}{52}{appendix.Alph2}
+\contentsline {section}{\numberline {B.1}C\IeC {\'o}digo de Android}{52}{section.Alph2.1}
+\contentsline {section}{\numberline {B.2}C\IeC {\'o}digo de procesado de los datos}{57}{section.Alph2.2}
+\contentsline {chapter}{\numberline {C}Otros c\IeC {\'o}digos}{61}{appendix.Alph3}
+\contentsline {section}{\numberline {C.1}C\IeC {\'o}digo del algoritmo de correlaci\IeC {\'o}n de fase}{61}{section.Alph3.1}
+\contentsline {section}{\numberline {C.2}C\IeC {\'o}digo del algoritmo de nomalizaci\IeC {\'o}n de luz}{62}{section.Alph3.2}
+\contentsline {chapter}{Bibliograf\IeC {\'\i }a}{65}{lstnumber.-16.78}

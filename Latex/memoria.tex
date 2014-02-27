@@ -6,7 +6,7 @@
 \usepackage{amsmath}
 \usepackage{mathtools}
 \usepackage{graphicx}
-\usepackage{url}
+\usepackage{hyperref}
 
 \definecolor{mygreen}{rgb}{0,0.6,0}
 \definecolor{mygray}{rgb}{0.5,0.5,0.5}
@@ -48,7 +48,7 @@
 
 
 \begin{document}
-
+\def\thepage{\roman{page}}
 \begin{titlepage}
 
 
@@ -89,6 +89,7 @@ Andrés A. Sánchez González\\
 \newpage
 \mbox{}
 \let\cleardoublepage\clearpage
+\def\thepage{\roman{page}}
 \chapter*{Introducción}
 \pagenumbering{arabic} % para empezar la numeración con números
 \addcontentsline{toc}{chapter}{\protect\numberline{}Introducción}%
@@ -98,7 +99,7 @@ Este trabajo trata sobre visión artificial con la librería openCV y, en concre
 \newline
 \newline
 
-This paper deals with computer vision using the openCV library and, specifically, with video image stabilization and lighting stabilization. Several algorithms have been used in order to eliminate both the involuntary movements that can be produced by the person who records the video, and also the lighting changes that can happen during video recording.
+This work deals with computer vision using the openCV library and, specifically, with video image stabilization and illumination stabilization. Several algorithms have been used in order to eliminate both the involuntary movements that can be produced by the person who records the video, and also the lighting changes that can happen during video recording.
 With this purpose, an attempt of using mobile sensors, such as accelerometers and light sensor, has been made.
 The present work consists of the study of the openCV library, the learning of basic Android programming, the search of image stabilization algorithms, the design and programming of an algorithm for image stabilization using the accelerometer, the search of algorithms for lighting stabilization and the design and programming of an algorithm for light stabilization using the light sensor.
 
@@ -131,7 +132,7 @@ códigos sencillos de ejemplo que hice durante el proceso de aprendizaje.
 El siguiente capítulo está dedicado a otras librerías que, sin jugar un papel
 an protagonista como OpenCV, he tenido que aprender y usar durante el
 trabajo. La parte central de este capítulo es Android y una pequeña noción
-sobree cómo se estructuran este sistema operativo y sus aplicaciones.
+sobre cómo se estructuran este sistema operativo y sus aplicaciones.
 El siguiente capítulo trata sobre la estabilización de la imagen y abarca tanto los algoritmos puramente de visión artificial para estabilizar la imagen, como los intentos de usar el acelerómetro con este objeto. Finalmente, el último capítulo está dedicado a la estabilización de la luz.
 \newline
 
@@ -169,13 +170,14 @@ En primer lugar veamos como mostrar una imagen en una ventana
 \lstinputlisting[language=Python, frame= single]{ejemplos/ejemplo1.py}
 Como vemos se trata de un código muy sencillo. Al ser ejecutado con un argumento, carga una imagen y la muestra en una ventana; luego espera hasta que el usuario pulse una tecla.
 
-La función \lstinline|cv2.imread()| es la que se encarga de cargar la imagen desde un archivo.  Esta función toma como argumentos el nombre del archivo que se quiere abrir y además podemos especificar con un segundo parámetro opcional el modo de color en que se carga la imagen.La función devuelve la imagen (en forma de array de Numpy).
+La función \lstinline|cv2.imread()| es la que se encarga de cargar la imagen desde un archivo.  Esta función toma como argumentos el nombre del archivo que se quiere abrir y además podemos especificar con un segundo parámetro opcional el modo de color en que se carga la imagen. La función devuelve la imagen (en forma de array de Numpy).
 
 
 Una vez hemos cargado la imagen, la mostramos en una ventana usando \lstinline|cv2.imshow(winname, image)|, donde \lstinline|winname| es el nombre de la ventana e \lstinline|image| es la imagen que queremos mostrar.
 Por último, utilizamos \lstinline|cv2.waitKey(0)| para esperar a que el usuario pulse una tecla. Esta función recibe un único parámetro que indica el tiempo de espera en milisegundos para la pulsación de una tecla. Si este parámetro es menor o igual que cero, esperará indefinidamente.
 
 \subsection*{Ejemplo 2}
+\enlargethispage{2cm}
 En el siguiente ejemplo vemos como cargar un archivo de vídeo y mostrarlo en una ventana. El programa termina cuando el vídeo se acaba o cuando el usuario pulsa la tecla ``Esc"
 \lstinputlisting[language=Python, frame= single]{ejemplos/ejemplo2.py}
 En este ejemplo hemos hecho uso de la clase VideoCapture.
@@ -187,11 +189,11 @@ Por último, esta vez usamos la función \lstinline|cv2.waitKey| de manera un po
 \newpage
 \subsection*{Ejemplo 3}
 En este ejemplo mejoraremos un poco el reproductor de vídeo que hemos programado en el ejemplo anterior. Se ha añadido una barra de deslizamiento con el instante del vídeo en que nos encontramos, el cual se puede utilizar para avanzar y retroceder hasta donde deseemos.
-\lstinputlisting[language=Python, frame= single, firstline=4, lastline=27]{ejemplos/ejemplo3.py}
+\lstinputlisting[language=Python, frame= single, firstline=4, lastline=31]{ejemplos/ejemplo3.py}
 Como vemos, en este código hemos introducido unas cuantas funciones nuevas.
 En primer lugar, hemos usado varias veces la función \lstinline|cv2.VideoCapture.get(propId)| con distintos argumentos.
 Esta función devuelve el valor de distintas propiedades del video con el que estamos trabajando. El argumento es el identificador de la propiedad entre los que destacan: \lstinline|CV_CAP_PROP_POS_FRAMES| (posición del próximo fotograma que va a ser decodificado/capturado), \lstinline|CV_CAP_PROP_FPS| (fotogramas por segundo) y \lstinline|CV_CAP_PROP_FRAME_WIDTH|y \lstinline|CV_CAP_PROP_FRAME_HEIGHT| (anchura y altura de los fotogramas del video respectivamente).
-La lista completa de opciones puede ser encontrada fácilmente en la documentación de OpenCV\footnote{\url{http://docs.opencv.org/modules/highgui/doc/reading_and_writing_images_and_video.html#videocapture-get}}.
+La lista completa de opciones puede ser encontrada fácilmente en la documentación de OpenCV\footnote{\url{http://docs.opencv.org/modules/highgui/doc/reading_and_writing_images_and_video.html\#videocapture-get}}.
 
 También usamos la función \lstinline|cv2.VideoCapture.set(propId, value)|, usada para fijar el valor de alguna de las propiedades del vídeo. Por tanto los valores que puede tomar \lstinline|propId| son los mismos que para la función \lstinline|cv2.VideoCapture.get()| y el argumento \lstinline|value| indica el nuevo valor que tomará la propiedad indicada.
 
@@ -201,11 +203,14 @@ Ahora le vamos a añadir algo (una trackbar) a nuestra ventana, por lo que neces
 Para esto usamos \lstinline|cv2.createTrackbar(trackbarName, windowName, value, count, onChange)|, siendo estos parámetros el nombre de la barra de deslizamiento creada, el nombre de la ventana en la que queremos la barra,una variable que refleja la posición del deslizador, la posición máxima del deslizador (la posición mínima es 0 siempre) y por último una función que será llamada cada vez que la barra de deslizamiento cambie de posición.
 
 \newpage
-
+\enlargethispage{3cm}
 \subsection*{Ejemplo 4}
 Ahora vamos a ver un ejemplo de una transformación muy sencilla, vamos a abrir una imagen y a aplicarle un desenfoque gaussiano y a mostrar tanto la imagen original como la resultante por pantalla. El desenfoque gaussiano es un filtro usado para suavizar imágenes y desenfocarlas. Funciona de la siguiente manera: cada píxel de la imagen mezcla su color con los de un ventana a su alrededor (de altura y anchura dadas). Esta mezcla es una media de los píxeles que están dentro de la ventana ponderada con un núcleo gaussiano (es decir la media de los píxeles multiplicando cada uno de ellos por un peso, que en este caso lo da el núcleo gaussiano). Un núcleo gaussiano (de una dimensión) de tamaño $\texttt{ksize}$ es una matriz de dimensiones $ \texttt{ksize}\times1$ con coeficientes:
-$ G_i= \alpha \cdot e^{-(i-( \texttt{ksize} -1)/2)^2/(2* \sigma )^2}$ \footnote{Está fórmula proviene de la de la función de densidad de la distribución gaussiana: $f(x)=\frac1{\sigma\sqrt{2\pi}}\; e^{ - \frac{1}{2} \left(\frac{x-\mu}{\sigma}\right)^2}$.} donde i va de $0$ a $\texttt{ksize}-1$ y $\alpha$ es tal que  $\sum_i G_i=1$. Como las imágenes son en dos dimensiones el núcleo gaussiano que se aplica es de dos dimensiones (esto es equivalente a aplicar un núcleo gaussiano en cada dirección), por lo que habrá dos parámetros $\sigma$, que llamaremos $\sigma_1$ y $\sigma_2$.
+$ G_i= \alpha \cdot e^{-(i-( \texttt{ksize} -1)/2)^2/(2* \sigma )^2}$ donde i va de $0$ a $\texttt{ksize}-1$ y $\alpha$ es tal que  $\sum_i G_i=1$. Esta fórmula proviene de la de la función de densidad de la distribución gaussiana: $f(x)=\frac1{\sigma\sqrt{2\pi}}\; e^{ - \frac{1}{2} \left(\frac{x-\mu}{\sigma}\right)^2}$.
+
+Como las imágenes son en dos dimensiones el núcleo gaussiano que se aplica es de dos dimensiones (esto es equivalente a aplicar un núcleo gaussiano en cada dirección), por lo que habrá dos parámetros $\sigma$, que llamaremos $\sigma_1$ y $\sigma_2$.
 \lstinputlisting[language=Python, frame= single]{ejemplos/ejemplo4.py}
+%\newpage
 La única función nueva es 
 \lstinline|cv2.GaussianBlur()|, que es la que realiza el desenfoque.
 Sus parámetros obligatorios son la imagen y el tamaño del núcleo. Puede además indicarse los valores $\sigma_1$ y $\sigma_2$. Si ambos son 0, entonces se calcularán a partir del tamaño del núcleo $(k_1, k_2)$ con la siguiente fórmula:
@@ -249,7 +254,7 @@ Como vemos el código para mostrar una imagen de la \textit{webcam} es exactamen
 
 \newpage 
 \subsection*{Ejemplo 6}
-Ahora simplemente vamos a combinar los dos ejemplos anteriores, reduciendo la imagen a la cuarta parte de su tamaño original. Esto lo hacemos aplicando dos veces \lstinline|pyrDown| y luego encontrando los bordes con \lstinline|Canny|
+Ahora simplemente vamos a extender el ejemplo anterior, reduciendo la imagen a la cuarta parte de su tamaño original  y luego encontrando los bordes con \lstinline|Canny|. Esta reducción la hacemos aplicando dos veces \lstinline|pyrDown|
 \lstinputlisting[language=Python, frame= single]{ejemplos/ejemplo7.py}
 \newpage
 
@@ -389,7 +394,7 @@ La idea de la función propuesta inicialmente por Harris era que no hacía falta
 \begin{itemize}
  \item Si $|R|$ es pequeño, $\lambda_1$ y $\lambda_2$ también son pequeños.
  \item Si $R<0$ entonces $\lambda_1>>\lambda_2$ o bien $\lambda_2>>\lambda_1$, en cuyo caso se trata de un borde.
- \item Si R es grande, entonces  $\lambda_1$ y $\lambda_2$ también lo son y $\lambda_1 \sim \lambda_2$, por lo que se trata de una esquina.
+ \item Si $R$ es grande (mayor que un umbral definido por el usuario), entonces  $\lambda_1$ y $\lambda_2$ también lo son y $\lambda_1 \sim \lambda_2$, por lo que se trata de una esquina.
  \end{itemize}
  
 Sin embargo Shi y Tomasi argumentaron que bastaba con que el mínimo de los dos autovalores fuese suficientemente grande, debido a que las diferencias de intensidad están acotadas por el valor máximo de intensidad de los píxeles, lo que impide que el mayor autovalor sea arbitrariamente grande.
@@ -498,11 +503,11 @@ Donde:
 \item \lstinline|criteria| es un parámetero que indica el criterio para terminar la búsqueda iterativa del algoritmo: después de un número máximo de iteraciones
 o cuando la ventana de búsqueda se mueve menos que un épsilon dado.
 \item \lstinline|flags|:
-	\begin{itemize}
+        \begin{itemize}
     \item \lstinline|OPTFLOW_USE_INITIAL_FLOW| utiliza estimaciones iniciales, almacenadas en \lstinline|nextPst|. Si no, copia \lstinline|prevPts| a \lstinline|nextPts| y los considera la estimación inicial.
     
     \item \lstinline|OPTFLOW_LK_GET_MIN_EIGENVALS| utiliza los autovalores mínimos como medida de error. Si este parámetro no se indica se usará como medida de error la distancia $L_1$ entre los bloques del punto original y un punto movido, dividido por el número de píxeles en una ventana.
-	\end{itemize}
+        \end{itemize}
 \item \lstinline|minEigThreshold| –  El algoritmo calcula el menor autovalor de la matriz de las ecuaciones del flujo. Si este valor dividido por el número de píxeles en una ventana es menor que \lstinline|minEigThreshold|, entonces el punto es filtrado y no se calcula su flujo.
 
 \end{itemize}
@@ -514,17 +519,17 @@ En visión artificial se llama homografía a una transformación proyectiva de u
 Tenemos una serie de puntos $q_1 \ldots q_n$ que van a parar a $q'_1 \ldots q'_n$. Denotaremos $q_i = (x_i,y_i)$ y $q'_i=(x'_i, y'_i)$,
 Entonces podemos expresar la homografía como:
 \begin{equation}
-	\left( \begin{array}{c}
-	x'_i\\
-	y'_i\\
-	1
-	\end{array} \right)
-	= sH
-		\left( \begin{array}{c}
-	x_i\\
-	y_i\\
-	1
-	\end{array} \right)
+        \left( \begin{array}{c}
+        x'_i\\
+        y'_i\\
+        1
+        \end{array} \right)
+        = sH
+                \left( \begin{array}{c}
+        x_i\\
+        y_i\\
+        1
+        \end{array} \right)
 \end{equation}
 donde $s$ es un factor de escala y $H$ es la matriz de la transformación.
 Para encontrar dicha matriz usamos la función \lstinline|cv.FindHomography()|
@@ -572,13 +577,13 @@ Obtenemos la correlación cruzada normalizada aplicando la inversa de la transfo
 \begin{equation*}
     \ r = \mathcal{F}^{-1}\{R\}
 \end{equation*}
-Por último, localizamos el máximo de $r$, y no quedamos con las cordenadas de este, que será el desplazamiento que se ha producido entre un fotograma y otro.
+Por último, localizamos el máximo de $r$, y nos quedamos con las cordenadas de este, que será el desplazamiento que se ha producido entre un fotograma y otro.
 OpenCV dispone de la función \lstinline|cv2.phaseCorrelate(src1, src2[, window])| que se encarga de todo esto. Los dos primeros argumentos son las dos imágenes. El último argumento es opcional y es un array con los coeficientes para la función ventana.
 
 Podemos encontrar el código de este algoritmo en el apéndice \ref{ap_pc}.
 \newpage
 \section{Uso del acelerómetro para estabilizar}
-Se trata de intentar utilizar la información extra de los que disponemos, en concreto la que nos proporciona el acelerómetro del móvil, para intentar estabilizar la imagen utilizando estos datos.
+En esta sección trataremos de utilizar la información extra de los que disponemos, en concreto la que nos proporciona el acelerómetro del móvil, para intentar estabilizar la imagen utilizando estos datos.
 Para ello en primer lugar hacemos un programa para Android que se encargue de recoger estos datos, grabando el vídeo a la vez que registra los datos del acelerómetro y los guarda en un archivo junto con el momento exacto en el que se han registrado los datos.
 Luego, un segundo programa en un PC procesa los archivos para intentar estabilizar la imagen: recoge los datos de aceleración en cada instante de medida y aproxima el movimiento en dichos instantes. Luego calcula mediante interpolación cuanto se ha movido la cámara en el instante del fotograma y recoloca el fotograma de acuerdo con lo obtenido.
 
@@ -692,7 +697,7 @@ La manera de acceder al sensor de luz es análoga a la de acceder al acelerómet
 
 Una vez que tenemos los lux medidos en cada instante tenemos que ver que podemos hacer con ellos. 
 
-En primer lugar estableceremos una escala, para ello supondremos que nos encontramos en una habitación.En este caso podemos suponer que a partir de 400 lx la habitación está muy iluminada. Por tanto fijamos 400 como el máximo y reescalamos a un  $k \in [0,1]$ dividiendo por 400. Queremos que estos datos representen lo iluminada que está la imagen. 
+En primer lugar estableceremos una escala, para ello supondremos que nos encontramos en una habitación. En este caso podemos suponer que a partir de 400 lx la habitación está muy iluminada. Por tanto fijamos 400 como el máximo y reescalamos a un  $k \in [0,1]$ dividiendo por 400. Queremos que estos datos representen lo iluminada que está la imagen. 
 Como la relación entre lo iluminada que está una imagen y la iluminación ambiental no es lineal, elevamos los datos a un $\alpha  \in [0,1]$, en concreto hemos decidido usar  $\alpha = 1/4$ ya que tras varías pruebas es la que mejores resultados parece proporcionar.
 
 Antes de ver cómo usamos estos datos, veamos primero la transformación que proponemos. Se trata de algo que en muchos programas de edición de imagen se conoce como ajuste de niveles. 
@@ -704,7 +709,7 @@ Los datos de que nosotros disponemos parten de la iluminación media y, por tant
 Esto lo hacemos mediante la transformación $10^{-2k+1}$.
 Como límites mínimo y máximo utilizamos los percentiles 1 y 99 respectivamente.
 
-De las pruebas realizadas podemos observar que el algoritmo funciona bastante bien pero tiene algunas limitaciones: en primer lugar, los cambios bruscos de iluminación,como por otra parte era imaginable, siguen dando problemas, ya que se sigue notando el cambio brusco y, algunas zonas muy oscuras de las imágenes aclaradas siguen quedando totalmente negras. Como ya hemos dicho, esto era esperable. Sin embargo existe otro problema y es que los cambios más leves el sensor algunas veces no los refleja.\footnote{Se puede encontrar un ejemplo de vídeo en \url{https://github.com/anarcadio/ComputerVision/tree/master/videos}}
+De las pruebas realizadas podemos observar que el algoritmo funciona bastante bien pero tiene algunas limitaciones: en primer lugar, los cambios bruscos de iluminación, como por otra parte era imaginable, siguen dando problemas, ya que se sigue notando el cambio brusco y, algunas zonas muy oscuras de las imágenes aclaradas siguen quedando totalmente negras. Como ya hemos dicho, esto era esperable. Sin embargo existe otro problema y es que los cambios más leves el sensor algunas veces no los refleja.\footnote{Se puede encontrar un ejemplo de vídeo en \url{https://github.com/anarcadio/ComputerVision/tree/master/videos}}
 No obstante para cambios no muy bruscos de la iluminación, se puede usar este código, aunque probablemente haya que aplicar posteriormente otro (como el propuesto en el apartado anterior).
 Se adjunta el código en el apéndice \ref{ap_illu}.
 \appendix
