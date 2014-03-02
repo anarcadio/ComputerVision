@@ -1,0 +1,4 @@
+-Un ejemplo del algoritmo de estabilización de imagen es "out-estab.avi" (el vídeo original es "recMovimiento.avi")
+-Dos ejemplos del algoritmo de estabilización usan el acelerómetro son "out-recMovimiento.avi" y "out-recMovimiento2.avi" cuyos vídeos originales son "recMovimiento.avi" y "recMovimiento2.avi" respectivamente.
+-Un ejemplo del algoritmo de estabilización de luz es "luz_out.avi", y el vídeo original es luz.avi.
+-Un ejemplo del algoritmo de estabilización de luz usando el sensor es "out-recLuz.avi" cuyo vídeo original es "recLuz.avi"
